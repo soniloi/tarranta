@@ -1,0 +1,129 @@
+#include "Container.h"
+
+/*
+ *	Destructor
+ */
+Container::~Container(){
+	//cerr << "Container destructor called on: " << this->longname;
+}
+
+/*
+ *	Insert item into container
+ *	This will not check whether there is already an item in the container
+ */
+void Container::insertItem(Item* item){
+	this->within = item;
+}
+
+/*
+ *	Return pointer to the item in the Container, without removing it
+ *	NULL return means the container is empty
+ */
+Item* Container::getItemWithin(){
+	return this->within;
+}
+
+/*
+ *	Remove item from container and return pointer to it
+ */
+Item* Container::extractItemWithin(){
+	Item* i = this->within;
+	this->within = NULL;
+	return i;
+}
+
+/*
+ *	Return whether there is anything in the container or not
+ */
+bool Container::isEmpty(){
+	return (!this->within);
+}
+
+/*
+ *	Return size/capacity of this container alone
+ */
+int Container::getSize(){
+	return this->size;
+}
+
+/*
+ *	Override method to return weight of this container together with anything that's in it
+ */
+int Container::getWeight(){
+	int result = this->size;
+	if(this->within)
+		result += this->within->getWeight();
+	return result;
+}
+
+/*
+ *	Override method to display also what is in the container
+ */
+string Container::getLongname(){
+
+	string result = this->longname;
+
+	result += " (";
+
+	if(this->within)
+		result += "containing " + this->within->getLongname();
+	else
+		result += "empty";
+
+	result += ')';
+
+	return result;
+
+}
+
+/*
+ *	Display what is in the container, displaying any nested containers correctly
+ *	tabcount parameter is the nesting depth
+ */
+string Container::getInventoryname(int tabcount){
+
+	string result = this->longname;
+
+	result += "\n\t\t";
+
+	for(int i = 0 ; i < tabcount ; i++)
+		result += TAB;
+
+	if(this->within){
+		result += " containing: ";
+		if(this->within->hasAttribute(CTRL_ITEM_CONTAINER)){
+			Container* withincontainer = (Container*) this->within;
+			result += withincontainer->getInventoryname(tabcount+ONE);
+		}
+		else
+			result += this->within->getInventoryname();
+	}
+	else
+		result += " (empty)";
+
+	return result;
+
+}
+
+/*
+ *	Override method to also display what is in the container
+ */
+string Container::getInventoryname(){
+	return this->getInventoryname(ZERO);
+}
+
+/*
+ *	Override methodeturn full description of this container; includes information about the things it contains, if any
+ */
+string Container::getFullname(){
+	string result = this->fullname;
+	result += ".\n";
+	if(!this->within)
+		result += "It is currently empty";
+	else{
+		result += "It contains: " + this->within->getLongname() + ".";
+		result += "\n\tIt is ";
+		result += this->within->getFullname();
+	}
+	return result;
+}
