@@ -28,8 +28,11 @@ class Container: public Item{
 		void insertItem(Item* item);
 		Item* getItemWithin();
 		Item* extractItemWithin();
+		bool contains(Item* item); // Check whether this container, or any container within it, contains a certain item
+		bool containsWithAttribute(int attribute); // Check whether this container, or any container within it, contains any item with a certain attribute
 		bool isEmpty(); // Whether there is anything in the container or not
-		bool isSuitable(Item* item); // Whethere this container is a suitable container for a certain item
+		bool isSuitable(Item* item); // Whether this container is a suitable container for a certain item
+		Container* getParentOf(Item* item); // Return the container, or container within this container, that contains a certain item
 		virtual int getWeight(); // The weight of this container together with the weight of whatever is in it
 		virtual string getLongname();
 		virtual string getInventoryname();

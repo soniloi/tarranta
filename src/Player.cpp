@@ -177,8 +177,16 @@ void Player::setLocation(Location* loc){
 	this->location = loc;
 }
 
-bool Player::hasInInventory(uint64_t itemcode){
-	return this->inventory->contains(itemcode);
+bool Player::hasInPresent(Item* item){
+	if(this->inventory->contains(item))
+		return true;
+	if(this->location->get(item->getCode()))
+		return true;
+	return false;
+}
+
+bool Player::hasInInventory(Item* item){
+	return this->inventory->contains(item);
 }
 
 /*
@@ -188,16 +196,47 @@ bool Player::hasInInventoryWithAttribute(int attribute){
 	for(map<uint64_t, Item*>::iterator it = this->inventory->items.begin() ; it != this->inventory->items.end() ; it++){
 		if(it->second->hasAttribute(attribute))
 			return true;
+		if(it->second->hasAttribute(CTRL_ITEM_CONTAINER)){
+			Container* container = (Container*) it->second;
+			if(container->containsWithAttribute(attribute))
+				return true;
+		}
 	}
 	return false;
+}
+
+/*
+ *	Find the container that contains a certain item
+ */
+Container* Player::getParentContainer(Item* item){
+	for(map<uint64_t, Item*>::iterator it = this->inventory->items.begin() ; it != this->inventory->items.end() ; it++){
+		if(it->second->hasAttribute(CTRL_ITEM_CONTAINER)){
+			Container* container = (Container*) it->second;
+			Container* parent = container->getParentOf(item);
+			if(parent)
+				return parent;
+		}
+	}
+	// TODO: do the same for this location's items
+	return NULL; // NEVER let the program get into a position where this is returned
 }
 
 void Player::addToInventory(Item* item){
 	this->inventory->deposit(item);
 }
 
-void Player::extractFromInventory(uint64_t itemcode){
-	this->inventory->extract(itemcode);
+void Player::extractFromInventory(Item* item){
+	this->inventory->extract(item->getCode());
+
+	if(item->getLocation()->getID() == LOCATION_CONTAINER){ // Deal with nasty stuff
+		Container* parent = this->getParentContainer(item);
+		if(parent){ // Just in case it somehow returns NULL, I don't want a big ugly segfault
+			parent->extractItemWithin();
+		}
+	}
+
+	else
+		this->inventory->extract(item->getCode());
 }
 
 /*
@@ -238,17 +277,17 @@ string Player::inventoryToString(){
 }
 
 bool Player::hasLight(){
-	return (this->location->hasLight() || this->inventory->hasLight());
+	return (this->location->hasLight() || this->hasInInventoryWithAttribute(CTRL_ITEM_GIVES_LIGHT));
 }
 
 bool Player::hasAir(){
-	return (this->location->hasAir() || this->inventory->hasAir());
+	return (this->location->hasAir() || this->hasInInventoryWithAttribute(CTRL_ITEM_GIVES_AIR));
 }
 
 bool Player::hasGravity(){
-	return (this->location->hasGravity() || this->inventory->hasGravity());
+	return (this->location->hasGravity() || this->hasInInventoryWithAttribute(CTRL_ITEM_GIVES_GRAVITY));
 }
 
 bool Player::hasNosnomp(){
-	return (this->location->hasNosnomp() || this->inventory->hasNosnomp());
+	return (this->location->hasNosnomp() || this->hasInInventoryWithAttribute(CTRL_ITEM_GIVES_NOSNOMP));
 }

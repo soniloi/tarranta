@@ -21,9 +21,9 @@ class Inventory{
  		Inventory(int maxcapacity);
  		~Inventory();
  		void deposit(Item* item);
- 		Item* get(uint64_t cd); // Return pointer to desired Item without removing from inventory
+ 		Item* get(Item* item); // Return pointer to desired Item without removing from inventory
  		Item* extract(uint64_t cd); // Return pointer to desired Item and remove from inventory
- 		bool contains(uint64_t cd);
+ 		bool contains(Item* item); // Return whether an item is contained in inventory
  		bool hasLight();
 		bool hasAir();
 		bool hasGravity();

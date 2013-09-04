@@ -33,6 +33,31 @@ Item* Container::extractItemWithin(){
 }
 
 /*
+ *	Check whether this container, or any container within it, contains a certain item
+ */
+bool Container::contains(Item* item){
+	if(this->within == item)
+		return true;
+	if(this->within && this->within->hasAttribute(CTRL_ITEM_CONTAINER)){
+		return ((Container*) this->within)->contains(item);
+	}
+	return false;
+}
+
+/*
+ *	Check whether this container, or any container within it, contains any item with a certain attribute
+ */
+bool Container::containsWithAttribute(int attribute){
+	if(this->within == NULL)
+		return false; // Nothing in the container
+	if(this->within->hasAttribute(attribute))
+		return true;
+	if(this->within->hasAttribute(CTRL_ITEM_CONTAINER))
+		return ((Container*) this->within)->containsWithAttribute(attribute);
+	return false;
+}
+
+/*
  *	Return whether there is anything in the container or not
  */
 bool Container::isEmpty(){
@@ -54,6 +79,20 @@ bool Container::isSuitable(Item* item){
 	return true;
 }
 
+/*
+ *	Return the container that contains a certain item
+ *	This could be this container itself, or a container within this one
+ *	Will return NULL if not found
+ */
+Container* Container::getParentOf(Item* item){
+	if(this->within == item)
+		return this;
+	if(this->within && this->within->hasAttribute(CTRL_ITEM_CONTAINER)){
+		Container* container = (Container*) this->within;
+		return container->getParentOf(item);
+	}
+	return NULL; // Not found
+}
 
 /*
  *	Override method to return weight of this container together with anything that's in it

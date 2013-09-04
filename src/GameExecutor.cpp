@@ -44,7 +44,7 @@ void Game::Executor::execGrab(Game* game, uint64_t arg){
 		Terminal::wrpro("I don't know what " + Statics::codeToStr(arg) + " is.");
 		return;
 	}
-	if(game->player->hasInInventory(item->getCode())){ // Already in inventory
+	if(game->player->hasInInventory(item)){ // Already in inventory
 		Terminal::wrpro("You already have it.");
 		return;
 	}
@@ -362,7 +362,7 @@ void Game::Executor::execAttack(Game* game, Item* item){
  */
 void Game::Executor::execBurn(Game* game, Item* item){
 
-	if(!game->player->hasInInventory(ITEM_MATCHES)){
+	if(!game->player->hasInInventory(game->items->get(ITEM_MATCHES))){
 		Terminal::wrpro(game->general->get(STR_NOMATCH));
 		return;
 	}
@@ -406,7 +406,7 @@ void Game::Executor::execEmpty(Game* game, Container* container){
 	Item* itemwithin = container->extractItemWithin();
 	if(!itemwithin) // Nothing in the container
 		Terminal::wrpro("The " + container->getShortname() + " is already empty.");
-	else if(game->player->hasInInventory(container->getCode())){ // Item in container, which is in inventory
+	else if(game->player->hasInInventory(container)){ // Item in container, which is in inventory
 		itemwithin->setLocation(game->station->get(LOCATION_INVENTORY));
 		game->player->addToInventory(itemwithin);
 		Terminal::wrpro("The " + container->getShortname() + " has been emptied of " + itemwithin->getLongname() + ", which you are now holding.");
@@ -429,13 +429,13 @@ void Game::Executor::execGive(Game* game, Item* item){
 	if(receiver){ // Player has chosen to feed the lion
 		if(code == ITEM_RUTABAGA){
 			Terminal::wrpro(game->general->get(STR_LIONKILL)); // Lion does not like cabbage and kills player
-			game->player->extractFromInventory(code);
+			game->player->extractFromInventory(item);
 			item->setLocation(game->station->get(LOCATION_NOWHERE));
 			game->player->kill();
 		}
 		else if(item->hasAttribute(CTRL_ITEM_EDIBLE)){
 			Terminal::wrpro(game->general->get(STR_LIONWHET)); // Lion't appetite has been whetted by feeding
-			game->player->extractFromInventory(code);
+			game->player->extractFromInventory(item);
 			item->setLocation(game->station->get(LOCATION_NOWHERE));
 		}
 		else{
@@ -448,7 +448,7 @@ void Game::Executor::execGive(Game* game, Item* item){
 	if(receiver){
 		if(item->hasAttribute(CTRL_ITEM_EDIBLE)){
 			Terminal::wrpro(game->general->get(STR_TROLLED));
-			game->player->extractFromInventory(code);
+			game->player->extractFromInventory(item);
 			item->setLocation(game->station->get(LOCATION_NOWHERE));
 			game->player->kill();
 		}
@@ -643,13 +643,13 @@ void Game::Executor::execRub(Game* game, Item* item){
 void Game::Executor::execTake(Game* game, Item* item){
 	if(!game->player->hasLight()) // Player cannot see what they are doing
 		Terminal::wrpro(game->general->get(STR_TAKENOSE));
-	else if(game->player->hasInInventory(item->getCode())) // Item is already in inventory
+	else if(game->player->hasInInventory(item)) // Item is already in inventory
 		Terminal::wrpro(game->general->get(STR_TAKEALRE));
 	else if(!item->hasAttribute(CTRL_ITEM_MOBILE)) // Item is not portable
 		Terminal::wrpro(game->general->get(STR_TAKENOCA));
 	else{ // Item is portable
 		Location* itemloc = item->getLocation();
-		if(itemloc != NULL && !game->player->hasInInventory(item->getCode()))
+		if(itemloc != NULL && !game->player->hasInInventory(item))
 			itemloc->extract(item->getCode());
 		item->setLocation(game->station->get(LOCATION_INVENTORY));
 		game->player->addToInventory(item);
@@ -664,6 +664,7 @@ void Game::Executor::execTake(Game* game, Item* item){
  *	Execute command to drop item into current location
  */
 void Game::Executor::execDrop(Game* game, Item* item){
+	
 	Location* current = game->player->getLocation();
 	if(!current->hasAttribute(CTRL_LOC_HAS_FLOOR) && game->player->hasGravity()){ // Gravity pulls item down to location beneath current
 		Location* below = current->getDirection(CMD_DOWN);
@@ -676,18 +677,18 @@ void Game::Executor::execDrop(Game* game, Item* item){
 				game->destroyItem(item, item->getCode());
 			}
 			else{
-				item->setLocation(below);
 				below->deposit(item);
-				game->player->extractFromInventory(item->getCode()); // Remove item from inventory
+				game->player->extractFromInventory(item); // Remove item from inventory
+				item->setLocation(below);
 			}
 		}
 	}
 
 	else{
 		Terminal::wrpro(game->general->get(STR_DROPGOOD));
-		item->setLocation(current); // Set item's location to current location
 		current->deposit(item); // Add item to current location's item list
-		game->player->extractFromInventory(item->getCode()); // Remove item from inventory
+		game->player->extractFromInventory(item); // Remove item from inventory
+		item->setLocation(current); // Set item's location to current location
 	}
 }
 
@@ -731,7 +732,7 @@ void Game::Executor::execInsert(Game* game, Item* item){
 			else if(!containers.front()->isEmpty()) // Something is currently in container
 				Terminal::wrpro(game->general->get(STR_CONTFULL));
 			else{
-				game->player->extractFromInventory(item->getCode()); // Remove item from inventory
+				game->player->extractFromInventory(item); // Remove item from inventory
 				item->setLocation(game->station->get(LOCATION_CONTAINER)); // Set item's location to "container"
 				containers.front()->insertItem(item); // Insert item into desired container
 				Terminal::wrpro(item->getShortname() + " inserted into " + containers.front()->getShortname() + ".");
@@ -763,7 +764,7 @@ void Game::Executor::execInsert(Game* game, Item* item){
 			else if(!(*it)->isEmpty()) // Something is currently in container
 				Terminal::wrpro(game->general->get(STR_CONTFULL));
 			else{
-				game->player->extractFromInventory(item->getCode()); // Remove item from inventory
+				game->player->extractFromInventory(item); // Remove item from inventory
 				item->setLocation(game->station->get(LOCATION_CONTAINER)); // Set item's location to "container"
 				(*it)->insertItem(item); // Insert item into desired container
 				Terminal::wrpro(item->getShortname() + " inserted into " + (*it)->getShortname() + ".");

@@ -25,10 +25,20 @@ void Inventory::deposit(Item* item){
  *	Return pointer to an item with a certain code from the inventory,
  *		but do not remove it from the inventory
  *	Returns NULL if item not in inventory
+ *	We cannot use map::find on this because we need to search inside any containers also
  */
-Item* Inventory::get(uint64_t cd){
+Item* Inventory::get(Item* item){
+/*
+	for(map<uint64_t, Item*>::iterator it = this->items.begin() ; it != this->items.end(); it++){
+		if(it->second == item)
+			return it->second;
 
-	map<uint64_t, Item*>::iterator it = this->items.find(cd);
+	}
+
+	return NULL;
+*/
+
+	map<uint64_t, Item*>::iterator it = this->items.find(item->getCode());
 
 	if(it == this->items.end()) // If no item by that code in the inventory, return NULL
 		return NULL;
@@ -57,14 +67,21 @@ Item* Inventory::extract(uint64_t cd){
 
 /*
  *	Return whether an item with a certain code is in the inventory
+ *	We cannot use map::find on this because we need to search inside any containers also
  */
-bool Inventory::contains(uint64_t cd){
-
-	map<uint64_t, Item*>::iterator it = this->items.find(cd);
-
-	return it != this->items.end();
-
+bool Inventory::contains(Item* item){
+	for(map<uint64_t, Item*>::iterator it = this->items.begin() ; it != this->items.end(); it++){
+		if(it->second == item)
+			return true;
+		if(it->second->hasAttribute(CTRL_ITEM_CONTAINER)){
+			Container* container = (Container*) it->second;
+			if(container->contains(item))
+				return true;
+		}
+	}
+	return false;
 }
+
 
 /*
  *	Check the inventory for something that emits light
@@ -149,8 +166,10 @@ list<Container*> Inventory::getSuitableContainers(Item* item){
 	for(map<uint64_t, Item*>::iterator it = items.begin() ; it != items.end() ; it++){
 		if(it->second != item && it->second->hasAttribute(CTRL_ITEM_CONTAINER)){
 			Container* container = (Container*) it->second;
+			while(!container->isSuitable(item) && container->getItemWithin()->hasAttribute(CTRL_ITEM_CONTAINER))
+				container = (Container*) container->getItemWithin();
 			if(container->isSuitable(item))
-				result.push_back( (Container*) it->second);
+				result.push_back(container);
 		}
 	}
 

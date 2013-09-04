@@ -1,7 +1,7 @@
 OBJS = Tarranta.o Game.o GameParser.o GameDispatcher.o GameExecutor.o Station.o ItemCollection.o CommandCollection.o StringCollection.o Location.o Player.o Item.o Container.o SwitchableItem.o Inventory.o Command.o Tokeniser.o Statics.o Terminal.o BitFileReader.o
 LFLAGS = -Wall -g
 CFLAGS = -Wall -c -g -Os
-CC = g++
+CC = clang++
 COMPILE = $(CC) $(CFLAGS)
 
 tarranta: $(OBJS)

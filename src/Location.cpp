@@ -340,19 +340,23 @@ list<Container*> Location::getSuitableContainers(Item* item){
 
 	list<Container*> result;
 
-	for(map<uint64_t, Item*>::iterator it = items.begin() ; it != items.end() ; it++){ // Check all items at this location
+	for(map<uint64_t, Item*>::iterator it = items.begin() ; it != items.end() ; it++){
 		if(it->second != item && it->second->hasAttribute(CTRL_ITEM_CONTAINER)){
 			Container* container = (Container*) it->second;
+			while(!container->isSuitable(item) && container->getItemWithin()->hasAttribute(CTRL_ITEM_CONTAINER))
+				container = (Container*) container->getItemWithin();
 			if(container->isSuitable(item))
-				result.push_back( (Container*) it->second);
+				result.push_back(container);
 		}
 	}
 
-	for(map<uint64_t, Item*>::iterator it = fixtures.begin() ; it != fixtures.end() ; it++){ // Check all fixtures at this location
+	for(map<uint64_t, Item*>::iterator it = fixtures.begin() ; it != fixtures.end() ; it++){
 		if(it->second != item && it->second->hasAttribute(CTRL_ITEM_CONTAINER)){
 			Container* container = (Container*) it->second;
+			while(!container->isSuitable(item) && container->getItemWithin()->hasAttribute(CTRL_ITEM_CONTAINER))
+				container = (Container*) container->getItemWithin();
 			if(container->isSuitable(item))
-				result.push_back( (Container*) it->second);
+				result.push_back(container);
 		}
 	}
 
