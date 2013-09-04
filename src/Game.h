@@ -30,7 +30,7 @@ class Game{
 
 		inline void destroyItem(Item* item, uint64_t code){
 			if(!player->hasInInventory(item)) // Item was at location, not in inventory
-				item->getLocation()->extract(code);
+				item->getLocation()->extract(item);
 			else // Item was in inventory, not at location
 				player->extractFromInventory(item);
 			item->setLocation(station->get(LOCATION_NOWHERE));

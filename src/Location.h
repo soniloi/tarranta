@@ -60,7 +60,7 @@ class Location{
 		void deposit(Item* item);
 		Location* getDirection(uint64_t dircode);
 		Item* get(uint64_t cd);
-		Item* extract(uint64_t cd);
+		Item* extract(Item* item);
 		Item* getObstruction();
 		list<Container*> getSuitableContainers(Item* item);
 

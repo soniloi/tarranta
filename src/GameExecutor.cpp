@@ -51,7 +51,7 @@ void Game::Executor::execGrab(Game* game, uint64_t arg){
 
 	Location* itemloc = item->getLocation();
 	if(itemloc != NULL)
-		itemloc->extract(item->getCode());
+		itemloc->extract(item);
 	item->setLocation(game->station->get(LOCATION_INVENTORY));
 	game->player->addToInventory(item);
 	Terminal::wrpro("Taken.");
@@ -73,7 +73,7 @@ void Game::Executor::execAvnarand(Game* game){
 	Location* current = game->player->getLocation();
 	Item* obst = current->get(ITEM_ROBOT);
 	if(current->getID() == LOCATION_CHECKPOINT && obst != NULL){
-		current->extract(obst->getCode()); // Remove obstruction from location
+		current->extract(obst); // Remove obstruction from location
 		obst->setLocation(game->station->get(LOCATION_NOWHERE)); // Place item nowhere
 		Terminal::wrpro(game->general->get(STR_ROBOT));
 		game->player->incrementScore(SCORE_PUZZLE);
@@ -94,7 +94,7 @@ void Game::Executor::execChimbu(Game* game){
 
 		if(within != NULL && within->getCode() == ITEM_TOOTH){ // If the player left a tooth in the envelope
 
-			current->extract(fairy->getCode());
+			current->extract(fairy);
 			fairy->setLocation(game->station->get(LOCATION_NOWHERE)); // Fairy vanishes
 
 			within->setLocation(LOCATION_NOWHERE);
@@ -403,17 +403,26 @@ void Game::Executor::execDescribe(Game* game, Item* item){
  *	Execute command to empty container
  */
 void Game::Executor::execEmpty(Game* game, Container* container){
+
 	Item* itemwithin = container->extractItemWithin();
-	if(!itemwithin) // Nothing in the container
-		Terminal::wrpro("The " + container->getShortname() + " is already empty.");
+	if(!itemwithin){ // Nothing in the container
+		Terminal::wrpro("It is already empty.");
+		return;
+	}
+
+	if(itemwithin->hasAttribute(CTRL_ITEM_LIQUID)){
+		Terminal::wrpro("You pour the " + itemwithin->getShortname() + " out of the " + container->getShortname() + ". It falls to the floor and quickly seeps away.");
+		itemwithin->setLocation(game->station->get(LOCATION_NOWHERE));
+	}
+
 	else if(game->player->hasInInventory(container)){ // Item in container, which is in inventory
-		itemwithin->setLocation(game->station->get(LOCATION_INVENTORY));
 		game->player->addToInventory(itemwithin);
+		itemwithin->setLocation(game->station->get(LOCATION_INVENTORY));
 		Terminal::wrpro("The " + container->getShortname() + " has been emptied of " + itemwithin->getLongname() + ", which you are now holding.");
 	}
 	else{ // Item in container, which is at location but not in inventory
-		itemwithin->setLocation(game->player->getLocation());
 		game->player->getLocation()->deposit(itemwithin);
+		itemwithin->setLocation(game->player->getLocation());
 		Terminal::wrpro("The " + container->getShortname() + " has been emptied of " + itemwithin->getLongname() + ", which now sits on the ground.");
 	}	
 }
@@ -468,7 +477,7 @@ void Game::Executor::execGive(Game* game, Item* item){
 void Game::Executor::execIgnore(Game* game, Item* item){
 	uint64_t code = item->getCode();
 	if(code == ITEM_TROLL){
-		game->player->getLocation()->extract(code);
+		game->player->getLocation()->extract(item);
 		Terminal::wrpro(game->general->get(STR_TROLL));
 		game->player->incrementScore(SCORE_PUZZLE);
 	}
@@ -622,7 +631,7 @@ void Game::Executor::execRoll(Game* game, Item* item){
 void Game::Executor::execRub(Game* game, Item* item){
 	uint64_t code = item->getCode();
 	if(code == ITEM_DRAGON){ // Player wishes to rub dragon
-		game->player->getLocation()->extract(code);
+		game->player->getLocation()->extract(item);
 		Terminal::wrpro(game->general->get(STR_DRAGON));
 		game->player->incrementScore(SCORE_PUZZLE);
 
@@ -647,10 +656,75 @@ void Game::Executor::execTake(Game* game, Item* item){
 		Terminal::wrpro(game->general->get(STR_TAKEALRE));
 	else if(!item->hasAttribute(CTRL_ITEM_MOBILE)) // Item is not portable
 		Terminal::wrpro(game->general->get(STR_TAKENOCA));
+	else if(item->hasAttribute(CTRL_ITEM_LIQUID)){ // Liquids cannot be carried directly, but must be in containers
+
+		list<Container*> containers = game->player->getSuitableContainers(item);
+
+		if(containers.size() == ZERO){ // No available container to place item into
+			Terminal::wrpro(game->general->get(STR_NOCONTAI));
+		}
+
+		else if(containers.size() == ONE){ // Exactly one available container
+			string confirm = Terminal::rdstr("Take " + item->getShortname() + " in " + containers.front()->getShortname() + "? ");
+			if(!confirm.compare("y") || !confirm.compare("yes")){
+				if(item == containers.front()) // Smartarse wants to insert the item into itself
+					Terminal::wrpro(game->general->get(STR_CONTRECU));
+				else if(!containers.front()->isEmpty()) // Something is currently in container
+					Terminal::wrpro(game->general->get(STR_CONTFULL));
+				else{
+					game->player->getLocation()->extract(item); // Remove item from inventory
+					item->setLocation(game->station->get(LOCATION_CONTAINER)); // Set item's location to "container"
+					containers.front()->insertItem(item); // Insert item into desired container
+					Terminal::wrpro(item->getShortname() + " taken in " + containers.front()->getShortname() + ".");
+					if(!game->player->hasInInventory(containers.front()))
+						game->executor.execTake(game, containers.front()); // Container itself had been at location, not in inventory
+				}
+			}
+
+		}
+
+		else{ // Multiple available containers
+			Terminal::wrpro("Take " + item->getShortname() + " in...");
+			int i = ONE;
+			for(list<Container*>::iterator it = containers.begin() ; it != containers.end() ; it++){
+				stringstream ss;
+				ss << TAB << i << ". " << (*it)->getShortname();
+				Terminal::wrtab(ss.str()); // List all available containers
+				i++;
+			} 
+			Terminal::wrtab("\t0. None of these");
+			string choice = Terminal::rdstr("Please choose one: ");
+			if(choice.length() > ONE)
+				Terminal::wrpro("I do not understand that selection.");
+			else if(choice[0] == '0'){ // If player wishes to cancel insert
+				Terminal::wrpro(game->general->get(STR_OK));
+			}
+			else if((unsigned) choice[0]-ASCII_OFFSET <= containers.size()){ // If player wishes to insert into available container
+				list<Container*>::iterator it = containers.begin();
+				advance(it, choice[0]-ASCII_OFFSET-ONE); // Iterate to correct position in list
+				if(item == (*it)) // Smartarse wants to insert the item into itself
+					Terminal::wrpro(game->general->get(STR_CONTRECU));
+				else if(!(*it)->isEmpty()) // Something is currently in container
+					Terminal::wrpro(game->general->get(STR_CONTFULL));
+				else{
+					game->player->getLocation()->extract(item); // Remove item from inventory
+					item->setLocation(game->station->get(LOCATION_CONTAINER)); // Set item's location to "container"
+					(*it)->insertItem(item); // Insert item into desired container
+					Terminal::wrpro(item->getShortname() + " taken in " + (*it)->getShortname() + ".");
+					if(!game->player->hasInInventory(*it))
+						game->executor.execTake(game, (*it));
+				}
+			}
+			else{ // If player has selected an invalid option
+				Terminal::wrpro("I gave no such option.");
+			}
+		}
+
+	}
 	else{ // Item is portable
 		Location* itemloc = item->getLocation();
 		if(itemloc != NULL && !game->player->hasInInventory(item))
-			itemloc->extract(item->getCode());
+			itemloc->extract(item);
 		item->setLocation(game->station->get(LOCATION_INVENTORY));
 		game->player->addToInventory(item);
 		if(item->hasAttribute(CTRL_ITEM_WORN))
@@ -703,7 +777,7 @@ void Game::Executor::execFree(Game* game, Item* item){
 	this->execDrop(game, item);
 
 	if((code == ITEM_LION) && (attackee != NULL)){ // Lion will attack and drive off wolf if released in same location
-		current->extract(attackee->getCode()); // Remove wolf from location
+		current->extract(attackee); // Remove wolf from location
 		Terminal::wrpro(game->general->get(STR_LIONWOLF));
 		game->player->incrementScore(SCORE_PUZZLE);
 	}

@@ -227,8 +227,8 @@ Item* Location::get(uint64_t cd){
  *	Return pointer to an item with a certain code from this location,
  *		and remove it from the location
  */
-Item* Location::extract(uint64_t cd){
-
+Item* Location::extract(Item* item){
+/*
 	map<uint64_t, Item*>::iterator it = this->items.find(cd);
 
 	if(it == this->items.end()) // If no item by that code at this location, return NULL (no need to remove)
@@ -238,7 +238,15 @@ Item* Location::extract(uint64_t cd){
 	this->items.erase(it);
 
 	return item;
+*/
 
+	for(map<uint64_t, Item*>::iterator it = this->items.begin() ; it != this->items.end() ; it++){
+		if(it->second == item){
+			this->items.erase(it);
+			return item;
+		}
+	}
+	return item; // TODO: FIX THIS NONSENSE: all these extract methods should probably just be void instead but not changing now due to consistency
 }
 
 /*
