@@ -39,6 +39,7 @@ class Item{
 		bool hasAttribute(int attribute);
 		void setLocation(Location* loc);
 		string getShortname();
+		int getSize();
 		virtual int getWeight() {return this->size;};
 		virtual string getLongname();
 		virtual string getInventoryname();

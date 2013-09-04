@@ -50,7 +50,7 @@ class Player{
 		bool hasInInventoryWithAttribute(int attribute);
 		void addToInventory(Item* item);
 		void extractFromInventory(uint64_t itemcode);
-		list<Container*> getInventoryContainers();
+		list<Container*> getSuitableContainers(Item* item);
 		string getLocationStub();
 		string getLocationArrival();
 		string getLocationAll();

@@ -12,7 +12,7 @@
 #include "Definitions.h"
 #include "Item.h"
 #include "SwitchableItem.h"
-//#include "Container.h" // Uncomment this, but only if necessary; try to stick with forward declaration if at all possible
+#include "Container.h" // Comment this out if possible; it causes circular dependency issues if not handled properly
 
 using namespace std;
 
@@ -62,7 +62,7 @@ class Location{
 		Item* get(uint64_t cd);
 		Item* extract(uint64_t cd);
 		Item* getObstruction();
-		list<Container*> getContainers();
+		list<Container*> getSuitableContainers(Item* item);
 
 };
 

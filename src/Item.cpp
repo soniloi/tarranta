@@ -11,7 +11,7 @@ Item::Item(uint64_t cd, int stat, string longn, string fulln, string writ, int s
 	this->longname = longn;
 	this->fullname = fulln;
 	this->writing = writ;
-	this->size = size;
+	this->size = sz;
 
 }
 
@@ -64,6 +64,14 @@ string Item::getInventoryname(){
  */
 bool Item::isPresent(Location* current){
 	return(this->location == current);
+}
+
+/*
+ *	Return the size of this item
+ *	If item is a container return its size/capacity
+ */
+int Item::getSize(){
+	return this->size;
 }
 
 /*

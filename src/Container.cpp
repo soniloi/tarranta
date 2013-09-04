@@ -40,11 +40,20 @@ bool Container::isEmpty(){
 }
 
 /*
- *	Return size/capacity of this container alone
+ *	Return whethere this is a suitable container for a certain item
  */
-int Container::getSize(){
-	return this->size;
+bool Container::isSuitable(Item* item){
+	if(this->within)
+		return false; // There is already something in the container
+	if(this->size <= item->getSize())
+		return false; // Container is not big enough to contain item
+	if(this->hasAttribute(CTRL_ITEM_CONTAINER_LIQUID) && !item->hasAttribute(CTRL_ITEM_LIQUID))
+		return false; // Cannot place a non-liquid in a liquid container
+	if(!this->hasAttribute(CTRL_ITEM_CONTAINER_LIQUID) && item->hasAttribute(CTRL_ITEM_LIQUID))
+		return false; // Cannot place a liquid in a non liquid-container
+	return true;
 }
+
 
 /*
  *	Override method to return weight of this container together with anything that's in it

@@ -29,7 +29,7 @@ class Container: public Item{
 		Item* getItemWithin();
 		Item* extractItemWithin();
 		bool isEmpty(); // Whether there is anything in the container or not
-		int getSize(); // The size/capacity of this container
+		bool isSuitable(Item* item); // Whethere this container is a suitable container for a certain item
 		virtual int getWeight(); // The weight of this container together with the weight of whatever is in it
 		virtual string getLongname();
 		virtual string getInventoryname();

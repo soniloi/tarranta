@@ -28,7 +28,6 @@ BitFileReader::BitFileReader(string filename){
  */
 BitFileReader::~BitFileReader(){
 
-	//cerr << "closing input bitfile" << endl;
 	if(this->file.good())
 		this->file.close();
 

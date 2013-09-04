@@ -332,20 +332,28 @@ Item* Location::getObstruction(){
 }
 
 /*
- *	Return a list of pointers to all container items at this location
+ *	Return a list of pointers to all container items at this location suitable for containing item
+ *	Does not return containers that are too small, containers that are actually item,
+ *		liquid containers for solid items, or solid containers for liquid items
  */
-list<Container*> Location::getContainers(){
+list<Container*> Location::getSuitableContainers(Item* item){
 
 	list<Container*> result;
 
-	for(map<uint64_t, Item*>::iterator it = items.begin() ; it != items.end() ; it++){
-		if(it->second->hasAttribute(CTRL_ITEM_CONTAINER))
-			result.push_back( (Container*) it->second);
+	for(map<uint64_t, Item*>::iterator it = items.begin() ; it != items.end() ; it++){ // Check all items at this location
+		if(it->second != item && it->second->hasAttribute(CTRL_ITEM_CONTAINER)){
+			Container* container = (Container*) it->second;
+			if(container->isSuitable(item))
+				result.push_back( (Container*) it->second);
+		}
 	}
 
-	for(map<uint64_t, Item*>::iterator it = fixtures.begin() ; it != fixtures.end() ; it++){
-		if(it->second->hasAttribute(CTRL_ITEM_CONTAINER))
-			result.push_back( (Container*) it->second);
+	for(map<uint64_t, Item*>::iterator it = fixtures.begin() ; it != fixtures.end() ; it++){ // Check all fixtures at this location
+		if(it->second != item && it->second->hasAttribute(CTRL_ITEM_CONTAINER)){
+			Container* container = (Container*) it->second;
+			if(container->isSuitable(item))
+				result.push_back( (Container*) it->second);
+		}
 	}
 
 	return result;

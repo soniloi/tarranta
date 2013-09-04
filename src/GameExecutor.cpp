@@ -713,9 +713,7 @@ void Game::Executor::execFree(Game* game, Item* item){
  */
 void Game::Executor::execInsert(Game* game, Item* item){
 
-	list<Container*> containers = game->player->getLocation()->getContainers(); // Get list of all containers at this location
-	list<Container*> inventcontainers = game->player->getInventoryContainers(); // Get list of all containers in inventory
-	containers.splice(containers.end(), inventcontainers); // Merge both lists
+	list<Container*> containers = game->player->getSuitableContainers(item); // Retrieve list of container items capable of holding this item
 
 	if(containers.size() == ZERO){ // No available container to place item into
 		Terminal::wrpro(game->general->get(STR_NOCONTAI));

@@ -200,8 +200,17 @@ void Player::extractFromInventory(uint64_t itemcode){
 	this->inventory->extract(itemcode);
 }
 
-list<Container*> Player::getInventoryContainers(){
-	return this->inventory->getContainers();
+/*
+ *	Create and return a list of containers suitable for containing item
+ *	Does not return containers that are too small, containers that are actually item,
+ *		liquid containers for solid items, or solid containers for liquid items
+ */
+list<Container*> Player::getSuitableContainers(Item* item){
+	list<Container*> containers = this->location->getSuitableContainers(item); // Get list of all suitable containers at this location
+	list<Container*> inventcontainers = this->inventory->getSuitableContainers(item); // Get list of all suitable containers in inventory
+	containers.splice(containers.end(), inventcontainers); // Merge both lists
+
+	return containers;
 }
 
 string Player::getLocationStub(){

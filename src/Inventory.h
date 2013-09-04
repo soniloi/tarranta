@@ -29,6 +29,6 @@ class Inventory{
 		bool hasGravity();
 		bool hasNosnomp();
  		string toString();
- 		list<Container*> getContainers();
+ 		list<Container*> getSuitableContainers(Item* item);
 
 };

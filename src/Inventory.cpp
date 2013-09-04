@@ -138,15 +138,20 @@ string Inventory::toString(){
 }
 
 /*
- *	Return a list of pointers to all container items in the inventory
+ *	Return a list of pointers to all container items in the inventory suitable for containing item
+ *	Does not return containers that are too small, containers that are actually item,
+ *		liquid containers for solid items, or solid containers for liquid items
  */
-list<Container*> Inventory::getContainers(){
+list<Container*> Inventory::getSuitableContainers(Item* item){
 
 	list<Container*> result;
 
 	for(map<uint64_t, Item*>::iterator it = items.begin() ; it != items.end() ; it++){
-		if(it->second->hasAttribute(CTRL_ITEM_CONTAINER))
-			result.push_back( (Container*) it->second);
+		if(it->second != item && it->second->hasAttribute(CTRL_ITEM_CONTAINER)){
+			Container* container = (Container*) it->second;
+			if(container->isSuitable(item))
+				result.push_back( (Container*) it->second);
+		}
 	}
 
 	return result;
