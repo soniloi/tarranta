@@ -166,7 +166,7 @@ list<Container*> Inventory::getSuitableContainers(Item* item){
 	for(map<uint64_t, Item*>::iterator it = items.begin() ; it != items.end() ; it++){
 		if(it->second != item && it->second->hasAttribute(CTRL_ITEM_CONTAINER)){
 			Container* container = (Container*) it->second;
-			while(!container->isSuitable(item) && container->getItemWithin()->hasAttribute(CTRL_ITEM_CONTAINER))
+			while(!container->isSuitable(item) && container->getItemWithin() && container->getItemWithin()->hasAttribute(CTRL_ITEM_CONTAINER))
 				container = (Container*) container->getItemWithin();
 			if(container->isSuitable(item))
 				result.push_back(container);

@@ -65,7 +65,7 @@ bool Container::isEmpty(){
 }
 
 /*
- *	Return whethere this is a suitable container for a certain item
+ *	Return whether this is a suitable container for a certain item
  */
 bool Container::isSuitable(Item* item){
 	if(this->within)

@@ -21,7 +21,6 @@ class Player{
 		Inventory* inventory;
 		Location* wakeLocation;
 		Location* safeLocation;
-		Container* getParentContainer(Item* item);
 
 	public:
 		Player(Location* initial, Location* safeloc);
@@ -52,7 +51,9 @@ class Player{
 		bool hasInInventoryWithAttribute(int attribute);
 		void addToInventory(Item* item);
 		void extractFromInventory(Item* item);
+		Container* getParentContainer(Item* item);
 		list<Container*> getSuitableContainers(Item* item);
+		list<Container*> getSuitableInventoryContainers(Item* item);
 		string getLocationStub();
 		string getLocationArrival();
 		string getLocationAll();

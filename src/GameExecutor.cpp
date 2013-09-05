@@ -371,12 +371,12 @@ void Game::Executor::execBurn(Game* game, Item* item){
 	if(code == ITEM_BOOK)
 		Terminal::wrpro(game->general->get(STR_PHILISTI));
 	else if(code == ITEM_BREAD){ // Burn bread and replace with toast
-		game->destroyItem(item, code);
+		game->destroyItem(item);
 		Terminal::wrpro(game->general->get(STR_BREAD));
 		game->player->addToInventory(game->items->get(ITEM_TOAST));
 	}
 	else if(code == ITEM_TOAST){ // Burn toast and replace with ash
-		game->destroyItem(item, code);
+		game->destroyItem(item);
 		if(game->player->getLocation()->getID() == LOCATION_AIRLOCKE){
 			Terminal::wrpro(game->general->get(STR_TOAST));
 			Terminal::wrpro(game->general->get(STR_ASHMOUSE));
@@ -411,7 +411,7 @@ void Game::Executor::execEmpty(Game* game, Container* container){
 	}
 
 	if(itemwithin->hasAttribute(CTRL_ITEM_LIQUID)){
-		Terminal::wrpro("You pour the " + itemwithin->getShortname() + " out of the " + container->getShortname() + ". It falls to the floor and quickly seeps away.");
+		Terminal::wrpro("You pour the " + itemwithin->getShortname() + " out of the " + container->getShortname() + ". It falls to the ground and quickly seeps away.");
 		itemwithin->setLocation(game->station->get(LOCATION_NOWHERE));
 	}
 
@@ -590,7 +590,7 @@ void Game::Executor::execRepair(Game* game, Item* item){
 			Item* newpanel = game->items->get(ITEM_PANEL);
 			newpanel->setLocation(item->getLocation());
 			item->getLocation()->fix(newpanel);
-			game->destroyItem(item, code);
+			game->destroyItem(item);
 		}
 		else if(code == ITEM_PANEL)
 			Terminal::wrpro("The control panel has already been repaired.");
@@ -658,7 +658,12 @@ void Game::Executor::execTake(Game* game, Item* item){
 		Terminal::wrpro(game->general->get(STR_TAKENOCA));
 	else if(item->hasAttribute(CTRL_ITEM_LIQUID)){ // Liquids cannot be carried directly, but must be in containers
 
-		list<Container*> containers = game->player->getSuitableContainers(item);
+		if(item->getLocation() == game->station->get(LOCATION_CONTAINER	)){ // Liquid is currently in a container somewhere else, so we prevent player from taking more until that disappears
+			Terminal::wrpro("I think you have had enough for now, do you not agree?");
+			return;
+		}
+
+		list<Container*> containers = game->player->getSuitableInventoryContainers(item); // Search for containers the player already has
 
 		if(containers.size() == ZERO){ // No available container to place item into
 			Terminal::wrpro(game->general->get(STR_NOCONTAI));
@@ -672,12 +677,10 @@ void Game::Executor::execTake(Game* game, Item* item){
 				else if(!containers.front()->isEmpty()) // Something is currently in container
 					Terminal::wrpro(game->general->get(STR_CONTFULL));
 				else{
-					game->player->getLocation()->extract(item); // Remove item from inventory
+					//game->player->getLocation()->extract(item); // Remove item from location
 					item->setLocation(game->station->get(LOCATION_CONTAINER)); // Set item's location to "container"
 					containers.front()->insertItem(item); // Insert item into desired container
 					Terminal::wrpro(item->getShortname() + " taken in " + containers.front()->getShortname() + ".");
-					if(!game->player->hasInInventory(containers.front()))
-						game->executor.execTake(game, containers.front()); // Container itself had been at location, not in inventory
 				}
 			}
 
@@ -707,12 +710,10 @@ void Game::Executor::execTake(Game* game, Item* item){
 				else if(!(*it)->isEmpty()) // Something is currently in container
 					Terminal::wrpro(game->general->get(STR_CONTFULL));
 				else{
-					game->player->getLocation()->extract(item); // Remove item from inventory
+					//game->player->getLocation()->extract(item); // Remove item from location
 					item->setLocation(game->station->get(LOCATION_CONTAINER)); // Set item's location to "container"
 					(*it)->insertItem(item); // Insert item into desired container
 					Terminal::wrpro(item->getShortname() + " taken in " + (*it)->getShortname() + ".");
-					if(!game->player->hasInInventory(*it))
-						game->executor.execTake(game, (*it));
 				}
 			}
 			else{ // If player has selected an invalid option
@@ -735,20 +736,58 @@ void Game::Executor::execTake(Game* game, Item* item){
 }
 
 /*
+ *	Execute command to drink a (liquid) item
+ */
+void Game::Executor::execDrink(Game* game, Item* item){
+	Terminal::wrpro(game->general->get(STR_DRINK));
+	game->destroyItem(item);
+	uint64_t code = item->getCode();
+	switch(code){
+		case ITEM_AQUA: {
+			Terminal::wrpro(game->general->get(STR_DRINKAQU));
+			break;
+		}
+		case ITEM_ELIXIR: {
+			Terminal::wrpro(game->general->get(STR_DRINKELI));
+			game->player->setStrength(MAX_STRENGTH);
+			break;
+		}
+		case ITEM_POTION: {
+			Terminal::wrpro(game->general->get(STR_DRINKPOT));
+			game->player->kill();
+			break;
+		}
+		case ITEM_WATER: {
+			Terminal::wrpro(game->general->get(STR_DRINKWAT));
+			break;
+		}
+		default: {
+			Terminal::wrpro(game->general->get(STR_NOHAPPEN));
+		}
+	}
+}
+
+/*
  *	Execute command to drop item into current location
  */
 void Game::Executor::execDrop(Game* game, Item* item){
 	
 	Location* current = game->player->getLocation();
-	if(!current->hasAttribute(CTRL_LOC_HAS_FLOOR) && game->player->hasGravity()){ // Gravity pulls item down to location beneath current
+	if(item->hasAttribute(CTRL_ITEM_LIQUID)){ // Liquids do not survive being dropped, regardless of gravity
+		Container* container = game->player->getParentContainer(item);
+		container->extractItemWithin(); // Empty the container that was holding it
+		Terminal::wrpro("You pour out the " + item->getShortname() + ". It falls to the ground and quickly seeps away.");
+		item->setLocation(game->station->get(LOCATION_NOWHERE));
+	}
+	else if(!current->hasAttribute(CTRL_LOC_HAS_FLOOR) && game->player->hasGravity()){ // Gravity pulls item down to location beneath current
 		Location* below = current->getDirection(CMD_DOWN);
-		if(below == game->station->get(LOCATION_NOWHERE))
+		if(below == game->station->get(LOCATION_NOWHERE)) // Error state; only way this could happen is error in datafile
 			Terminal::wrpro(game->general->get(STR_ERROR));
 		else{
 			Terminal::wrpro("Because there is no floor here, it falls down. You hear it hit the ground far below.");
 			if(item->hasAttribute(CTRL_ITEM_FRAGILE)){
 				Terminal::wrpro("Fragile as it was, you hear it break into pieces as it makes contact with a surface. You also hear a little cleaner bot come out to collect the remains.");
-				game->destroyItem(item, item->getCode());
+				game->destroyItem(item);
 			}
 			else{
 				below->deposit(item);
@@ -859,7 +898,7 @@ void Game::Executor::execThrow(Game* game, Item* item){
 	if(item->hasAttribute(CTRL_ITEM_FRAGILE) && game->player->getLocation()->hasAttribute(CTRL_LOC_HAS_GRAVITY)){
 		Terminal::wrpro("Fragile as it is, it breaks into pieces on contact with a nearby surface.");
 		Terminal::wrpro(game->general->get(STR_SHARDS));
-		game->destroyItem(item, item->getCode());
+		game->destroyItem(item);
 	}
 	else
 		this->execDrop(game, item);

@@ -248,8 +248,15 @@ list<Container*> Player::getSuitableContainers(Item* item){
 	list<Container*> containers = this->location->getSuitableContainers(item); // Get list of all suitable containers at this location
 	list<Container*> inventcontainers = this->inventory->getSuitableContainers(item); // Get list of all suitable containers in inventory
 	containers.splice(containers.end(), inventcontainers); // Merge both lists
-
 	return containers;
+}
+
+/*
+ *	Create and return a list of containers suitable for containing item
+ *	Must come from inventory alone
+ */
+list<Container*> Player::getSuitableInventoryContainers(Item* item){
+	return this->inventory->getSuitableContainers(item);
 }
 
 string Player::getLocationStub(){

@@ -28,7 +28,7 @@ class Game{
 			player->getLocation()->setDirection(CMD_BACK, station->get(LOCATION_NOWHERE)); // Set the return location to the nowhere place
 		}
 
-		inline void destroyItem(Item* item, uint64_t code){
+		inline void destroyItem(Item* item){
 			if(!player->hasInInventory(item)) // Item was at location, not in inventory
 				item->getLocation()->extract(item);
 			else // Item was in inventory, not at location
@@ -107,6 +107,7 @@ class Game{
 			void execEat(Game* game, Item* item);
 			void execFree(Game* game, Item* item);
 			void execInsert(Game* game, Item* item);
+			void execPour(Game* game, Item* item);
 			void execThrow(Game* game, Item* item);
 		};
 

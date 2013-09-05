@@ -177,10 +177,24 @@ void Game::Dispatcher::dispatchInventoryArg(Game* game, Command* command, Item* 
 	}
 
 	switch(command->getCode()){
+		case CMD_DRINK: {
+			if(!item->hasAttribute(CTRL_ITEM_LIQUID))
+				Terminal::wrpro("I do not know how to drink something that is not liquid.");
+			else
+				game->executor.execDrink(game, item); 
+			break;
+		}
 		case CMD_DROP: game->executor.execDrop(game, item); break;
 		case CMD_FREE: game->executor.execFree(game, item); break;
 		case CMD_GIVE: game->executor.execGive(game, item); break;
 		case CMD_INSERT: game->executor.execInsert(game, item); break;
+		case CMD_POUR: {
+			if(!item->hasAttribute(CTRL_ITEM_LIQUID))
+				Terminal::wrpro("I do not know how to pour something that is not liquid.");
+			else
+				game->executor.execDrop(game, item); 
+			break;
+		}
 		case CMD_THROW: game->executor.execThrow(game, item); break;
 	}
 

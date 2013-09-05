@@ -79,13 +79,13 @@ vector<uint64_t> Tokeniser::splitToCodes(string str, char delim){
 		int j = i;
 		while(str[i] != delim && i != bound && (i-j) < CHARS_PER_CODE){
 			unsigned int shiftby = BITS_PER_BYTE*(CHARS_PER_CODE-(i-j)-ONE);
-			current |= ((uint64_t) str[i] << shiftby);
+			current |= ((uint64_t) tolower(str[i]) << shiftby);
 			i++;
 		}
 
 		result.push_back(current);
 		count++;
-
+	
 		//cout << "\ttoken found: |" << std::hex << ((long long) current) << std::dec << "|" << endl;
 
 		while(i < bound && str[i] != delim)
