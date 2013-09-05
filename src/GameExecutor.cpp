@@ -125,7 +125,33 @@ void Game::Executor::execCommands(Game* game){
  *	Cool story, bro
  */
 void Game::Executor::execCsb(Game* game){
-	Terminal::wrpro("ikr?");
+	Terminal::wrpro(game->general->get(STR_IKR));
+}
+
+/*
+ *	Execute command to fish for something
+ */
+void Game::Executor::execFish(Game* game){
+
+	if(!game->player->hasInInventory(game->items->get(ITEM_NET))){
+		Terminal::wrpro(game->general->get(STR_NONET));
+		return;
+	}
+	Item* glint = game->items->get(ITEM_GLINT);
+	if(glint->getLocation() != game->player->getLocation()){
+		Terminal::wrpro(game->general->get(STR_NOFISH));
+		return;
+	}
+	glint->getLocation()->extractFixture(glint);
+	glint->setLocation(game->station->get(LOCATION_NOWHERE)); // Remove the glint the player is seeing
+
+	Item* nugget = game->items->get(ITEM_NUGGET);
+	game->player->addToInventory(nugget);
+	nugget->setLocation(game->station->get(LOCATION_INVENTORY)); // Give nugget to player
+
+	Terminal::wrpro(game->general->get(STR_NUGGGOOD));
+	game->player->incrementScore(SCORE_PUZZLE);	
+	
 }
 
 /*

@@ -58,6 +58,7 @@ class Location{
 		string getAll();
 		void fix(Item* item);
 		void deposit(Item* item);
+		void extractFixture(Item* item);
 		Location* getDirection(uint64_t dircode);
 		Item* get(uint64_t cd);
 		Item* extract(Item* item);

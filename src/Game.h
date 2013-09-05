@@ -67,6 +67,7 @@ class Game{
 			void execChimbu(Game* game);
 			void execCommands(Game* game);
 			void execCsb(Game* game);
+			void execFish(Game* game);
 			void execHelp(Game* game);
 			void execInventor(Game* game);
 			void execLook(Game* game);

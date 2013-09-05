@@ -43,7 +43,10 @@ ItemCollection::ItemCollection(BitFileReader& reader, Station* station){
 		}
 
 		item->setLocation(station->get(initloc)); // Set item's initial location
-		station->get(initloc)->deposit(item); // Add item to initial location's item list
+		if(item->hasAttribute(CTRL_ITEM_MOBILE))
+			station->get(initloc)->deposit(item); // If a mobile item, add to initial location's item list
+		else
+			station->get(initloc)->fix(item); // If a non-mobile item, add to initial location's fixture list
 	
 		this->items[cd] = item;
 

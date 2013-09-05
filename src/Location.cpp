@@ -228,17 +228,6 @@ Item* Location::get(uint64_t cd){
  *		and remove it from the location
  */
 Item* Location::extract(Item* item){
-/*
-	map<uint64_t, Item*>::iterator it = this->items.find(cd);
-
-	if(it == this->items.end()) // If no item by that code at this location, return NULL (no need to remove)
-		return NULL;
-
-	Item* item = it->second;
-	this->items.erase(it);
-
-	return item;
-*/
 
 	for(map<uint64_t, Item*>::iterator it = this->items.begin() ; it != this->items.end() ; it++){
 		if(it->second == item){
@@ -247,6 +236,19 @@ Item* Location::extract(Item* item){
 		}
 	}
 	return item; // TODO: FIX THIS NONSENSE: all these extract methods should probably just be void instead but not changing now due to consistency
+}
+
+/*
+ *	Remove fixture from this location
+ *	Has no effect if fixture is not already present
+ */
+void Location::extractFixture(Item* item){
+	for(map<uint64_t, Item*>::iterator it = this->fixtures.begin() ; it != this->fixtures.end() ; it++){
+		if(it->second == item){
+			this->fixtures.erase(it);
+			return;
+		}
+	}	
 }
 
 /*
