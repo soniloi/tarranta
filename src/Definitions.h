@@ -102,12 +102,14 @@
 #define CTRL_ITEM_LIQUID 0x800 // Whether the item is a liquid
 #define CTRL_ITEM_KEEP 0x1000 // Whether the item should be kept when player dies
 #define CTRL_ITEM_EDIBLE 0x2000 // Whether the item is any sort of food or drink
+#define CTRL_ITEM_GIVES_INVISIBILITY 0x4000 // Whether wearing or carrying the item grants the player invisibility
 #define CTRL_ITEM_TREASURE 0x8000 // Whether the item is a treasure or not
 
 // Useful locations
 #define LOCATION_AIRLOCKE 31 // The airlock just off the Recreation Hub
 #define LOCATION_AIRLOCKEOUT 36 // The outside area just outside Airlock East
 #define LOCATION_ANTEROOM 125 // The anteroom just below the observatory
+#define LOCATION_CELLAR 29 // The secret cellar beneath the garden
 #define LOCATION_CHECKPOINT 32 // The security checkpoint between the Recreation Hub and the Control Hub
 #define LOCATION_COMMS 51 // The communications room
 #define LOCATION_CONTAINER 2 // When an item has this location, it means it is in a container
@@ -136,7 +138,6 @@
 #define INVENTORY_CAPACITY 10 // Initial default capacity of inventory
 #define DEATH_CHANCE 1 // One in this number of moves of a random hazard will lead to death
 #define DEATH_PLACES 60 // The number of places a fall or a snomp will kill you will be between zero and this
-#define MAX_STRENGTH 2 // What the player's strength is set to when they drink the elixir
 
 /*
  *	Useful uint_64s
@@ -226,8 +227,10 @@
 #define ITEM_ACORN 0x61636F726E000000
 #define ITEM_AQUA 0x6171756100000000
 #define ITEM_BOOK 0x626F6F6B00000000
+#define ITEM_BOULDER 0x626F756C64657200
 #define ITEM_BREAD 0x6272656164000000
 #define ITEM_BUTTON 0x627574746F6E0000
+#define ITEM_CAULDRON 0x6361756C64726F6E
 #define ITEM_COIN 0x636F696E00000000
 #define ITEM_CONSOLE 0x636F6E736F6C6500
 #define ITEM_DRAGON 0x647261676F6E0000
@@ -236,6 +239,7 @@
 #define ITEM_FAIRY 0x6661697279000000
 #define ITEM_GLINT 0x676C696E74000000
 #define ITEM_KEY 0x6B65790000000000
+#define ITEM_KOHLRABI 0x6B6F686C72616269
 #define ITEM_LAMP 0x6C616D7000000000
 #define ITEM_LION 0x6C696F6E00000000
 #define ITEM_MATCHES 0x6D61746368657300
@@ -244,8 +248,8 @@
 #define ITEM_PANEL 0x70616E656C000000
 #define ITEM_PIRATE 0x7069726174650000
 #define ITEM_POTION 0x706F74696F6E0000
+#define ITEM_RADISHES 0x7261646973686573
 #define ITEM_ROBOT 0x726F626F74000000
-#define ITEM_RUTABAGA 0x7275746162616761
 #define ITEM_SHIP 0x7368697000000000
 #define ITEM_TOAST 0x746F617374000000
 #define ITEM_TOOTH 0x746F6F7468000000

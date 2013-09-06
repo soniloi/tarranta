@@ -8,7 +8,7 @@ Player::Player(Location* initial, Location* safeloc){
 	this->moves = 0;
 	this->alive = true;
 	this->deaths = 0;
-	this->strength = 0;
+	this->strong = false;
 	this->location = initial;
 	this->inventory = new Inventory(INVENTORY_CAPACITY);
 	this->wakeLocation = initial;
@@ -41,20 +41,16 @@ int Player::getDeaths(){
 	return this->deaths;
 }
 
-int Player::getStrength(){
-	return this->strength;
+bool Player::isStrong(){
+	return this->strong;
 }
 
 bool Player::isInvisible(){
-	return false; // TODO: DO THIS PROPERLY
+	return this->hasInInventoryWithAttribute(CTRL_ITEM_GIVES_INVISIBILITY);
 }
 
-void Player::setStrength(int stren){
-	this->strength = stren;
-}
-
-void Player::decrementStrength(){
-	this->strength--;
+void Player::setStrong(bool str){
+	this->strong = str;
 }
 
 void Player::setWakeLocation(Location* wakeloc){

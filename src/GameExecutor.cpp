@@ -462,7 +462,7 @@ void Game::Executor::execGive(Game* game, Item* item){
 
 	receiver = game->player->getLocation()->get(ITEM_LION);
 	if(receiver){ // Player has chosen to feed the lion
-		if(code == ITEM_RUTABAGA){
+		if(code == ITEM_KOHLRABI){
 			Terminal::wrpro(game->general->get(STR_LIONKILL)); // Lion does not like cabbage and kills player
 			game->player->extractFromInventory(item);
 			item->setLocation(game->station->get(LOCATION_NOWHERE));
@@ -648,6 +648,29 @@ void Game::Executor::execRob(Game* game, Item* item){
  */
 void Game::Executor::execRoll(Game* game, Item* item){
 
+	if(item->hasAttribute(CTRL_ITEM_MOBILE)){
+		Terminal::wrpro("I see little point in moving such a thing. You could take it instead.");
+		return;
+	}
+
+	uint64_t code = item->getCode();
+	Location* loc = game->player->getLocation();
+	
+	if(code == ITEM_BOULDER){
+		if(!game->player->isStrong()){
+			Terminal::wrpro("You are not strong enough to roll it.");
+		}
+		else if(loc->getDirection(CMD_DOWN) != game->station->get(LOCATION_NOWHERE)){
+			Terminal::wrpro("You have already rolled the boulder.");
+		}
+		else{
+			Terminal::wrpro("You roll the boulder, revealing a passage beneath. Your muscles return to normal size.");
+			loc->setDirection(CMD_DOWN, game->station->get(LOCATION_CELLAR));
+			game->player->setStrong(false);
+			game->player->incrementScore(SCORE_PUZZLE);
+		}
+	}
+
 }
 
 
@@ -762,6 +785,28 @@ void Game::Executor::execTake(Game* game, Item* item){
 }
 
 /*
+ *	Execute command to cook an item
+ */
+void Game::Executor::execCook(Game* game, Item* item){
+	if(!game->player->hasInPresent(game->items->get(ITEM_CAULDRON))){
+		Terminal::wrpro("You have nothing to cook it in.");
+		return;
+	}
+	uint64_t code = item->getCode();
+	switch(code){
+		case ITEM_RADISHES:{
+			game->destroyItem(item);
+			Terminal::wrpro("You cook the radishes and this produces an elixir. A large quantity of it now sits in the cauldron.");
+			game->player->getLocation()->deposit(game->items->get(ITEM_ELIXIR)); // Remember that we do not set liquid to point to its location
+			break;
+		}
+		default:{
+			Terminal::wrpro(game->general->get(STR_NONOHOW));
+		}
+	}
+}
+
+/*
  *	Execute command to drink a (liquid) item
  */
 void Game::Executor::execDrink(Game* game, Item* item){
@@ -775,7 +820,7 @@ void Game::Executor::execDrink(Game* game, Item* item){
 		}
 		case ITEM_ELIXIR: {
 			Terminal::wrpro(game->general->get(STR_DRINKELI));
-			game->player->setStrength(MAX_STRENGTH);
+			game->player->setStrong(true);
 			break;
 		}
 		case ITEM_POTION: {

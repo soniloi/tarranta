@@ -182,6 +182,7 @@ void Game::Dispatcher::dispatchInventoryArg(Game* game, Command* command, Item* 
 	}
 
 	switch(command->getCode()){
+		case CMD_COOK: game->executor.execCook(game, item); break;
 		case CMD_DRINK: {
 			if(!item->hasAttribute(CTRL_ITEM_LIQUID))
 				Terminal::wrpro("I do not know how to drink something that is not liquid.");

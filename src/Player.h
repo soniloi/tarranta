@@ -15,7 +15,7 @@ class Player{
 		int moves; // Number of moves player has made
 		bool alive;
 		int deaths; // Number of times player died
-		int strength;
+		bool strong;
 		Location* location;
 		Inventory* inventory;
 		Location* wakeLocation;
@@ -28,10 +28,9 @@ class Player{
 		int getMoves();
 		bool isAlive();
 		int getDeaths();
-		int getStrength();
+		bool isStrong();
 		bool isInvisible();
-		void setStrength(int stren);
-		void decrementStrength();
+		void setStrong(bool str);
 		void setWakeLocation(Location* wakeloc);
 		void setSafeLocation(Location* safeloc);
 		void kill();
