@@ -29,11 +29,10 @@ class Location{
 		string shortname;
 		string longname;
 		string fullname;
-		map<uint64_t, Item*> fixtures;
 		map<uint64_t, Item*> items;
 		void printItemListDescription();
 		string getBasic();
-		string itemListToString(map<uint64_t, Item*> things, bool obstructiononly);
+		string itemListToString(map<uint64_t, Item*> things, int attributes);
 		Location* getOnlyDirection();
 		void determineOut();
 
@@ -56,9 +55,7 @@ class Location{
 		string getStub();
 		string getArrival();
 		string getAll();
-		void fix(Item* item);
 		void deposit(Item* item);
-		void extractFixture(Item* item);
 		Location* getDirection(uint64_t dircode);
 		Item* get(uint64_t cd);
 		Item* extract(Item* item);

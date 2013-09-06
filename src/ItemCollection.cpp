@@ -1,5 +1,4 @@
 #include "ItemCollection.h"
-#include <typeinfo>
 
 /*
  *	Constructor
@@ -43,35 +42,21 @@ ItemCollection::ItemCollection(BitFileReader& reader, Station* station){
 		}
 
 		item->setLocation(station->get(initloc)); // Set item's initial location
-		if(item->hasAttribute(CTRL_ITEM_MOBILE))
-			station->get(initloc)->deposit(item); // If a mobile item, add to initial location's item list
-		else
-			station->get(initloc)->fix(item); // If a non-mobile item, add to initial location's fixture list
+		station->get(initloc)->deposit(item); // Add to initial location's item list
 	
 		this->items[cd] = item;
 
 		line = reader.getline();
 	}
-/*
-	for(map<uint64_t, Item*>::iterator it = items.begin() ; it != items.end() ; it++){
-		string name = Statics::codeToStr(it->first);
-		cerr << name << "\tis\t" << typeid(*(it->second)).name() << "\tbytes allocated: " << sizeof(*(it->second)) << endl;
-	}
-*/
+
 }
 
 /*
  *	Destructor
+ *	May seem like overkill, but will allow greater flexibility later should name aliases for items be introduced
  */
 ItemCollection::~ItemCollection(){
-/*
-	for(map<uint64_t, Item*>::iterator it=items.begin() ; it!=items.end() ; it++){
-		if(sizeof(it->second) > ZERO)
-			delete it->second; // Erase the item
-	}
-*/
 
-	// Method may seem like overkill, but will allow greater flexibility later if I want to introduce aliases for item names later
 	for(map<uint64_t, Item*>::iterator it = items.begin() ; it != items.end() ; it++){
 
 		if(it->second != NULL){

@@ -24,7 +24,6 @@ class Station{
 		int getLocationCount();
 		Location* get(unsigned int index);
 		Item* find(uint64_t itemcode);
-		void fix(int index, Item* item);
 		void leave(int index, Item* item);
 
 };

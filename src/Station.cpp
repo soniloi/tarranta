@@ -137,13 +137,6 @@ Location* Station::get(unsigned int index){
 }
 
 /*
- *	Fix a fixture at a certain location
- */
-void Station::fix(int index, Item* item){
-	this->locations.at(index)->fix(item);
-}
-
-/*
  *	Deposit an item at a certain location
  */
 void Station::leave(int index, Item* item){

@@ -101,11 +101,6 @@ int Location::countTreasures(){
 			result++;
 	}
 
-	for(map<uint64_t, Item*>::iterator it = this->fixtures.begin() ; it != this->fixtures.end() ; it++){
-		if(it->second->hasAttribute(CTRL_ITEM_TREASURE))
-			result++;
-	}
-
 	return result;
 }
 
@@ -179,13 +174,6 @@ bool Location::hasNosnomp(){
 }
 
 /*
- *	Fix an item at this location
- */
-void Location::fix(Item* item){
-	this->fixtures[item->getCode()] = item;
-}
-
-/*
  *	Deposit an item at this location
  */
 void Location::deposit(Item* item){
@@ -224,7 +212,7 @@ Item* Location::get(uint64_t cd){
 }
 
 /*
- *	Return pointer to an item with a certain code from this location,
+ *	Return pointer to an item from this location,
  *		and remove it from the location
  */
 Item* Location::extract(Item* item){
@@ -236,19 +224,6 @@ Item* Location::extract(Item* item){
 		}
 	}
 	return item; // TODO: FIX THIS NONSENSE: all these extract methods should probably just be void instead but not changing now due to consistency
-}
-
-/*
- *	Remove fixture from this location
- *	Has no effect if fixture is not already present
- */
-void Location::extractFixture(Item* item){
-	for(map<uint64_t, Item*>::iterator it = this->fixtures.begin() ; it != this->fixtures.end() ; it++){
-		if(it->second == item){
-			this->fixtures.erase(it);
-			return;
-		}
-	}	
 }
 
 /*
@@ -275,13 +250,14 @@ string Location::getBasic(){
 
 /*
  *	Return string representing a list of items in a map
- *	If obstructiononly is true, only concatenate information about items that are obstructions
+ *	attributes parameter refers to the types of items that are to be displayed; refer to the Definitions file for this
+ *		by default, if this is not set then all items are included	
  */
-string Location::itemListToString(map<uint64_t, Item*> things, bool obstructiononly){
+string Location::itemListToString(map<uint64_t, Item*> things, int attributes=0){
 
 	string str;
 	for(map<uint64_t, Item*>::iterator it = things.begin() ; it != things.end() ; it++){
-		if(!obstructiononly || it->second->hasAttribute(CTRL_ITEM_OBSTRUCTION)){
+		if(!attributes || it->second->hasAttribute(attributes)){
 			str += "\nThere is " + it->second->getLongname() + " here";
 			if(it->second->hasAttribute(CTRL_ITEM_OBSTRUCTION) || it->second->hasAttribute(CTRL_ITEM_TREASURE))
 				str += EXCLAMATION;
@@ -294,28 +270,24 @@ string Location::itemListToString(map<uint64_t, Item*> things, bool obstructiono
 
 /*
  *	Return string consisting of information a player would receive on arriving at this location
- *		i.e. a basic, one-line description, followed by a list of all portable objects,
- *		followed by a list of all fixtures that are also obstructions
+ *		i.e. a basic, one-line description, followed by a list of all mobile items and all non-mobile items that are also obstructions
  */
 string Location::getArrival(){
 	string str = this->getBasic();
 	str += DOT;
-	str += this->itemListToString(this->items, false);
-	str += this->itemListToString(this->fixtures, true);
+	str += this->itemListToString(this->items, (CTRL_ITEM_MOBILE | CTRL_ITEM_OBSTRUCTION));
 	return str;
 }
 
 /*
  *	Return string consisting of the maximal amount of information about this location,
- *		i.e., any further information about the location, together with a list of all fixtures,
- *		together with a list of all portable objects
+ *		i.e., any further information about the location, followed by a list of all items
  */
 string Location::getAll(){
 	string str = this->getBasic();
 	str += this->fullname;
 	str += DOT;
-	str += this->itemListToString(this->items, false);
-	str += this->itemListToString(this->fixtures, false);
+	str += this->itemListToString(this->items);
 	return str;
 }
 
@@ -324,12 +296,6 @@ string Location::getAll(){
  *	Return NULL if none present
  */
 Item* Location::getObstruction(){
-
-	// Search all non-mobile items
-	for(map<uint64_t, Item*>::iterator it = this->fixtures.begin() ; it != this->fixtures.end() ; it++){
-		if(it->second->hasAttribute(CTRL_ITEM_OBSTRUCTION))
-			return it->second;
-	}
 
 	// Search all mobile items
 	for(map<uint64_t, Item*>::iterator it = this->items.begin() ; it != this->items.end() ; it++){
@@ -351,16 +317,6 @@ list<Container*> Location::getSuitableContainers(Item* item){
 	list<Container*> result;
 
 	for(map<uint64_t, Item*>::iterator it = items.begin() ; it != items.end() ; it++){
-		if(it->second != item && it->second->hasAttribute(CTRL_ITEM_CONTAINER)){
-			Container* container = (Container*) it->second;
-			while(!container->isSuitable(item) && container->getItemWithin()->hasAttribute(CTRL_ITEM_CONTAINER))
-				container = (Container*) container->getItemWithin();
-			if(container->isSuitable(item))
-				result.push_back(container);
-		}
-	}
-
-	for(map<uint64_t, Item*>::iterator it = fixtures.begin() ; it != fixtures.end() ; it++){
 		if(it->second != item && it->second->hasAttribute(CTRL_ITEM_CONTAINER)){
 			Container* container = (Container*) it->second;
 			while(!container->isSuitable(item) && container->getItemWithin()->hasAttribute(CTRL_ITEM_CONTAINER))

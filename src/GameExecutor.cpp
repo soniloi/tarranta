@@ -142,7 +142,7 @@ void Game::Executor::execFish(Game* game){
 		Terminal::wrpro(game->general->get(STR_NOFISH));
 		return;
 	}
-	glint->getLocation()->extractFixture(glint);
+	glint->getLocation()->extract(glint);
 	glint->setLocation(game->station->get(LOCATION_NOWHERE)); // Remove the glint the player is seeing
 
 	Item* nugget = game->items->get(ITEM_NUGGET);
@@ -327,13 +327,13 @@ void Game::Executor::execCall(Game* game, uint64_t arg){
 		// Insert the bloodthirsty pirate at the checkpoint
 		loc = game->station->get(LOCATION_CHECKPOINT);
 		item = game->items->get(ITEM_PIRATE);
-		loc->fix(item);
+		loc->deposit(item);
 		item->setLocation(loc);
 
 		// Insert the pirate ship (Item) into the docking bay
 		loc = game->station->get(LOCATION_DOCKING);
 		item = game->items->get(ITEM_SHIP);
-		loc->fix(item);
+		loc->deposit(item);
 		item->setLocation(loc);
 
 		// Link the pirate ship (Location) to the docking bay
@@ -412,7 +412,7 @@ void Game::Executor::execBurn(Game* game, Item* item){
 			game->player->incrementScore(SCORE_PUZZLE);
 		}
 	}
-	else{ // Some other item or fixture, refuse to burn
+	else{
 		Terminal::wrpro(game->general->get(STR_NONOHOW));
 		
 	}
@@ -615,7 +615,7 @@ void Game::Executor::execRepair(Game* game, Item* item){
 			Terminal::wrpro(game->general->get(STR_CONSOLE));
 			Item* newpanel = game->items->get(ITEM_PANEL);
 			newpanel->setLocation(item->getLocation());
-			item->getLocation()->fix(newpanel);
+			item->getLocation()->deposit(newpanel);
 			game->destroyItem(item);
 		}
 		else if(code == ITEM_PANEL)
@@ -680,7 +680,7 @@ void Game::Executor::execTake(Game* game, Item* item){
 		Terminal::wrpro(game->general->get(STR_TAKENOSE));
 	else if(game->player->hasInInventory(item)) // Item is already in inventory
 		Terminal::wrpro(game->general->get(STR_TAKEALRE));
-	else if(!item->hasAttribute(CTRL_ITEM_MOBILE)) // Item is not portable
+	else if(!item->hasAttribute(CTRL_ITEM_MOBILE) | item->hasAttribute(CTRL_ITEM_OBSTRUCTION)) // Item is not portable, or is an obstruction
 		Terminal::wrpro(game->general->get(STR_TAKENOCA));
 	else if(item->hasAttribute(CTRL_ITEM_LIQUID)){ // Liquids cannot be carried directly, but must be in containers
 
