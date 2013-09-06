@@ -104,7 +104,7 @@ void Game::Executor::execChimbu(Game* game){
 
 			Terminal::wrpro(game->general->get(STR_FAIRY));
 
-			game->player->incrementScore(TWO*SCORE_PUZZLE);
+			game->player->incrementScore(SCORE_PUZZLE);
 		}
 		else
 			Terminal::wrpro(game->general->get(STR_NOHAPPEN));
@@ -293,10 +293,16 @@ void Game::Executor::execVersion(Game* game){
  *	Execute XYRO magic word command
  */
 void Game::Executor::execXyro(Game* game){
-	Item* wiz = game->player->getLocation()->get(ITEM_WIZARD);
-	if(wiz){
+	Item* wizard = game->player->getLocation()->get(ITEM_WIZARD);
+	if(wizard){
 		if(game->player->isInvisible()){ // Wizard cannot kill you if you are invisible, but you still cannot get past him
-			Terminal::wrpro("\"I heard that!\", the wizard bellows. He raises his wand in preparation for an attack, but cannot see you. He gives up, but does not move out of your way.");
+			Terminal::wrpro(game->general->get(STR_WIZINVIS));
+		}
+		else if(game->player->hasInInventory(game->items->get(ITEM_MIRROR))){ // Wizard attacks you but player reflects attack
+			Terminal::wrpro(game->general->get(STR_WIZMIRRO));
+			game->player->getLocation()->extract(wizard);
+			wizard->setLocation(LOCATION_NOWHERE);
+			game->player->incrementScore(SCORE_PUZZLE);
 		}
 		else{ // Wizard can see you
 			Terminal::wrpro(game->general->get(STR_WIZARDED));
@@ -705,6 +711,7 @@ void Game::Executor::execRub(Game* game, Item* item){
 	uint64_t code = item->getCode();
 	if(code == ITEM_DRAGON){ // Player wishes to rub dragon
 		game->player->getLocation()->extract(item);
+		item->setLocation(LOCATION_NOWHERE);
 		Terminal::wrpro(game->general->get(STR_DRAGON));
 		game->player->incrementScore(SCORE_PUZZLE);
 

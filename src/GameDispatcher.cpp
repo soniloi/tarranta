@@ -125,7 +125,6 @@ void Game::Dispatcher::dispatchAnyArg(Game* game, Command* command, uint64_t arg
  */
 void Game::Dispatcher::dispatchPresentArg(Game* game, Command* command, Item* item){
 
-	//if(!item->isPresent(game->player->getLocation()) && !game->player->hasInInventory(item->getCode())){ // Argument item is neither present at current location nor in inventory
 	if(!game->player->hasInPresent(item)){
 		Terminal::wrpro("I see no " + item->getShortname() + " here to " + command->toString() + ", or I cannot get at it.");
 		return;
