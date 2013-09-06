@@ -11,3 +11,13 @@
 *.lai
 *.la
 *.a
+
+# Assorted test files
+*.out
+
+# Specific Directories
+bitfile/*
+musings/*
+
+# Compiled Binary
+tarrant
