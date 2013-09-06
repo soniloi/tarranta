@@ -13,7 +13,7 @@ void Game::Dispatcher::dispatchMovement(Game* game, Command* command){
 
 	else if(next == game->station->get(LOCATION_NOWHERE)){ // No location in desired direction
 		if(command->is(CMD_BACK)) // game->player requested 'back', but cannot go back from here for whatever reason
-			Terminal::wrpro("I do not remember how I got here. Please give a direction.");
+			Terminal::wrpro("I do not remember how I got here, or I cannot get back there directly. Please give a direction.");
 		else if(command->is(CMD_OUT)) // game->player requested 'out', but out is ambiguous here
 			Terminal::wrpro("I cannot tell in from out here. Please give a direction.");
 		else
@@ -57,7 +57,11 @@ void Game::Dispatcher::dispatchMovement(Game* game, Command* command){
 			}
 
 			if(game->player->isAlive()){ // game->player was safe, or got away with it
-				next->setDirection(CMD_BACK, game->player->getLocation());
+
+				if(next->hasRouteTo(current)) // Player will only be able to use back command if there is actually a way they could
+					next->setDirection(CMD_BACK, game->player->getLocation());
+				else
+					next->setDirection(CMD_BACK, game->station->get(LOCATION_NOWHERE));
 				game->player->setLocation(next);
 				Terminal::wrpro(game->player->getLocationArrival());
 

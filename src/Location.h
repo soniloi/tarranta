@@ -43,6 +43,7 @@ class Location{
 		~Location();
 		int getID();
 		void crossReference(Location* n, Location* s, Location* e, Location* w, Location* ne, Location* sw, Location* se, Location* nw, Location* u, Location* d, Location* nowh);
+		bool hasRouteTo(Location* that);
 		void setDirection(uint64_t dir, Location* loc);
 		int countTreasures();
 		bool hasAttribute(int attribute);

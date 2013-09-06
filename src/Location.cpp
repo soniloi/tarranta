@@ -81,6 +81,17 @@ Location* Location::getOnlyDirection(){
 }
 
 /*
+ *	Determine whether this location has a direct route to another location
+ */
+bool Location::hasRouteTo(Location* that){
+	for(map<uint64_t, Location*>::iterator it = this->directions.begin() ; it != this->directions.end() ; it++){
+		if(it->second == that)
+			return true;
+	}
+	return false;
+}
+
+/*
  *	Link a direction
  */
 void Location::setDirection(uint64_t dir, Location* loc){
