@@ -169,6 +169,25 @@ void Game::Executor::execInventor(Game* game){
 }
 
 /*
+ *	Execute command to knit
+ */
+void Game::Executor::execKnit(Game* game){
+	Item* needles = game->items->get(ITEM_NEEDLES);
+	Item* yarn = game->items->get(ITEM_YARN);
+	if(!game->player->hasInInventory(needles) || !game->player->hasInInventory(yarn)){
+		Terminal::wrpro("You do not have the equipment needed.");
+		return;
+	}
+
+	game->destroyItem(yarn); // All yarn is consumed
+	Location* loc = game->player->getLocation();
+	Item* jumper = game->items->get(ITEM_JUMPER);
+	loc->deposit(jumper); // Jumper now appears instead
+	jumper->setLocation(loc);
+	Terminal::wrpro(game->general->get(STR_KNITJUMP));
+}
+
+/*
  *	Execute command to describe surroundings to user
  */
 void Game::Executor::execLook(Game* game){
@@ -276,8 +295,13 @@ void Game::Executor::execVersion(Game* game){
 void Game::Executor::execXyro(Game* game){
 	Item* wiz = game->player->getLocation()->get(ITEM_WIZARD);
 	if(wiz){
-		Terminal::wrpro(game->general->get(STR_WIZARDED));
-		game->player->kill();
+		if(game->player->isInvisible()){ // Wizard cannot kill you if you are invisible, but you still cannot get past him
+			Terminal::wrpro("\"I heard that!\", the wizard bellows. He raises his wand in preparation for an attack, but cannot see you. He gives up, but does not move out of your way.");
+		}
+		else{ // Wizard can see you
+			Terminal::wrpro(game->general->get(STR_WIZARDED));
+			game->player->kill();
+		}
 	}
 	else
 		Terminal::wrpro(game->general->get(STR_SHMAGIC));

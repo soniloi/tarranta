@@ -70,6 +70,7 @@ class Game{
 			void execFish(Game* game);
 			void execHelp(Game* game);
 			void execInventor(Game* game);
+			void execKnit(Game* game);
 			void execLook(Game* game);
 			void execPlugh(Game* game);
 			void execQuit(Game* game);

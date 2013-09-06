@@ -92,6 +92,7 @@ void Game::Dispatcher::dispatchNoArg(Game* game, Command* command){
 		case CMD_FISH: game->executor.execFish(game); break;
 		case CMD_HELP: game->executor.execHelp(game); break;
 		case CMD_INVENTOR: game->executor.execInventor(game); break;
+		case CMD_KNIT: game->executor.execKnit(game); break;
 		case CMD_LOOK: game->executor.execLook(game); break;
 		case CMD_PLUGH: game->executor.execPlugh(game); break;
 		case CMD_QUIT: game->executor.execQuit(game); break;
