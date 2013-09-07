@@ -116,6 +116,7 @@ void Game::Dispatcher::dispatchAnyArg(Game* game, Command* command, uint64_t arg
 		case CMD_CALL: game->executor.execCall(game, arg); break;
 		case CMD_HINT: game->executor.execHint(game, arg); break;
 		case CMD_SAY: game->executor.execSay(game, arg); break;
+		case CMD_TETHER: game->executor.execTether(game, arg); break;
 	}
 
 }

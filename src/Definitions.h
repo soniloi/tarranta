@@ -113,6 +113,7 @@
 #define LOCATION_CHECKPOINT 32 // The security checkpoint between the Recreation Hub and the Control Hub
 #define LOCATION_COMMS 51 // The communications room
 #define LOCATION_CONTAINER 2 // When an item has this location, it means it is in a container
+#define LOCATION_DOCKEAST 22 // East end of the docking bay
 #define LOCATION_DOCKING 21 // The west end of the docking bay
 #define LOCATION_DWELL 91 // The Dwell room
 #define LOCATION_ESCAPE 23 // The place the player must bring treasures to and ultimately escape from
@@ -192,6 +193,7 @@
 #define CMD_CALL 0x63616C6C00000000
 #define CMD_HINT 0x68696E7400000000
 #define CMD_SAY 0x7361790000000000
+#define CMD_TETHER 0x7465746865720000
 
 // Present-arg command codes
 #define CMD_ATTACK 0x61747461636B0000
@@ -231,6 +233,7 @@
 #define ITEM_BOULDER 0x626F756C64657200
 #define ITEM_BREAD 0x6272656164000000
 #define ITEM_BUTTON 0x627574746F6E0000
+#define ITEM_CABLE 0x6361626C65000000
 #define ITEM_CAULDRON 0x6361756C64726F6E
 #define ITEM_COIN 0x636F696E00000000
 #define ITEM_CONSOLE 0x636F6E736F6C6500
@@ -255,6 +258,7 @@
 #define ITEM_RADISHES 0x7261646973686573
 #define ITEM_ROBOT 0x726F626F74000000
 #define ITEM_SHIP 0x7368697000000000
+#define ITEM_SHUTTLE 0x73687574746C6500
 #define ITEM_TOAST 0x746F617374000000
 #define ITEM_TOOTH 0x746F6F7468000000
 #define ITEM_TROLL 0x74726F6C6C000000

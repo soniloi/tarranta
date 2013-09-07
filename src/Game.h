@@ -84,6 +84,7 @@ class Game{
 			void execCall(Game* game, uint64_t arg);
 			void execHint(Game* game, uint64_t arg);
 			void execSay(Game* game, uint64_t arg);
+			void execTether(Game* game, uint64_t arg);
 			void execAttack(Game* game, Item* item);
 			void execBurn(Game* game, Item* item);
 			void execDescribe(Game* game, Item* item);
