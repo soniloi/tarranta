@@ -420,6 +420,10 @@ void Game::Executor::execHint(Game* game, uint64_t arg){
 void Game::Executor::execSay(Game* game, uint64_t arg){
 	string statement = Statics::codeToStr(arg);
 	Terminal::wrpro("You say \"" + statement + "\" aloud.");
+	if(game->player->hasInPresent(game->items->get(ITEM_PIRATE))){ // Blind pirate will hear player and kill them
+		Terminal::wrpro(game->general->get(STR_PIRATKIL));
+		game->player->kill();
+	}
 }
 
 /*
