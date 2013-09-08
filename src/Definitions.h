@@ -113,7 +113,6 @@
 #define LOCATION_CHECKPOINT 32 // The security checkpoint between the Recreation Hub and the Control Hub
 #define LOCATION_COMMS 51 // The communications room
 #define LOCATION_CONTAINER 2 // When an item has this location, it means it is in a container
-#define LOCATION_DOCKEAST 22 // East end of the docking bay
 #define LOCATION_DOCKING 21 // The west end of the docking bay
 #define LOCATION_DWELL 91 // The Dwell room
 #define LOCATION_ESCAPE 23 // The place the player must bring treasures to and ultimately escape from

@@ -406,19 +406,33 @@ void Game::Executor::execSay(Game* game, uint64_t arg){
  */
 void Game::Executor::execTether(Game* game, uint64_t arg){
 	if(arg == ITEM_SHIP || arg == ITEM_SHUTTLE){
+
+		Item* item = game->items->get(arg);
+		Item* itemship = game->items->get(ITEM_SHIP);
+		Item* itemshuttle = game->items->get(ITEM_SHUTTLE);
+		Item* cable = game->items->get(ITEM_CABLE);
+		Location* dock = game->station->get(LOCATION_DOCKING);
 		int loccode = game->player->getLocation()->getID();
-		Location* possibleship = game->station->get(LOCATION_DOCKING)->getDirection(CMD_EAST);
-		Location* ship = game->station->get(LOCATION_SHIP);
-		Location* shuttle = game->station->get(LOCATION_SHUTTLE);
-		if(possibleship != ship || (!game->player->getLocation()->get(arg) && (loccode != LOCATION_SHIP) && (loccode != LOCATION_SHUTTLE))){ // Not near ship/shuttle
-			Terminal::wrpro("I see no " + Statics::codeToStr(arg) + " here to tether.");
+
+		if(!game->player->hasInPresent(item) && loccode != LOCATION_SHIP && loccode != LOCATION_SHUTTLE){
+			Terminal::wrpro("I see no " + Statics::codeToStr(arg) + " here to tether."); // Player is nowhere near either ship or shuttle
 		}
-		else if(!game->player->hasInInventory(game->items->get(ITEM_CABLE))){ // No cable to use to tether
-			Terminal::wrpro("You have nothing you can use to tether the " + Statics::codeToStr(arg) + ".");
+		else if(arg == ITEM_SHUTTLE && (game->player->hasInPresent(itemshuttle) || loccode == LOCATION_SHIP || loccode == LOCATION_SHUTTLE) && !dock->get(ITEM_SHIP)){
+			Terminal::wrpro("I see nothing here to tether it to."); // Player wishes to tether shuttle, but ship is not nearby
 		}
+		else if(arg == ITEM_SHIP && (game->player->hasInPresent(itemship) || loccode == LOCATION_SHIP || loccode == LOCATION_SHUTTLE) && !dock->get(ITEM_SHIP)){
+			Terminal::wrpro("I see no ship here to tether."); // Player wishes to tether ship, but ship is not in dock
+		}
+		else if(!game->player->hasInInventory(cable)){
+			Terminal::wrpro("You have nothing you can use to tether the " + Statics::codeToStr(arg) + "."); // Player has no cable to use to tether
+		}		
 		else{
+			Location* ship = game->station->get(LOCATION_SHIP);
+			Location* shuttle = game->station->get(LOCATION_SHUTTLE);
+
 			ship->setDirection(CMD_SOUTH, shuttle);
 			shuttle->setDirection(CMD_NORTH, ship);
+			game->destroyItem(cable);
 			game->player->incrementScore(SCORE_PUZZLE);
 			Terminal::wrpro("You use the cable to tether the shuttle to the ship.");
 		}
