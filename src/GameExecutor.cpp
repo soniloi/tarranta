@@ -346,6 +346,9 @@ void Game::Executor::execZiqua(Game* game){
  */
 void Game::Executor::execCall(Game* game, uint64_t arg){
 	if(game->player->getLocation()->getID() == LOCATION_COMMS && arg == STR_SHIP){
+
+		// TODO: insert score, and also prevent re-calling of STR_SHIP
+
 		// Change player's start & safe locations on death; they must now be west of the checkpoint rather than east
 		game->player->setWakeLocation(game->station->get(LOCATION_START_1));
 		game->player->setSafeLocation(game->station->get(LOCATION_SAFE_1));
@@ -381,6 +384,24 @@ void Game::Executor::execCall(Game* game, uint64_t arg){
 	else
 		Terminal::wrpro(game->general->get(STR_NONOHOW));
 
+}
+
+/*
+ *	Execute command to fly
+ */
+void Game::Executor::execFly(Game* game, uint64_t arg){
+	if(arg == ITEM_SHIP){
+		if(game->player->getLocation()->getID() == LOCATION_SHIP){
+			Terminal::wrpro("You steal the pirate ship and fly away in it. Congratulations, you have successfully escaped from Asterbase Tarranta.");
+			game->player->incrementScore(SCORE_ESCAPE);
+			execScore(game);
+			game->on = false;
+		}
+		else
+			Terminal::wrpro("You are not in any ship.");
+	}
+	else
+		Terminal::wrpro(game->general->get(STR_NONOHOW));
 }
 
 /*

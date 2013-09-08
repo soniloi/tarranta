@@ -13,6 +13,7 @@
  */
 
 // Scoring
+#define SCORE_ESCAPE 50 // Points given for escaping the asteroid
 #define SCORE_PUZZLE 20 // Points given for solving some puzzle
 #define SCORE_TREASURE 10 // Points given for depositing a treasure in the right place
 
@@ -190,6 +191,7 @@
 
 // Any-arg command codes
 #define CMD_CALL 0x63616C6C00000000
+#define CMD_FLY 0x666C790000000000
 #define CMD_HINT 0x68696E7400000000
 #define CMD_SAY 0x7361790000000000
 #define CMD_TETHER 0x7465746865720000
