@@ -40,7 +40,7 @@ void Game::Executor::execFlash(Game* game, uint64_t arg){
  */
 void Game::Executor::execGrab(Game* game, uint64_t arg){
 	Item* item = game->items->get(arg);
-	if(!item){ // Whatever they input as argument isn't anything we know as an item
+	if(item == game->items->get(ITEM_NULL)){ // Whatever they input as argument isn't anything we know as an item
 		Terminal::wrpro("I don't know what " + Statics::codeToStr(arg) + " is.");
 		return;
 	}
@@ -357,9 +357,9 @@ void Game::Executor::execCall(Game* game, uint64_t arg){
 		Location* loc1;
 		Item* item;
 
-		// Insert the bloodthirsty pirate at the checkpoint
+		// Insert the bloodthirsty corsair at the checkpoint
 		loc = game->station->get(LOCATION_CHECKPOINT);
-		item = game->items->get(ITEM_PIRATE);
+		item = game->items->get(ITEM_CORSAIR);
 		loc->deposit(item);
 		item->setLocation(loc);
 
@@ -420,7 +420,7 @@ void Game::Executor::execHint(Game* game, uint64_t arg){
 void Game::Executor::execSay(Game* game, uint64_t arg){
 	string statement = Statics::codeToStr(arg);
 	Terminal::wrpro("You say \"" + statement + "\" aloud.");
-	if(game->player->hasInPresent(game->items->get(ITEM_PIRATE))){ // Blind pirate will hear player and kill them
+	if(game->player->hasInPresent(game->items->get(ITEM_CORSAIR))){ // Blind corsair will hear player and kill them
 		Terminal::wrpro(game->general->get(STR_PIRATKIL));
 		game->player->kill();
 	}
@@ -741,13 +741,19 @@ void Game::Executor::execRepair(Game* game, Item* item){
  */
 void Game::Executor::execRob(Game* game, Item* item){
 	uint64_t code = item->getCode();
-	if(code == ITEM_PIRATE){
+	if(code == ITEM_CORSAIR){
 		Item* key = game->items->get(ITEM_KEY);
-		if(key->getLocation()->getID() == LOCATION_NOWHERE)
-			Terminal::wrpro("The pirate has nothing more for you to rob.");
-		else{
+		if(key->getLocation()->getID() != LOCATION_NOWHERE) // Corsair's item has already been stolen
+			Terminal::wrpro(game->general->get(STR_PIRATNO));
+		else if(game->player->hasInInventory(game->items->get(ITEM_BOOTS))){ // Player is walking too loudly and corsair hears
+			Terminal::wrpro(game->general->get(STR_PIRATBOO));
+			game->player->kill();
+		}
+		else{ // Player successfully robs corsair
 			Terminal::wrpro(game->general->get(STR_PIRATROB));
-			game->player->addToInventory(game->items->get(ITEM_KEY));
+			game->player->addToInventory(key);
+			key->setLocation(game->player->getLocation());
+			game->player->incrementScore(SCORE_PUZZLE);
 		}
 		
 	}

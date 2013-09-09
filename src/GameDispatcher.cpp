@@ -24,7 +24,7 @@ void Game::Dispatcher::dispatchMovement(Game* game, Command* command){
 		Item* ob = game->player->getLocation()->getObstruction(); // Search for obstructions at current location
 		if(ob != NULL && next != game->player->getLocation()->getDirection(CMD_BACK)){ // Obstruction exists preventing game->player going any direction but the one they came from
 			if(game->player->hasLight())
-				Terminal::wrpro("The " + ob->getShortname() + " will not let you go that way.");
+				Terminal::wrpro("You cannot get past the " + ob->getShortname() + ".");
 			else
 				Terminal::wrpro("Some obstruction at this location will not let you go that way.");
 		}

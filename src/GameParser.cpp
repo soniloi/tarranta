@@ -117,7 +117,7 @@ void Game::Parser::parseInput(Game* game, string line){
 				// Every remaining arg-taking command requires a named item
 				else{
 					item = game->items->get(tentativeArg);
-					if(!item) // Whatever they input as argument isn't anything we know as an item
+					if(item == game->items->get(ITEM_NULL)) // Whatever they input as argument isn't anything we know as an item
 						Terminal::wrpro(game->general->get(STR_NONOWHAT));
 
 					// First handle items that just have to be in player's vicinity, may-or-may-not be in inventory
