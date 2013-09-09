@@ -165,7 +165,6 @@ void Game::Dispatcher::dispatchPresentArg(Game* game, Command* command, Item* it
 		case CMD_REPAIR: game->executor.execRepair(game, item); break;
 		case CMD_READ: game->executor.execRead(game, item); break;
 		case CMD_ROB: game->executor.execRob(game, item); break;
-		case CMD_ROLL: game->executor.execRoll(game, item); break;
 		case CMD_RUB: game->executor.execRub(game, item); break;
 		case CMD_TAKE: game->executor.execTake(game, item); break;
 

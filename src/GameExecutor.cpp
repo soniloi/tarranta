@@ -474,8 +474,24 @@ void Game::Executor::execAttack(Game* game, Item* item){
 
 	if(code == ITEM_DRAGON || code == ITEM_LION || code == ITEM_WOLF)
 		Terminal::wrpro(game->general->get(STR_NOWISEAT));
+	
+	else if(code == ITEM_BOULDER){
+		if(!game->player->isStrong()){
+			Terminal::wrpro(game->general->get(STR_NOSTRONG));
+		}
+		else{
+			Location* loc = game->player->getLocation();
+			loc->setDirection(CMD_DOWN, game->station->get(LOCATION_CELLAR)); // Link location to cellar
+			loc->deposit(game->items->get(ITEM_DUST)); // Boulder is replaced with dust
+			game->player->setStrong(false);
+			game->player->incrementScore(SCORE_PUZZLE);
+			Terminal::wrpro(game->general->get(STR_BOULDPUL));
+		}
+	}
+
 	else
-		Terminal::wrpro(game->general->get(STR_NONOHOW));
+		Terminal::wrpro(game->general->get(STR_NONOHOW));	
+
 }
 
 /*
@@ -737,37 +753,6 @@ void Game::Executor::execRob(Game* game, Item* item){
 	else
 		Terminal::wrpro(game->general->get(STR_NONOHOW));
 }
-
-/*
- *	Execute command to roll something
- */
-void Game::Executor::execRoll(Game* game, Item* item){
-
-	if(item->hasAttribute(CTRL_ITEM_MOBILE)){
-		Terminal::wrpro("I see little point in moving such a thing. You could take it instead.");
-		return;
-	}
-
-	uint64_t code = item->getCode();
-	Location* loc = game->player->getLocation();
-	
-	if(code == ITEM_BOULDER){
-		if(!game->player->isStrong()){
-			Terminal::wrpro("You are not strong enough to roll it.");
-		}
-		else if(loc->getDirection(CMD_DOWN) != game->station->get(LOCATION_NOWHERE)){
-			Terminal::wrpro("You have already rolled the boulder.");
-		}
-		else{
-			Terminal::wrpro("You roll the boulder, revealing a passage beneath. Your muscles return to normal size.");
-			loc->setDirection(CMD_DOWN, game->station->get(LOCATION_CELLAR));
-			game->player->setStrong(false);
-			game->player->incrementScore(SCORE_PUZZLE);
-		}
-	}
-
-}
-
 
 /*
  *	Execute command to rub an item

@@ -101,7 +101,6 @@ class Game{
 			void execRead(Game* game, Item* item);
 			void execRepair(Game* game, Item* item);
 			void execRob(Game* game, Item* item);
-			void execRoll(Game* game, Item* item);
 			void execRub(Game* game, Item* item);
 			void execTake(Game* game, Item* item);
 			void execUnlock(Game* game, Item* item);
