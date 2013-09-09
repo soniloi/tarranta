@@ -482,6 +482,7 @@ void Game::Executor::execAttack(Game* game, Item* item){
 		else{
 			Location* loc = game->player->getLocation();
 			loc->setDirection(CMD_DOWN, game->station->get(LOCATION_CELLAR)); // Link location to cellar
+			game->destroyItem(item);
 			loc->deposit(game->items->get(ITEM_DUST)); // Boulder is replaced with dust
 			game->player->setStrong(false);
 			game->player->incrementScore(SCORE_PUZZLE);
