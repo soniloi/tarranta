@@ -79,14 +79,14 @@ ItemCollection::~ItemCollection(){
 
 /*
  *	Return pointer to an item with a certain code from the collection,
- *	Returns NULL if item does not exist
+ *	Returns a special null item if item does not exist; this will be an error, but will minimise segmentation faults
  */
 Item* ItemCollection::get(uint64_t cd){
 
 	map<uint64_t, Item*>::iterator it = this->items.find(cd);
 
-	if(it == this->items.end()) // If no item by that code in the collection, return NULL
-		return NULL;
+	if(it == this->items.end()) // If no item by that code in the collection, return null item
+		return this->items[ITEM_NULL];
 
 	return it->second;
 
