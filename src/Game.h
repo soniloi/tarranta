@@ -62,6 +62,7 @@ class Game{
 			void execGrab(Game* game, uint64_t arg);
 			#endif
 
+			void execMovement(Game* game, Location* current, Location* next);
 			void execAbracada(Game* game);
 			void execAvnarand(Game* game);
 			void execChimbu(Game* game);

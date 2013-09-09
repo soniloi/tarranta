@@ -60,6 +60,45 @@ void Game::Executor::execGrab(Game* game, uint64_t arg){
 #endif
 
 /*
+ *	Execute a movement command
+ */
+void Game::Executor::execMovement(Game* game, Location* current, Location* next){
+
+	if(!game->player->hasLight() && !next->hasLight()){ // Player moving from dark space to dark space, may trip and fall...
+		Terminal::wrpro(game->general->get(STR_STUMBLE));
+		int life = rand()%DEATH_CHANCE;
+		if(!life){ // Player has tripped and smashed their head
+			Terminal::wrpro(game->general->get(STR_NOLIGHT));
+			game->player->kill();
+		}
+	}
+
+	if(!game->player->hasNosnomp() && !next->hasNosnomp()){ // Player moving from snomp space to snomp space, may get eaten...
+		int life = rand()%DEATH_CHANCE;
+		if(!life){ // Player has been caught by a snomp and eaten
+			Terminal::wrpro("A snomp happens by and eats you.");
+			game->player->kill();
+		}
+	}
+
+	if(game->player->isAlive()){ // game->player was safe, or got away with it
+
+		if(next->hasRouteTo(current)) // Player will only be able to use back command if there is actually a way they could
+			next->setDirection(CMD_BACK, game->player->getLocation());
+		else
+			next->setDirection(CMD_BACK, game->station->get(LOCATION_NOWHERE));
+		game->player->setLocation(next);
+		Terminal::wrpro(game->player->getLocationArrival());
+
+		if(!next->hasAir()){ // Check whether next location has ambient air
+			Terminal::wrpro("Just a friendly warning: there is no ambient atmosphere at this location.");
+		}
+
+	}
+
+}
+
+/*
  *	Execute ABRACADA magic word command
  */
 void Game::Executor::execAbracada(Game* game){
@@ -360,6 +399,12 @@ void Game::Executor::execCall(Game* game, uint64_t arg){
 		// Insert the bloodthirsty corsair at the checkpoint
 		loc = game->station->get(LOCATION_CHECKPOINT);
 		item = game->items->get(ITEM_CORSAIR);
+		loc->deposit(item);
+		item->setLocation(loc);
+
+		// Insert the bloodthirsty buccaneer at the docking control area
+		loc = game->station->get(LOCATION_DOCKINGCONTROL);
+		item = game->items->get(ITEM_BUCCANEE);
 		loc->deposit(item);
 		item->setLocation(loc);
 
@@ -741,7 +786,8 @@ void Game::Executor::execRepair(Game* game, Item* item){
  */
 void Game::Executor::execRob(Game* game, Item* item){
 	uint64_t code = item->getCode();
-	if(code == ITEM_CORSAIR){
+
+	if(code == ITEM_CORSAIR){ // Player wishes to rob the corsair
 		Item* key = game->items->get(ITEM_KEY);
 		if(key->getLocation()->getID() != LOCATION_NOWHERE) // Corsair's item has already been stolen
 			Terminal::wrpro(game->general->get(STR_PIRATNO));
@@ -750,13 +796,29 @@ void Game::Executor::execRob(Game* game, Item* item){
 			game->player->kill();
 		}
 		else{ // Player successfully robs corsair
-			Terminal::wrpro(game->general->get(STR_PIRATROB));
+			Terminal::wrpro(game->general->get(STR_PIRATRB1));
 			game->player->addToInventory(key);
 			key->setLocation(game->player->getLocation());
 			game->player->incrementScore(SCORE_PUZZLE);
-		}
-		
+		}	
 	}
+
+	else if(code == ITEM_BUCCANEE){ // Player wishes to rob the buccaneer
+		Item* medallion = game->items->get(ITEM_MEDALLIO);
+		if(medallion->getLocation()->getID() != LOCATION_NOWHERE) // Buccaneer's item has already been stolen
+			Terminal::wrpro(game->general->get(STR_PIRATNO));
+		else if(!game->player->isInvisible()){ // Player can be seen by buccaneer
+			Terminal::wrpro(game->general->get(STR_PIRATSEE));
+			game->player->kill();
+		}
+		else{ // Player successfully robs buccanee
+			Terminal::wrpro(game->general->get(STR_PIRATRB2));
+			game->player->addToInventory(medallion);
+			medallion->setLocation(game->player->getLocation());
+			game->player->incrementScore(SCORE_PUZZLE);
+		}
+	}
+
 	else
 		Terminal::wrpro(game->general->get(STR_NONOHOW));
 }

@@ -22,8 +22,31 @@ void Game::Dispatcher::dispatchMovement(Game* game, Command* command){
 
 	else{ // Location exists in desired direction
 		Item* ob = game->player->getLocation()->getObstruction(); // Search for obstructions at current location
-		if(ob != NULL && next != game->player->getLocation()->getDirection(CMD_BACK)){ // Obstruction exists preventing game->player going any direction but the one they came from
-			if(game->player->hasLight())
+
+		if(ob != NULL && next != game->player->getLocation()->getDirection(CMD_BACK)){ // Obstruction may exist preventing player going any direction but the one they came from
+		
+			int obcode = ob->getCode();			
+
+			if(obcode == ITEM_CORSAIR){ // Obstruction is the corsair (blind pirate)
+				if(game->player->hasInInventory(game->items->get(ITEM_BOOTS))){ // Player is wearing boots, so corsair will hear them approach
+					Terminal::wrpro("You attempt to sneak past the blind pirate, but he senses you as you get near, and dispatches you with a single swing of his cutlass.");
+					game->player->kill();
+				}
+				else // Just give a warning instead
+					Terminal::wrpro("As you draw nearer to the corsair, you realise that he is listening intently to every sound in the room. You decide not to risk it, and retreat to where you were.");
+			}
+
+			else if(obcode == ITEM_BUCCANEE){ // Obstruction is the buccaneer (deaf pirate)
+				if(!game->player->isInvisible()){ // Player is visible to buccaneer, so do not go near him
+						Terminal::wrpro("As you draw near to the buccaneer, you realise that he is looking vigilantly around the room. You decide not to risk it, and retreat to where you were.");
+				}
+				else{ // Player is invisible to deaf pirate, so can proceed
+					Terminal::wrpro("Being invisible as you are, you manage to sneak past the buccaneer.");
+					game->executor.execMovement(game, current, next);
+				}
+			}
+			
+			else if(game->player->hasLight())
 				Terminal::wrpro("You cannot get past the " + ob->getShortname() + ".");
 			else
 				Terminal::wrpro("Some obstruction at this location will not let you go that way.");
@@ -39,38 +62,7 @@ void Game::Dispatcher::dispatchMovement(Game* game, Command* command){
 		}
 		else{ // Movement to be attempted
 
-			if(!game->player->hasLight() && !next->hasLight()){ // Player moving from dark space to dark space, may trip and fall...
-				Terminal::wrpro(game->general->get(STR_STUMBLE));
-				int life = rand()%DEATH_CHANCE;
-				if(!life){ // Player has tripped and smashed their head
-					Terminal::wrpro(game->general->get(STR_NOLIGHT));
-					game->player->kill();
-				}
-			}
-
-			if(!game->player->hasNosnomp() && !next->hasNosnomp()){ // Player moving from snomp space to snomp space, may get eaten...
-				int life = rand()%DEATH_CHANCE;
-				if(!life){ // Player has been caught by a snomp and eaten
-					Terminal::wrpro("A snomp happens by and eats you.");
-					game->player->kill();
-				}
-			}
-
-			if(game->player->isAlive()){ // game->player was safe, or got away with it
-
-				if(next->hasRouteTo(current)) // Player will only be able to use back command if there is actually a way they could
-					next->setDirection(CMD_BACK, game->player->getLocation());
-				else
-					next->setDirection(CMD_BACK, game->station->get(LOCATION_NOWHERE));
-				game->player->setLocation(next);
-				Terminal::wrpro(game->player->getLocationArrival());
-
-				if(!next->hasAir()){ // Check whether next location has ambient air
-					Terminal::wrpro("Just a friendly warning: there is no ambient atmosphere at this location.");
-				}
-
-
-			}
+			game->executor.execMovement(game, current, next);
 
 		}
 
@@ -128,7 +120,7 @@ void Game::Dispatcher::dispatchAnyArg(Game* game, Command* command, uint64_t arg
 void Game::Dispatcher::dispatchPresentArg(Game* game, Command* command, Item* item){
 
 	if(!game->player->hasInPresent(item)){
-		Terminal::wrpro("I see no " + item->getShortname() + " here to " + command->toString() + ", or I cannot get at it.");
+		Terminal::wrpro("I see no " + item->getShortname() + " here to " + command->toString() + ".");
 		return;
 	}
 
