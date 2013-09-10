@@ -935,6 +935,84 @@ void Game::Executor::execTake(Game* game, Item* item){
 }
 
 /*
+ *	Execute command to water something with something else
+ *	container is the container holding the liquid that is to be poured
+ */
+void Game::Executor::execWater(Game* game, Item* item, Container* container){
+	uint64_t code = item->getCode();
+
+	if(code == ITEM_BEAN){
+
+		Item* liquid = container->extractItemWithin();
+		uint64_t liqcode = liquid->getCode();
+
+		if(liqcode == ITEM_POTION){ // Player waters the bean with potion
+
+			liquid->setLocation(game->station->get(LOCATION_NOWHERE)); // Liquid that was poured is consumed
+
+			Item* plant = game->items->get(ITEM_PLANT);
+
+			if(game->player->hasInInventory(item)){ // Bean had been in inventory, so plant goes in inventory
+				game->player->extractFromInventory(item);
+				game->player->addToInventory(plant);
+				plant->setLocation(game->station->get(LOCATION_INVENTORY));
+			}
+			else{ // Bean had been at location, so plant goes to location
+				Location* loc = game->player->getLocation();
+				loc->extract(item);
+				loc->deposit(plant);
+				plant->setLocation(loc);
+			}
+
+			item->setLocation(game->station->get(LOCATION_NOWHERE)); // Bean is removed
+			Terminal::wrpro("You water the bean and it instantly grows into a plant.");
+			
+		}
+		else
+			Terminal::wrpro("You pour the " + liquid->getShortname() + " onto the bean, but nothing happens.");
+
+	}
+
+	else if(code == ITEM_PLANT){
+
+		Item* liquid = container->extractItemWithin();
+		uint64_t liqcode = liquid->getCode();
+
+		if(liqcode == ITEM_POTION){ // Player waters the plant with potion
+
+			liquid->setLocation(game->station->get(LOCATION_NOWHERE)); // Liquid that was poured is consumed
+
+			Item* bean = game->items->get(ITEM_BEAN);
+
+			if(game->player->hasInInventory(item)){ // Plant had been in inventory, so bean goes in inventory
+				game->player->extractFromInventory(item);
+				game->player->addToInventory(bean);
+				bean->setLocation(game->station->get(LOCATION_INVENTORY));
+			}
+			else{ // Plant had been at location, so bean goes to location
+				Location* loc = game->player->getLocation();
+				loc->extract(item);
+				loc->deposit(bean);
+				bean->setLocation(loc);
+			}
+
+			item->setLocation(game->station->get(LOCATION_NOWHERE)); // Plant is removed
+			Terminal::wrpro("You water the plant and it turns back into a bean.");
+			
+		}
+		else
+			Terminal::wrpro("You pour the " + liquid->getShortname() + " onto the plant, but nothing happens.");
+
+	}
+
+	else{
+		Terminal::wrpro("I see no point in pouring liquid on such a thing.");
+	}
+
+
+}
+
+/*
  *	Execute command to cook an item
  */
 void Game::Executor::execCook(Game* game, Item* item){

@@ -30,5 +30,6 @@ class Inventory{
 		bool hasNosnomp();
  		string toString();
  		list<Container*> getSuitableContainers(Item* item);
+ 		list<Container*> getFullLiquidContainers();
 
 };

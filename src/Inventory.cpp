@@ -166,7 +166,7 @@ list<Container*> Inventory::getSuitableContainers(Item* item){
 	for(map<uint64_t, Item*>::iterator it = items.begin() ; it != items.end() ; it++){
 		if(it->second != item && it->second->hasAttribute(CTRL_ITEM_CONTAINER)){
 			Container* container = (Container*) it->second;
-			while(!container->isSuitable(item) && container->getItemWithin() && container->getItemWithin()->hasAttribute(CTRL_ITEM_CONTAINER))
+			while(!container->isSuitable(item) && !container->isEmpty() && container->getItemWithin()->hasAttribute(CTRL_ITEM_CONTAINER))
 				container = (Container*) container->getItemWithin();
 			if(container->isSuitable(item))
 				result.push_back(container);
@@ -175,4 +175,25 @@ list<Container*> Inventory::getSuitableContainers(Item* item){
 
 	return result;
 
-}	
+}
+
+/*
+ *	Return a list of pointers to all liquid container items that currently hold liquid
+ */
+list<Container*> Inventory::getFullLiquidContainers(){
+
+	list<Container*> result;
+
+	for(map<uint64_t, Item*>::iterator it = this->items.begin() ; it != this->items.end() ; it++){
+		if(it->second->hasAttribute(CTRL_ITEM_CONTAINER)){
+			Container* container = (Container*) it->second;
+			while(!container->isEmpty() && container->getItemWithin()->hasAttribute(CTRL_ITEM_CONTAINER))
+				container = (Container*) it->second;
+			if(!container->isEmpty() && container->getItemWithin()->hasAttribute(CTRL_ITEM_LIQUID))
+				result.push_back(container);
+		}
+	}
+
+	return result;
+
+}

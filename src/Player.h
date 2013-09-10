@@ -50,6 +50,7 @@ class Player{
 		Container* getParentContainer(Item* item);
 		list<Container*> getSuitableContainers(Item* item);
 		list<Container*> getSuitableInventoryContainers(Item* item);
+		list<Container*> getFullLiquidInventoryContainers();
 		string getLocationStub();
 		string getLocationArrival();
 		string getLocationAll();

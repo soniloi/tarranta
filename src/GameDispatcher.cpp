@@ -159,6 +159,48 @@ void Game::Dispatcher::dispatchPresentArg(Game* game, Command* command, Item* it
 		case CMD_RUB: game->executor.execRub(game, item); break;
 		case CMD_TAKE: game->executor.execTake(game, item); break;
 
+		case CMD_WATER: {
+
+			list<Container*> containers = game->player->getFullLiquidInventoryContainers(); // Retrieve list of container items that currently hold liquid
+
+			if(containers.size() == ZERO){ // No available liquid
+				Terminal::wrpro("You have no liquid to pour onto the " + item->getShortname() + ".");
+			}
+
+			else if(containers.size() == ONE){ // Exactly one available liquid
+				string confirm = Terminal::rdstr("Water "  + item->getShortname() + " with " + containers.front()->getItemWithin()->getShortname() + "? ");
+				if(!confirm.compare("y") || !confirm.compare("yes")){
+					game->executor.execWater(game, item, containers.front());
+				}
+			}
+
+			else{ // Multiple available liquids
+				Terminal::wrpro("Water " + item->getShortname() + " with...");
+				int i = ONE;
+				for(list<Container*>::iterator it = containers.begin() ; it != containers.end() ; it++){
+					stringstream ss;
+					ss << TAB << i << ". " << (*it)->getItemWithin()->getShortname();
+					Terminal::wrtab(ss.str()); // List all available liquids
+					i++;
+				} 
+				Terminal::wrtab("\t0. None of these");
+				string choice = Terminal::rdstr("Please choose one: ");
+				if(choice.length() > ONE)
+					Terminal::wrpro("I do not understand that selection.");
+				else if(choice[0] == '0') // If player wishes to cancel pour
+					Terminal::wrpro(game->general->get(STR_OK));
+				else if((unsigned) choice[0]-ASCII_OFFSET <= containers.size()){ // If player wishes to pour a liquid
+					list<Container*>::iterator it = containers.begin();
+					advance(it, choice[0]-ASCII_OFFSET-ONE); // Iterate to correct position in list
+					game->executor.execWater(game, item, (*it));
+				}
+				else // If player has selected an invalid option
+					Terminal::wrpro("I gave no such option.");
+			}
+
+			break;
+		}
+
 	}
 
 }

@@ -239,11 +239,18 @@ list<Container*> Player::getSuitableContainers(Item* item){
 }
 
 /*
- *	Create and return a list of containers suitable for containing item
+ *	Return a list of containers suitable for containing item
  *	Must come from inventory alone
  */
 list<Container*> Player::getSuitableInventoryContainers(Item* item){
 	return this->inventory->getSuitableContainers(item);
+}
+
+/*
+ *	Return a list of liquid containers that currently have liquid in them
+ */
+list<Container*> Player::getFullLiquidInventoryContainers(){
+	return this->inventory->getFullLiquidContainers();
 }
 
 string Player::getLocationStub(){

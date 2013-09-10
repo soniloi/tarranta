@@ -105,6 +105,7 @@ class Game{
 			void execRub(Game* game, Item* item);
 			void execTake(Game* game, Item* item);
 			void execUnlock(Game* game, Item* item);
+			void execWater(Game* game, Item* item, Container* container);
 			void execCook(Game* game, Item* item);
 			void execDrink(Game* game, Item* item);
 			void execDrop(Game* game, Item* item);
