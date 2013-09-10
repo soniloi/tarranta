@@ -1122,71 +1122,13 @@ void Game::Executor::execFree(Game* game, Item* item){
 }
 
 /*
- *	Execute command to insert item into an available container
+ *	Execute command to insert item into a container
  */
-void Game::Executor::execInsert(Game* game, Item* item){
-
-	list<Container*> containers = game->player->getSuitableContainers(item); // Retrieve list of container items capable of holding this item
-
-	if(containers.size() == ZERO){ // No available container to place item into
-		Terminal::wrpro(game->general->get(STR_NOCONTAI));
-	}
-
-	else if(item->hasAttribute(CTRL_ITEM_WORN)){
-		Terminal::wrpro(game->general->get(STR_NOFITWEA));
-	}
-
-	else if(containers.size() == ONE){ // Exactly one available container
-		string confirm = Terminal::rdstr("Insert " + item->getShortname() + " into " + containers.front()->getShortname() + "? ");
-		if(!confirm.compare("y") || !confirm.compare("yes")){
-			if(item == containers.front()) // Smartarse wants to insert the item into itself
-				Terminal::wrpro(game->general->get(STR_CONTRECU));
-			else if(!containers.front()->isEmpty()) // Something is currently in container
-				Terminal::wrpro(game->general->get(STR_CONTFULL));
-			else{
-				game->player->extractFromInventory(item); // Remove item from inventory
-				item->setLocation(game->station->get(LOCATION_CONTAINER)); // Set item's location to "container"
-				containers.front()->insertItem(item); // Insert item into desired container
-				Terminal::wrpro(item->getShortname() + " inserted into " + containers.front()->getShortname() + ".");
-			}
-		}
-	}
-
-	else{ // Multiple available containers
-		Terminal::wrpro("Insert " + item->getShortname() + " into...");
-		int i = ONE;
-		for(list<Container*>::iterator it = containers.begin() ; it != containers.end() ; it++){
-			stringstream ss;
-			ss << TAB << i << ". " << (*it)->getShortname();
-			Terminal::wrtab(ss.str()); // List all available containers
-			i++;
-		} 
-		Terminal::wrtab("\t0. None of these");
-		string choice = Terminal::rdstr("Please choose one: ");
-		if(choice.length() > ONE)
-			Terminal::wrpro("I do not understand that selection.");
-		else if(choice[0] == '0'){ // If player wishes to cancel insert
-			Terminal::wrpro(game->general->get(STR_OK));
-		}
-		else if((unsigned) choice[0]-ASCII_OFFSET <= containers.size()){ // If player wishes to insert into available container
-			list<Container*>::iterator it = containers.begin();
-			advance(it, choice[0]-ASCII_OFFSET-ONE); // Iterate to correct position in list
-			if(item == (*it)) // Smartarse wants to insert the item into itself
-				Terminal::wrpro(game->general->get(STR_CONTRECU));
-			else if(!(*it)->isEmpty()) // Something is currently in container
-				Terminal::wrpro(game->general->get(STR_CONTFULL));
-			else{
-				game->player->extractFromInventory(item); // Remove item from inventory
-				item->setLocation(game->station->get(LOCATION_CONTAINER)); // Set item's location to "container"
-				(*it)->insertItem(item); // Insert item into desired container
-				Terminal::wrpro(item->getShortname() + " inserted into " + (*it)->getShortname() + ".");
-			}
-		}
-		else{ // If player has selected an invalid option
-			Terminal::wrpro("I gave no such option.");
-		}
-	}
-
+void Game::Executor::execInsert(Game* game, Item* item, Container* container){
+	game->player->extractFromInventory(item); // Remove item from inventory
+	item->setLocation(game->station->get(LOCATION_CONTAINER)); // Set item's location to "container"
+	container->insertItem(item); // Insert item into desired container
+	Terminal::wrpro(item->getShortname() + " inserted into " + container->getShortname() + ".");
 }
 
 /*

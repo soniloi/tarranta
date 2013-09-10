@@ -111,7 +111,7 @@ class Game{
 			void execDrop(Game* game, Item* item);
 			void execEat(Game* game, Item* item);
 			void execFree(Game* game, Item* item);
-			void execInsert(Game* game, Item* item);
+			void execInsert(Game* game, Item* item, Container* container);
 			void execPour(Game* game, Item* item);
 			void execThrow(Game* game, Item* item);
 		};
