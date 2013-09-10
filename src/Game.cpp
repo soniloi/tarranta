@@ -5,7 +5,7 @@
  */
 Game::Game(string filename){
 
-	BitFileReader filein(filename);
+	FileReader filein(filename);
 
 	this->commands = new CommandCollection(filein);
 	this->station = new Station(filein);

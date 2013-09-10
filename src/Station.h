@@ -11,7 +11,7 @@
 #include <fstream>
 #include <cstdlib>
 #include "Location.h"
-#include "BitFileReader.h"
+#include "FileReader.h"
 
 class Station{
 
@@ -19,7 +19,7 @@ class Station{
 		vector<Location*> locations;
 
 	public:
-		Station(BitFileReader& reader);
+		Station(FileReader& reader);
 		~Station();
 		int getLocationCount();
 		Location* get(unsigned int index);

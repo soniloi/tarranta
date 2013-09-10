@@ -4,11 +4,10 @@
  */
 
 #include <map>
-//#include "Item.h"
 #include "Container.h"
 #include "SwitchableItem.h"
 #include "Station.h"
-#include "BitFileReader.h"
+#include "FileReader.h"
 
 class ItemCollection{
 
@@ -16,7 +15,7 @@ class ItemCollection{
 		map<uint64_t, Item*> items;
 
 	public:
-		ItemCollection(BitFileReader& reader, Station* station);
+		ItemCollection(FileReader& reader, Station* station);
 		~ItemCollection();
 		Item* get(uint64_t cd);
 

@@ -4,7 +4,7 @@
  *	Constructor
  *	Takes an istream representing the file it is reading from
  */
-StringCollection::StringCollection(BitFileReader& reader){
+StringCollection::StringCollection(FileReader& reader){
 
 	string line = reader.getline();
 
@@ -16,8 +16,6 @@ StringCollection::StringCollection(BitFileReader& reader){
 		string value = tokens.at(INDEX_SVALUE);
 		this->strings.insert(pair<uint64_t, string>(key, value));
 
-		//cerr << "Creating new string; code: |" << std::hex << key << std::dec << "|\tvalue: |" << value << "|" << endl;
-	
 		line = reader.getline();
 	}
 

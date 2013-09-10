@@ -3,7 +3,7 @@
 /*
  *	Constructor
  */
-CommandCollection::CommandCollection(BitFileReader& reader){
+CommandCollection::CommandCollection(FileReader& reader){
 
 	string line = reader.getline();
 

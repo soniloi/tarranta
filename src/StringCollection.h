@@ -5,7 +5,7 @@
 #include <string>
 #include <map>
 #include <inttypes.h>
-#include "BitFileReader.h"
+#include "FileReader.h"
 using namespace std;
 
 class StringCollection{
@@ -14,7 +14,7 @@ class StringCollection{
 		map<uint64_t, string> strings;
 
 	public:
-		StringCollection(BitFileReader& reader);
+		StringCollection(FileReader& reader);
 		~StringCollection();
 		string get(uint64_t key);
 

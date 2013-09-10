@@ -4,7 +4,7 @@
  *	Constructor
  *	We require a pointer to the associated Station object at this point so we can set initial locations
  */
-ItemCollection::ItemCollection(BitFileReader& reader, Station* station){
+ItemCollection::ItemCollection(FileReader& reader, Station* station){
 
 	string line = reader.getline();
 

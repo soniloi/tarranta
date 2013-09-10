@@ -3,7 +3,7 @@
 /*
  *	Constructor
  */
-Station::Station(BitFileReader& reader){
+Station::Station(FileReader& reader){
 
 	vector<int*> links;
 
@@ -69,16 +69,6 @@ Station::Station(BitFileReader& reader){
 		line = reader.getline();
 
 	}
-
-/*
-	// DEBUGGING !!!!!!!!!!!!!!!!
-	for(vector<int*>::iterator b=links.begin() ; b!=links.end() ; b++){
-		for(int i=0 ; i<10 ; i++)
-			cerr << (*b)[i] << '\t';
-		cerr << endl;
-	}
-*/
-
 	
 	/*
 	 *	Cross-reference all locations

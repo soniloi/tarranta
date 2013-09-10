@@ -9,8 +9,7 @@
 #include <map>
 #include <vector>
 #include "Command.h"
-//#include "Constants.h"
-#include "BitFileReader.h"
+#include "FileReader.h"
 #include "Statics.h"
 
 using namespace std;
@@ -21,7 +20,7 @@ class CommandCollection{
 		map<uint64_t, Command*> commands;
 
 	public:
-		CommandCollection(BitFileReader& reader);
+		CommandCollection(FileReader& reader);
 		~CommandCollection();
 		Command* get(uint64_t cd);
 		string listNonSecret();
