@@ -335,9 +335,13 @@
 #define STR_PIRATBOO 0x7069726174626F6F
 #define STR_PIRATKIL 0x70697261746B696C
 #define STR_PIRATNO 0x70697261746E6F00
-#define STR_PIRATRB1 0x7069726174726231 // Successfully robbing the blind pirate
-#define STR_PIRATRB2 0x7069726174726232 // Successfully robbing the deaf pirate
+#define STR_PIRATRB1 0x7069726174726231 // Successfully robbing blind pirate
+#define STR_PIRATRB2 0x7069726174726232 // Successfully robbing deaf pirate
 #define STR_PIRATSEE 0x7069726174736565
+#define STR_PIRATVG1 0x7069726174766731 // When blind pirate is vigilant and player retreats
+#define STR_PIRATVG2 0x7069726174766732 // When deaf pirate is vigilant and player retreats
+#define STR_PIRATSN1 0x7069726174736E31 // When player attempts to sneak past blind pirate
+#define STR_PIRATSN2 0x7069726174736E32 // When player attempts to sneak past deaf pirate
 #define STR_PLUGH 0x706C756768000000
 #define STR_ROBOT 0x726F626F74000000
 #define STR_SHARDS 0x7368617264730000

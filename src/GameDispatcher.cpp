@@ -25,23 +25,22 @@ void Game::Dispatcher::dispatchMovement(Game* game, Command* command){
 
 		if(ob != NULL && next != game->player->getLocation()->getDirection(CMD_BACK)){ // Obstruction may exist preventing player going any direction but the one they came from
 		
-			int obcode = ob->getCode();			
+			uint64_t obcode = ob->getCode();			
 
 			if(obcode == ITEM_CORSAIR){ // Obstruction is the corsair (blind pirate)
 				if(game->player->hasInInventory(game->items->get(ITEM_BOOTS))){ // Player is wearing boots, so corsair will hear them approach
-					Terminal::wrpro("You attempt to sneak past the blind pirate, but he senses you as you get near, and dispatches you with a single swing of his cutlass.");
+					Terminal::wrpro(game->general->get(STR_PIRATSN1));
 					game->player->kill();
 				}
 				else // Just give a warning instead
-					Terminal::wrpro("As you draw nearer to the corsair, you realise that he is listening intently to every sound in the room. You decide not to risk it, and retreat to where you were.");
+					Terminal::wrpro(game->general->get(STR_PIRATVG1));
 			}
 
 			else if(obcode == ITEM_BUCCANEE){ // Obstruction is the buccaneer (deaf pirate)
-				if(!game->player->isInvisible()){ // Player is visible to buccaneer, so do not go near him
-						Terminal::wrpro("As you draw near to the buccaneer, you realise that he is looking vigilantly around the room. You decide not to risk it, and retreat to where you were.");
-				}
+				if(!game->player->isInvisible()) // Player is visible to buccaneer, so do not go near him
+						Terminal::wrpro(game->general->get(STR_PIRATVG2));
 				else{ // Player is invisible to deaf pirate, so can proceed
-					Terminal::wrpro("Being invisible as you are, you manage to sneak past the buccaneer.");
+					Terminal::wrpro(game->general->get(STR_PIRATSN2));
 					game->executor.execMovement(game, current, next);
 				}
 			}
