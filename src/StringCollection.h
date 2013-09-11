@@ -14,6 +14,7 @@ class StringCollection{
 		map<uint64_t, string> strings;
 
 	public:
+		friend class Game;
 		StringCollection(FileReader& reader);
 		~StringCollection();
 		string get(uint64_t key);

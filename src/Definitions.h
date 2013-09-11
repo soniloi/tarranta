@@ -116,7 +116,6 @@
 #define LOCATION_CONTAINER 2 // When an item has this location, it means it is in a container
 #define LOCATION_DOCKING 21 // The west end of the docking bay
 #define LOCATION_DOCKINGCONTROL 19 // The docking control area
-#define LOCATION_DWELL 91 // The Dwell room
 #define LOCATION_ESCAPE 23 // The place the player must bring treasures to and ultimately escape from
 #define LOCATION_GARDEN 27 // The garden dome, at ground level
 #define LOCATION_INVENTORY 1 // When an item has this location, it means it is in the inventory
@@ -140,6 +139,8 @@
 #define INVENTORY_CAPACITY 10 // Initial default capacity of inventory
 #define DEATH_CHANCE 1 // One in this number of moves of a random hazard will lead to death
 #define DEATH_PLACES 60 // The number of places a fall or a snomp will kill you will be between zero and this
+#define MAX_MOVES 400 // The maximum number of moves the player may make during a single game
+#define MAX_MOVES_EVENT 100 // All random events must be displayed within this number of moves
 
 /*
  *	Useful uint_64s

@@ -19,7 +19,8 @@ class Game{
 		Player* player; // The player
 		StringCollection* hints; // A collection of strings representing hints
 		StringCollection* general; // A collection of general strings
-		StringCollection* randoms; // A collection of strings representing random game events
+		StringCollection* randomevents; // A collection of strings representing random game events
+		map<int, uint64_t> eventturns; // Maps turn numbers to the key for a random event
 		bool on; // Whether or not this game is currently running
 
 		int calculateScore();

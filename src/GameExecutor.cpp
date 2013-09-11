@@ -965,7 +965,7 @@ void Game::Executor::execWater(Game* game, Item* item, Container* container){
 			}
 
 			item->setLocation(game->station->get(LOCATION_NOWHERE)); // Bean is removed
-			Terminal::wrpro("You water the bean and it instantly grows into a plant.");
+			Terminal::wrpro("You water the bean and it instantly grows into a plant. The air is more pleasant to breathe now.");
 			
 		}
 		else
@@ -997,7 +997,7 @@ void Game::Executor::execWater(Game* game, Item* item, Container* container){
 			}
 
 			item->setLocation(game->station->get(LOCATION_NOWHERE)); // Plant is removed
-			Terminal::wrpro("You water the plant and it turns back into a bean.");
+			Terminal::wrpro("You water the plant and it turns back into a bean. The air feels thinner now.");
 			
 		}
 		else
