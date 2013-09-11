@@ -45,7 +45,7 @@ class Location{
 		void crossReference(Location* n, Location* s, Location* e, Location* w, Location* ne, Location* sw, Location* se, Location* nw, Location* u, Location* d, Location* nowh);
 		bool hasRouteTo(Location* that);
 		void setDirection(uint64_t dir, Location* loc);
-		int countTreasures();
+		int countItemsWithAttribute(int attribute);
 		bool hasAttribute(int attribute);
 		void setAttribute(int attribute, bool set);
 		bool hasLight();

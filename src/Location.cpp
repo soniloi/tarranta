@@ -101,18 +101,31 @@ void Location::setDirection(uint64_t dir, Location* loc){
 }
 
 /*
- *	Count the number of treasures at this location
+ *	Count the number of items at this location with a certain attribute
  */
-int Location::countTreasures(){
+int Location::countItemsWithAttribute(int attribute){
 
 	int result = 0;
 
 	for(map<uint64_t, Item*>::iterator it = this->items.begin() ; it != this->items.end() ; it++){
-		if(it->second->hasAttribute(CTRL_ITEM_TREASURE))
-			result++;
+		if(it->second->hasAttribute(attribute))
+			result++; // Add the item's self-value, if relevant
+
+		if(it->second->hasAttribute(CTRL_ITEM_CONTAINER)){
+			Container* container = (Container*) it->second;
+			while(!container->isEmpty() && container->getItemWithin()->hasAttribute(CTRL_ITEM_CONTAINER)){
+				container = (Container*) container->getItemWithin();
+				if(container->hasAttribute(attribute))
+					result++; // Add self-value of any containers along the way
+			}
+			if(!container->isEmpty() && container->getItemWithin()->hasAttribute(attribute))
+				result++; // Add value of innermost contained object, if it exists
+		}
+
 	}
 
 	return result;
+
 }
 
 /*

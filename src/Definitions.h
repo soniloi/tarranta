@@ -15,7 +15,7 @@
 // Scoring
 #define SCORE_ESCAPE 50 // Points given for escaping the asteroid
 #define SCORE_PUZZLE 20 // Points given for solving some puzzle
-#define SCORE_TREASURE 10 // Points given for depositing a treasure in the right place
+#define SCORE_TREASURE 5 // Points given for depositing a treasure in the right place; this counts for double if player escapes asteroid with it
 
 // Basic stuff
 #define ZERO 0
@@ -116,7 +116,7 @@
 #define LOCATION_CONTAINER 2 // When an item has this location, it means it is in a container
 #define LOCATION_DOCKING 21 // The west end of the docking bay
 #define LOCATION_DOCKINGCONTROL 19 // The docking control area
-#define LOCATION_ESCAPE 23 // The place the player must bring treasures to and ultimately escape from
+#define LOCATION_TREASURESTORE 23 // The place the player must bring treasures to
 #define LOCATION_GARDEN 27 // The garden dome, at ground level
 #define LOCATION_INVENTORY 1 // When an item has this location, it means it is in the inventory
 #define LOCATION_NOWHERE 0 // The nothing place
@@ -141,7 +141,7 @@
 #define DEATH_PLACES 60 // The number of places a fall or a snomp will kill you will be between zero and this
 #define PENALTY_HINT -10 // Number of points given to player when they ask for a hint
 #define MAX_MOVES 400 // The maximum number of moves the player may make during a single game
-#define MAX_MOVES_EVENT 100 // All random events must be displayed within this number of moves
+#define MAX_MOVES_EVENT (MAX_MOVES/4) // All random events must be displayed within this number of moves
 
 /*
  *	Useful uint_64s

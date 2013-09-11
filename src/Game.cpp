@@ -27,6 +27,7 @@ Game::Game(string filename){
  	}
 
  	this->on = false;
+ 	this->escaped = false;
 
 }
 
@@ -53,11 +54,16 @@ Game::~Game(){
 int Game::calculateScore(){
 	int score = this->player->getScore(); // Start with the player's achievement-based scores
 
-	int treasureCount = station->get(LOCATION_ESCAPE)->countTreasures();
-	score += (treasureCount * SCORE_TREASURE); // Add the treasure-based scores
+	Location* trove = this->station->get(LOCATION_TREASURESTORE);
+	int treasureCount = trove->countItemsWithAttribute(CTRL_ITEM_TREASURE);
+
+	if(this->escaped && trove->getDirection(CMD_SOUTH) != this->station->get(LOCATION_NOWHERE))
+		score += (treasureCount * SCORE_TREASURE * TWO); // Add the treasure-based scores at double value for escaping with them
+	else
+		score += (treasureCount * SCORE_TREASURE); // Add the treasure-based scores at ordinary value for not escaping with them
 
 	if(score < 0)
-		score = 0;
+		score = 0; // Don't be mean
 
 	return score;
 }
@@ -126,7 +132,13 @@ void Game::play(){
 			}
 
 			int move = this->player->getMoves();
-			if(this->eventturns.find(move) != this->eventturns.end()){ // If there is a random event here to print, show it
+
+			if(move >= MAX_MOVES){
+				Terminal::wrpro("You have been wandering around so long here that you die of exhaustion.");
+				this->executor.execScore(this);
+				this->on = false;
+			}
+			else if(this->eventturns.find(move) != this->eventturns.end()){ // If there is a random event here to print, show it
 				Terminal::wrpro(this->randomevents->get(this->eventturns[move]));
 			}
 

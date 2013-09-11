@@ -22,7 +22,8 @@ class Game{
 		StringCollection* general; // A collection of general strings
 		StringCollection* randomevents; // A collection of strings representing random game events
 		map<int, uint64_t> eventturns; // Maps turn numbers to the key for a random event
-		bool on; // Whether or not this game is currently running
+		bool on; // Whether this game is currently running
+		bool escaped; // Whether the player has escaped the asterbase
 
 		int calculateScore();
 

@@ -451,9 +451,10 @@ void Game::Executor::execFly(Game* game, uint64_t arg){
 			game->player->incrementScore(SCORE_ESCAPE);
 			execScore(game);
 			game->on = false;
+			game->escaped = true;
 		}
 		else
-			Terminal::wrpro("You are not in any ship.");
+			Terminal::wrpro("You are not in any ship that is capable of flying.");
 	}
 	else
 		Terminal::wrpro(game->general->get(STR_NONOHOW));
@@ -518,8 +519,8 @@ void Game::Executor::execTether(Game* game, uint64_t arg){
 			Location* ship = game->station->get(LOCATION_SHIP);
 			Location* shuttle = game->station->get(LOCATION_SHUTTLE);
 
-			ship->setDirection(CMD_SOUTH, shuttle);
-			shuttle->setDirection(CMD_NORTH, ship);
+			ship->setDirection(CMD_NORTH, shuttle);
+			shuttle->setDirection(CMD_SOUTH, ship);
 			game->destroyItem(cable);
 			game->player->incrementScore(SCORE_PUZZLE);
 			Terminal::wrpro("You use the cable to tether the shuttle to the ship.");
