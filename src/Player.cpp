@@ -180,16 +180,7 @@ bool Player::hasInInventory(Item* item){
  *	Check whether player is carrying any item with a certain attribute
  */
 bool Player::hasInInventoryWithAttribute(int attribute){
-	for(map<uint64_t, Item*>::iterator it = this->inventory->items.begin() ; it != this->inventory->items.end() ; it++){
-		if(it->second->hasAttribute(attribute))
-			return true;
-		if(it->second->hasAttribute(CTRL_ITEM_CONTAINER)){
-			Container* container = (Container*) it->second;
-			if(container->containsWithAttribute(attribute))
-				return true;
-		}
-	}
-	return false;
+	return this->inventory->containsWithAttribute(attribute);
 }
 
 /*

@@ -82,6 +82,31 @@ bool Inventory::contains(Item* item){
 	return false;
 }
 
+/*
+ *	Returns whether any item with a certain attribute is in the inventory
+ */
+bool Inventory::containsWithAttribute(int attribute){
+
+	for(map<uint64_t, Item*>::iterator it = this->items.begin() ; it != this->items.end() ; it++){
+		if(it->second->hasAttribute(attribute))
+			return true;
+
+		if(it->second->hasAttribute(CTRL_ITEM_CONTAINER)){
+			Container* container = (Container*) it->second;
+			while(!container->isEmpty() && container->getItemWithin()->hasAttribute(CTRL_ITEM_CONTAINER)){
+				container = (Container*) container->getItemWithin();
+				if(container->hasAttribute(attribute))
+					return true;
+			}
+			if(!container->isEmpty() && container->getItemWithin()->hasAttribute(attribute))
+				return true;
+		}
+
+	}
+
+	return false;
+
+}
 
 /*
  *	Check the inventory for something that emits light

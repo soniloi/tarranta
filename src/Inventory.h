@@ -24,6 +24,7 @@ class Inventory{
  		Item* get(Item* item); // Return pointer to desired Item without removing from inventory
  		Item* extract(uint64_t cd); // Return pointer to desired Item and remove from inventory
  		bool contains(Item* item); // Return whether an item is contained in inventory
+ 		bool containsWithAttribute(int attribute); // Return whether any item with a certain attribute is contained in inventory
  		bool hasLight();
 		bool hasAir();
 		bool hasGravity();
