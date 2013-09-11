@@ -56,6 +56,9 @@ int Game::calculateScore(){
 	int treasureCount = station->get(LOCATION_ESCAPE)->countTreasures();
 	score += (treasureCount * SCORE_TREASURE); // Add the treasure-based scores
 
+	if(score < 0)
+		score = 0;
+
 	return score;
 }
 

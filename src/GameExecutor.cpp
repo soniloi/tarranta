@@ -465,8 +465,16 @@ void Game::Executor::execFly(Game* game, uint64_t arg){
 void Game::Executor::execHint(Game* game, uint64_t arg){
 	string hint = game->hints->get(arg);
 	if(hint.empty())
-		hint = game->hints->get(HINT_DEFAULT);
-	Terminal::wrpro(hint);
+		Terminal::wrpro(game->hints->get(HINT_DEFAULT));
+	else{
+		string confirm = Terminal::rdstr("There is something more I can tell you about this, but you will have to accept a point penalty. Is this okay? ");
+		if(!confirm.compare("y") || !confirm.compare("yes")){
+			Terminal::wrpro(hint);
+			game->player->incrementScore(PENALTY_HINT);
+		}
+		else
+			Terminal::wrpro(game->general->get(STR_OK));
+	}
 }
 
 /*

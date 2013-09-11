@@ -139,6 +139,7 @@
 #define INVENTORY_CAPACITY 10 // Initial default capacity of inventory
 #define DEATH_CHANCE 1 // One in this number of moves of a random hazard will lead to death
 #define DEATH_PLACES 60 // The number of places a fall or a snomp will kill you will be between zero and this
+#define PENALTY_HINT -10 // Number of points given to player when they ask for a hint
 #define MAX_MOVES 400 // The maximum number of moves the player may make during a single game
 #define MAX_MOVES_EVENT 100 // All random events must be displayed within this number of moves
 
