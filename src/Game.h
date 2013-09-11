@@ -18,6 +18,7 @@ class Game{
 		ItemCollection* items; // The collection of all game items and fixtures
 		Player* player; // The player
 		StringCollection* hints; // A collection of strings representing hints
+		StringCollection* explanations; // A collection of strings representing explanations, or hints you can get for free
 		StringCollection* general; // A collection of general strings
 		StringCollection* randomevents; // A collection of strings representing random game events
 		map<int, uint64_t> eventturns; // Maps turn numbers to the key for a random event
@@ -84,6 +85,7 @@ class Game{
 			void execXyzzy(Game* game);
 			void execZiqua(Game* game);
 			void execCall(Game* game, uint64_t arg);
+			void execExplain(Game* game, uint64_t arg);
 			void execFly(Game* game, uint64_t arg);
 			void execHint(Game* game, uint64_t arg);
 			void execSay(Game* game, uint64_t arg);

@@ -105,6 +105,7 @@ void Game::Dispatcher::dispatchAnyArg(Game* game, Command* command, uint64_t arg
 
 	switch(command->getCode()){
 		case CMD_CALL: game->executor.execCall(game, arg); break;
+		case CMD_EXPLAIN: game->executor.execExplain(game, arg); break;
 		case CMD_FLY: game->executor.execFly(game, arg); break;
 		case CMD_HINT: game->executor.execHint(game, arg); break;
 		case CMD_SAY: game->executor.execSay(game, arg); break;
@@ -247,10 +248,7 @@ void Game::Dispatcher::dispatchInventoryArg(Game* game, Command* command, Item* 
 					else if(!containers.front()->isEmpty()) // Something is currently in container
 						Terminal::wrpro(game->general->get(STR_CONTFULL));
 					else{
-						game->player->extractFromInventory(item); // Remove item from inventory
-						item->setLocation(game->station->get(LOCATION_CONTAINER)); // Set item's location to "container"
-						containers.front()->insertItem(item); // Insert item into desired container
-						Terminal::wrpro(item->getShortname() + " inserted into " + containers.front()->getShortname() + ".");
+						game->executor.execInsert(game, item, containers.front());
 					}
 				}
 			}
@@ -279,10 +277,7 @@ void Game::Dispatcher::dispatchInventoryArg(Game* game, Command* command, Item* 
 					else if(!(*it)->isEmpty()) // Something is currently in container
 						Terminal::wrpro(game->general->get(STR_CONTFULL));
 					else{
-						game->player->extractFromInventory(item); // Remove item from inventory
-						item->setLocation(game->station->get(LOCATION_CONTAINER)); // Set item's location to "container"
-						(*it)->insertItem(item); // Insert item into desired container
-						Terminal::wrpro(item->getShortname() + " inserted into " + (*it)->getShortname() + ".");
+						game->executor.execInsert(game, item, (*it));
 					}
 				}
 				else{ // If player has selected an invalid option
@@ -293,7 +288,7 @@ void Game::Dispatcher::dispatchInventoryArg(Game* game, Command* command, Item* 
 			}
 
 			break;
-			
+
 		}
 
 		case CMD_POUR: {

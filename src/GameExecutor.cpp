@@ -432,6 +432,16 @@ void Game::Executor::execCall(Game* game, uint64_t arg){
 }
 
 /*
+ *	Execute command to explain something to player
+ */
+void Game::Executor::execExplain(Game* game, uint64_t arg){
+	string answer = game->explanations->get(arg);
+	if(answer.empty())
+		answer = game->explanations->get(HINT_DEFAULT);
+	Terminal::wrpro(answer);
+}
+
+/*
  *	Execute command to fly
  */
 void Game::Executor::execFly(Game* game, uint64_t arg){

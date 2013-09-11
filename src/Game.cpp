@@ -5,7 +5,7 @@
  */
 Game::Game(string filename){
 
-	srand(time(0));
+	srand(time(0)); // Seed for random number generator
 
 	FileReader filein(filename);
 
@@ -13,19 +13,17 @@ Game::Game(string filename){
 	this->station = new Station(filein);
  	this->items = new ItemCollection(filein, station);
  	this->hints = new StringCollection(filein);
+ 	this->explanations = new StringCollection(filein);
  	this->general = new StringCollection(filein);
  	this->randomevents = new StringCollection(filein);
  	this->player = new Player(this->station->get(LOCATION_START_0), this->station->get(LOCATION_SAFE_0));
 
  	for(map<uint64_t, string>::iterator it = this->randomevents->strings.begin() ; it != this->randomevents->strings.end() ; it++){
-
 		int move;
 		do{
 			move = rand()%MAX_MOVES_EVENT;
 		}while(this->eventturns.find(move) != this->eventturns.end()); // Prevent more than one event occurring on a given move
-
  		this->eventturns[move] = it->first; // Allocate turn to random event
-
  	}
 
  	this->on = false;
@@ -41,6 +39,7 @@ Game::~Game(){
 	delete this->items;
 	delete this->player;
 	delete this->hints;
+	delete this->explanations;
 	delete this->general;
 	delete this->randomevents;
 	Terminal::reset();
