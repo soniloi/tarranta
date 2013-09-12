@@ -34,11 +34,17 @@ StringCollection::~StringCollection(){
  *	If no value with that key exists, return an empty string
  */
 string StringCollection::get(uint64_t key){
-
 	string result;
 	map<uint64_t, string>::iterator it = this->strings.find(key);
 	if(it != this->strings.end())
 		result = it->second;
 
 	return result;
+}
+
+/*
+ *	Erase a string with a certain key
+ */
+void StringCollection::clear(uint64_t key){
+	this->strings.erase(key);
 }

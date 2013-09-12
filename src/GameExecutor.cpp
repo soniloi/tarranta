@@ -471,6 +471,7 @@ void Game::Executor::execHint(Game* game, uint64_t arg){
 		string confirm = Terminal::rdstr("There is something more I can tell you about this, but you will have to accept a point penalty. Is this okay? ");
 		if(!confirm.compare("y") || !confirm.compare("yes")){
 			Terminal::wrpro(hint);
+			game->hints->clear(arg);
 			game->player->incrementScore(PENALTY_HINT);
 		}
 		else
