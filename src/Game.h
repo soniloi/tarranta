@@ -97,6 +97,7 @@ class Game{
 			void execEmpty(Game* game, Container* container);
 			void execGive(Game* game, Item* item);
 			void execIgnore(Game* game, Item* item);
+			void execLaunch(Game* game, Item* item);
 			void execLight(Game* game, SwitchableItem* switchable);
 			void execLock(Game* game, Item* item);
 			void execOpen(Game* game, Item* item);

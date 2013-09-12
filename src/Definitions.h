@@ -119,6 +119,7 @@
 #define LOCATION_TREASURESTORE 23 // The place the player must bring treasures to
 #define LOCATION_GARDEN 27 // The garden dome, at ground level
 #define LOCATION_INVENTORY 1 // When an item has this location, it means it is in the inventory
+#define LOCATION_LAUNCH 102 // Where you launch the dinghy from
 #define LOCATION_NOWHERE 0 // The nothing place
 #define LOCATION_RECHUB 34 // The recreation hub
 #define LOCATION_RIVERBRIDGE 101 // On the river, under the bridge
@@ -206,6 +207,7 @@
 #define CMD_DESCRIBE 0x6465736372696265
 #define CMD_EMPTY 0x656D707479000000
 #define CMD_IGNORE 0x69676E6F72650000
+#define CMD_LAUNCH 0x6C61756E63680000
 #define CMD_LIGHT 0x6C69676874000000
 #define CMD_LOCK 0x6C6F636B00000000
 #define CMD_OPEN 0x6F70656E00000000
@@ -247,6 +249,7 @@
 #define ITEM_COIN 0x636F696E00000000
 #define ITEM_CONSOLE 0x636F6E736F6C6500
 #define ITEM_CORSAIR 0x636F727361697200
+#define ITEM_DINGHY 0x64696E6768790000
 #define ITEM_DRAGON 0x647261676F6E0000
 #define ITEM_DUST 0x6475737400000000
 #define ITEM_ELIXIR 0x656C697869720000

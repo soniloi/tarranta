@@ -138,6 +138,7 @@ void Game::Dispatcher::dispatchPresentArg(Game* game, Command* command, Item* it
 			break;
 		}
 		case CMD_IGNORE: game->executor.execIgnore(game, item); break;
+		case CMD_LAUNCH: game->executor.execLaunch(game, item); break;
 		case CMD_LIGHT:{
 			if(!item->hasAttribute(CTRL_ITEM_SWITCHABLE)) // Item is not a switchable item
 				Terminal::wrpro("I do not know how to switch such a thing on.");

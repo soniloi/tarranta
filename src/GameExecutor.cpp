@@ -41,7 +41,7 @@ void Game::Executor::execFlash(Game* game, uint64_t arg){
 void Game::Executor::execGrab(Game* game, uint64_t arg){
 	Item* item = game->items->get(arg);
 	if(item == game->items->get(ITEM_NULL)){ // Whatever they input as argument isn't anything we know as an item
-		Terminal::wrpro("I don't know what " + Statics::codeToStr(arg) + " is.");
+		Terminal::wrpro("I do not know what " + Statics::codeToStr(arg) + " is.");
 		return;
 	}
 	if(game->player->hasInInventory(item)){ // Already in inventory
@@ -703,6 +703,22 @@ void Game::Executor::execIgnore(Game* game, Item* item){
 	}
 	else
 		Terminal::wrpro(game->general->get(STR_NOINTERE));
+}
+
+/*
+ *	Execute command to launch an item
+ */
+void Game::Executor::execLaunch(Game* game, Item* item){
+	uint64_t code = item->getCode();
+	Location* loc = game->player->getLocation();
+
+	if(code == ITEM_DINGHY && loc == game->station->get(LOCATION_LAUNCH)){
+		Terminal::wrpro("You launch the dinghy into the River Amethyst. Almost immediately, the powerful current sweeps you downstream; there is no going back now.");
+		game->player->setLocation(game->station->get(LOCATION_RIVERBRIDGE));
+	}
+	else{
+		Terminal::wrpro(game->general->get(STR_NONOHOW));
+	}
 }
 
 /*
