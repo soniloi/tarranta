@@ -669,6 +669,24 @@ void Game::Executor::execGive(Game* game, Item* item){
 		return;
 	}
 
+	receiver = game->player->getLocation()->get(ITEM_SKELETON);
+	if(receiver){
+		if(code == ITEM_MILK){
+			Terminal::wrpro("I am reasonably sure that if the skeleton had eyes, they would be lighting up right now. Content, it climbs back into the grave to return to its eternal rest. It is quickly consumed by the earth. In the spot where it had been, you find an old brooch.");
+			game->destroyItem(item);
+			game->destroyItem(receiver);
+			Location* loc = game->player->getLocation();
+			Item* brooch = game->items->get(ITEM_BROOCH);
+			brooch->setLocation(loc);
+			loc->deposit(brooch);
+			game->player->incrementScore(SCORE_PUZZLE);
+		}
+		else{
+			Terminal::wrpro("The skeleton is uninterested in what you are offering.");
+		}
+		return;
+	}
+
 	Terminal::wrpro(game->general->get(STR_GIVEYAWN));
 
 }
