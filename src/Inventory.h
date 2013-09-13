@@ -32,5 +32,6 @@ class Inventory{
  		string toString();
  		list<Container*> getSuitableContainers(Item* item);
  		list<Container*> getFullLiquidContainers();
+ 		Container* getParentContainer(Item* item); // Return the container that contains a certain item
 
 };

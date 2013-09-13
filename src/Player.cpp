@@ -184,25 +184,15 @@ bool Player::hasInInventoryWithAttribute(int attribute){
 }
 
 /*
- *	Find the container that contains a certain item
+ *	Deposit an item into inventory
  */
-Container* Player::getParentContainer(Item* item){
-	for(map<uint64_t, Item*>::iterator it = this->inventory->items.begin() ; it != this->inventory->items.end() ; it++){
-		if(it->second->hasAttribute(CTRL_ITEM_CONTAINER)){
-			Container* container = (Container*) it->second;
-			Container* parent = container->getParentOf(item);
-			if(parent)
-				return parent;
-		}
-	}
-	// TODO: do the same for this location's items
-	return NULL; // NEVER let the program get into a position where this is returned
-}
-
 void Player::addToInventory(Item* item){
 	this->inventory->deposit(item);
 }
 
+/*
+ *	Remove an item from inventory
+ */
 void Player::extractFromInventory(Item* item){
 	this->inventory->extract(item->getCode());
 
@@ -215,6 +205,25 @@ void Player::extractFromInventory(Item* item){
 
 	else
 		this->inventory->extract(item->getCode());
+}
+
+/*
+ *	Find the container that contains a certain item
+ *	In theory, could return NULL, but ideally this should not be called unless certain that it will not return NULL
+ */
+Container* Player::getParentContainer(Item* item){
+
+	Container* container;
+
+	container = this->inventory->getParentContainer(item);
+	if(container)
+		return container;
+
+	container = this->location->getParentContainer(item);
+	if(container)
+		return container;
+
+	return NULL; // NEVER let the program get into a position where this is returned
 }
 
 /*

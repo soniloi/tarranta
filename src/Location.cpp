@@ -353,3 +353,19 @@ list<Container*> Location::getSuitableContainers(Item* item){
 	return result;
 
 }
+
+/*
+ *	Return the container that contains a certain item
+ *	May return NULL if that item is not contained in any container at this location
+ */
+Container* Location::getParentContainer(Item* item){
+	for(map<uint64_t, Item*>::iterator it = this->items.begin() ; it != this->items.end() ; it++){
+		if(it->second->hasAttribute(CTRL_ITEM_CONTAINER)){
+			Container* container = (Container*) it->second;
+			Container* parent = container->getParentOf(item);
+			if(parent)
+				return parent;
+		}
+	}
+	return NULL;
+}

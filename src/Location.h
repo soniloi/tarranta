@@ -62,6 +62,7 @@ class Location{
 		Item* extract(Item* item);
 		Item* getObstruction();
 		list<Container*> getSuitableContainers(Item* item);
+		Container* getParentContainer(Item* item); // Return the container that contains a certain item
 
 };
 
