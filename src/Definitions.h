@@ -118,6 +118,7 @@
 #define LOCATION_DOCKINGCONTROL 19 // The docking control area
 #define LOCATION_TREASURESTORE 23 // The place the player must bring treasures to
 #define LOCATION_GARDEN 27 // The garden dome, at ground level
+#define LOCATION_HOT 87 // The Hot room
 #define LOCATION_INVENTORY 1 // When an item has this location, it means it is in the inventory
 #define LOCATION_LAUNCH 102 // Where you launch the dinghy from
 #define LOCATION_NOWHERE 0 // The nothing place
@@ -237,6 +238,8 @@
 #define ITEM_ACORN 0x61636F726E000000
 #define ITEM_AQUA 0x6171756100000000
 #define ITEM_BEAN 0x6265616E00000000
+#define ITEM_BEANSTAL 0x6265616E7374616C
+#define ITEM_BLOSSOM 0x626C6F73736F6D00
 #define ITEM_BOOK 0x626F6F6B00000000
 #define ITEM_BOOTS 0x626F6F7473000000
 #define ITEM_BOULDER 0x626F756C64657200
@@ -294,6 +297,7 @@
 #define STR_ASH 0x6173680000000000
 #define STR_ASHMOUSE 0x6173686D6F757365
 #define STR_ASKREINC 0x61736B7265696E63
+#define STR_BEANSTAL 0x6265616E7374616C
 #define STR_BOULDPUL 0x626F756C6470756C
 #define STR_BREAD 0x6272656164000000
 #define STR_CABBAGE 0x6361626261676500

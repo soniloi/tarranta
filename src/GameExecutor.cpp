@@ -999,6 +999,7 @@ void Game::Executor::execWater(Game* game, Item* item, Container* container){
 
 		Item* liquid = container->extractItemWithin();
 		uint64_t liqcode = liquid->getCode();
+		Location* loc = game->player->getLocation();
 
 		if(liqcode == ITEM_POTION){ // Player waters the bean with potion
 
@@ -1012,7 +1013,6 @@ void Game::Executor::execWater(Game* game, Item* item, Container* container){
 				plant->setLocation(game->station->get(LOCATION_INVENTORY));
 			}
 			else{ // Bean had been at location, so plant goes to location
-				Location* loc = game->player->getLocation();
 				loc->extract(item);
 				loc->deposit(plant);
 				plant->setLocation(loc);
@@ -1022,6 +1022,20 @@ void Game::Executor::execWater(Game* game, Item* item, Container* container){
 			Terminal::wrpro("You water the bean and it instantly grows into a plant. The air is more pleasant to breathe now.");
 			
 		}
+
+		else if(liqcode == ITEM_WATER && loc->getID() == LOCATION_HOT){ // Player pours water on the bean where there is heat
+
+			Item* beanstalk = game->items->get(ITEM_BEANSTAL);
+			Item* blossom = game->items->get(ITEM_BLOSSOM);
+			game->destroyItem(item);
+			loc->deposit(beanstalk);
+			loc->deposit(blossom); // Remove bean and replace with beanstalk bearing asterium blossom
+			game->player->incrementScore(SCORE_PUZZLE);
+
+			Terminal::wrpro(game->general->get(STR_BEANSTAL));
+
+		}
+
 		else
 			Terminal::wrpro("You pour the " + liquid->getShortname() + " onto the bean, but nothing happens.");
 
