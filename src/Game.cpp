@@ -131,15 +131,19 @@ void Game::play(){
 
 			}
 
-			int move = this->player->getMoves();
+			if(this->on){ // Perform the turn-based checks, but only if the game is still going
+				int move = this->player->getMoves();
 
-			if(move >= MAX_MOVES){
-				Terminal::wrpro("You have been wandering around so long here that you die of exhaustion.");
-				this->executor.execScore(this);
-				this->on = false;
-			}
-			else if(this->eventturns.find(move) != this->eventturns.end()){ // If there is a random event here to print, show it
-				Terminal::wrpro(this->randomevents->get(this->eventturns[move]));
+				if(move >= MAX_MOVES){
+					Terminal::wrpro("You have been wandering around so long here that you die of exhaustion.");
+					this->executor.execScore(this);
+					this->on = false;
+				}
+
+				else if(this->eventturns.find(move) != this->eventturns.end()){ // If there is a random event here to print, show it
+					Terminal::wrpro(this->randomevents->get(this->eventturns[move]));
+				}
+				
 			}
 
 		}
