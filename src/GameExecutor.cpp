@@ -249,9 +249,7 @@ void Game::Executor::execQuit(Game* game){
 	if(s.compare("y") && s.compare("yes"))
 		return;
 
-	stringstream ss;
-	ss << "Quitting game ...\nYour final score is " << game->calculateScore() << " points; you gave " << game->player->getMoves() << " instructions and died a total of " << game->player->getDeaths() << " times.";
-	Terminal::wrpro(ss.str());
+	execScore(game, true);
 	game->on = false;
 
 }
@@ -259,9 +257,17 @@ void Game::Executor::execQuit(Game* game){
 /*
  *	Execute command to display current score to player
  */
-void Game::Executor::execScore(Game* game){
+void Game::Executor::execScore(Game* game, bool final){
 	stringstream ss;
-	ss << "Your current score is " << game->calculateScore() << " points, and you have died " << game->player->getDeaths() << " times.";
+	if(final)
+		ss << "Your final score was ";
+	else
+		ss << "Your current score is ";
+	ss << game->calculateScore() << " points. You ";
+	if(final) 
+		ss << "died " << game->player->getDeaths() << " times, and gave " << game->player->getMoves() << " instructions.";
+	else
+		ss << "have died " << game->player->getDeaths() << " times, and given " << game->player->getMoves() << " instructions.";
 	Terminal::wrpro(ss.str());
 }
 
@@ -449,7 +455,7 @@ void Game::Executor::execFly(Game* game, uint64_t arg){
 		if(game->player->getLocation()->getID() == LOCATION_SHIP){
 			Terminal::wrpro("You steal the pirate ship and fly away in it. Congratulations, you have successfully escaped from Asterbase Tarranta.");
 			game->player->incrementScore(SCORE_ESCAPE);
-			execScore(game);
+			execScore(game, true);
 			game->on = false;
 			game->escaped = true;
 		}

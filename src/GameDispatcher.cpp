@@ -87,7 +87,7 @@ void Game::Dispatcher::dispatchNoArg(Game* game, Command* command){
 		case CMD_LOOK: game->executor.execLook(game); break;
 		case CMD_PLUGH: game->executor.execPlugh(game); break;
 		case CMD_QUIT: game->executor.execQuit(game); break;
-		case CMD_SCORE: game->executor.execScore(game); break;
+		case CMD_SCORE: game->executor.execScore(game, false); break;
 		case CMD_SLEEP: game->executor.execSleep(game); break;
 		case CMD_TEZAZZLE: game->executor.execTezazzle(game); break;
 		case CMD_VERSION: game->executor.execVersion(game); break;

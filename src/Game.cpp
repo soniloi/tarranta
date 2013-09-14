@@ -136,14 +136,14 @@ void Game::play(){
 
 				if(move >= MAX_MOVES){
 					Terminal::wrpro("You have been wandering around so long here that you die of exhaustion.");
-					this->executor.execScore(this);
+					this->executor.execScore(this, true);
 					this->on = false;
 				}
 
 				else if(this->eventturns.find(move) != this->eventturns.end()){ // If there is a random event here to print, show it
 					Terminal::wrpro(this->randomevents->get(this->eventturns[move]));
 				}
-				
+
 			}
 
 		}

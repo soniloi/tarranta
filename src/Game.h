@@ -78,7 +78,7 @@ class Game{
 			void execLook(Game* game);
 			void execPlugh(Game* game);
 			void execQuit(Game* game);
-			void execScore(Game* game);
+			void execScore(Game* game, bool final);
 			void execSleep(Game* game);
 			void execTezazzle(Game* game);
 			void execVersion(Game* game);
