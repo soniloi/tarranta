@@ -820,11 +820,20 @@ void Game::Executor::execRead(Game* game, Item* item){
 void Game::Executor::execRepair(Game* game, Item* item){
 		uint64_t code = item->getCode();
 		if(code == ITEM_CONSOLE){
-			Terminal::wrpro(game->general->get(STR_CONSOLE));
-			Item* newpanel = game->items->get(ITEM_PANEL);
-			newpanel->setLocation(item->getLocation());
-			item->getLocation()->deposit(newpanel);
-			game->destroyItem(item);
+			Item* wire = game->items->get(ITEM_WIRE);
+			if(!game->player->hasInPresent(wire))
+				Terminal::wrpro("You do not have the component needed to repair the console.");
+			else{
+				game->destroyItem(wire); // Consume wire
+				game->destroyItem(item); // Remove console
+
+				Item* newpanel = game->items->get(ITEM_PANEL);
+				newpanel->setLocation(item->getLocation());
+				item->getLocation()->deposit(newpanel); // Insert panel
+
+				game->player->incrementScore(SCORE_PUZZLE);
+				Terminal::wrpro(game->general->get(STR_CONSOLE));
+			}
 		}
 		else if(code == ITEM_PANEL)
 			Terminal::wrpro("The control panel has already been repaired.");
