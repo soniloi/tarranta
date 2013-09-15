@@ -13,6 +13,11 @@ Station::Station(FileReader& reader){
 
 		vector<string> tokens = Tokeniser::splitToVector(line, REGEX_FILE);
 
+		if(tokens.size() < MIN_TOKENS_LOCATION){ // Basic range check
+			cerr << "Bad or corrupt datafile: insufficient tokens." << endl;
+			exit(EXIT_FAILURE);
+		}
+
 		/*
 		 *	Parse elements needed for constructor
 		 */

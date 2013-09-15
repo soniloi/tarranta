@@ -12,6 +12,11 @@ StringCollection::StringCollection(FileReader& reader){
 
 		vector<string> tokens = Tokeniser::splitToVector(line, REGEX_FILE);
 
+		if(tokens.size() < MIN_TOKENS_STRING){ // Basic range check
+			cerr << "Bad or corrupt datafile: insufficient tokens." << endl;
+			exit(EXIT_FAILURE);
+		}
+
 		uint64_t key = Statics::strToCode(tokens.at(INDEX_SKEY));
 		string value = tokens.at(INDEX_SVALUE);
 		this->strings.insert(pair<uint64_t, string>(key, value));

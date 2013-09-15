@@ -10,6 +10,10 @@ CommandCollection::CommandCollection(FileReader& reader){
 	while(line.compare(FILE_DELIMITER_SECTION)){
 
 		vector<string> tokens = Tokeniser::splitToVector(line, REGEX_FILE);
+		if(tokens.size() < MIN_TOKENS_COMMAND){
+			cerr << "Bad or corrupt datafile: insufficient tokens." << endl;
+			exit(EXIT_FAILURE);
+		}
 
 		int status;
 		Statics::strToInt(status, tokens.at(INDEX_CSTATUS), HEX);

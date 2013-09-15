@@ -29,6 +29,12 @@
 #define TOKENS_PER_COMMAND 2 // The maximum number of tokens the program will process from a user-input line
 #define ASCII_OFFSET 0x30 // Offset between ASCII characters and numeric values
 
+// Datafile bounds checks
+#define MIN_TOKENS_COMMAND 2 // The minimum number of tokens a line in commands section of datafile must contain
+#define MIN_TOKENS_LOCATION 15 // The minimum number of tokens a line in locations section of datafile must contain
+#define MIN_TOKENS_ITEM 7 // The minimum number of tokens a line in items section of datafile must contain
+#define MIN_TOKENS_STRING 2 // The minimum number of tokens a line in any of the strings sections of datafile must contain
+
 // Commands datafile control
 #define INDEX_CSTATUS 0 // Index of the status integer of the command
 #define INDEX_CPRIMARY 1 // Index of the primary term for the command

@@ -12,6 +12,11 @@ ItemCollection::ItemCollection(FileReader& reader, Station* station){
 
 		vector<string> tokens = Tokeniser::splitToVector(line, REGEX_FILE);
 
+		if(tokens.size() < MIN_TOKENS_ITEM){ // Basic range check
+			cerr << "Bad or corrupt datafile: insufficient tokens." << endl;
+			exit(EXIT_FAILURE);
+		}
+
 		int status;
 		Statics::strToInt(status, tokens.at(INDEX_ISTATUS), HEX);
 
