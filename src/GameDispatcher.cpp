@@ -227,6 +227,23 @@ void Game::Dispatcher::dispatchInventoryArg(Game* game, Command* command, Item* 
 			break;
 		}
 		case CMD_DROP: game->executor.execDrop(game, item); break;
+		case CMD_EXCHANGE: {
+			if(!game->player->hasInPresent(game->items->get(ITEM_MACHINE)))
+				Terminal::wrpro("I see nowhere here that it can be exchanged.");
+			else if(item->getCode() != ITEM_CARTRIDG)
+				Terminal::wrpro("The machine rejects the item you offer in exchange.");
+			else{
+				string furtherinput = Terminal::rdstr("What would you like the machine to dispense in exchange? ");
+				vector<uint64_t> secondarg = Tokeniser::splitToCodes(furtherinput, SPACE);
+				Item* request = game->items->get(secondarg[0]);
+				if(request->getCode() == ITEM_NULL)
+						Terminal::wrpro("The machine does not know what that item is.");
+				else
+					game->executor.execExchange(game, item, request);
+			}
+
+			break;
+		}
 		case CMD_FREE: game->executor.execFree(game, item); break;
 		case CMD_GIVE: {
 			string furtherinput = Terminal::rdstr("Who or what would you like to give the " + item->getShortname() + " to? ");

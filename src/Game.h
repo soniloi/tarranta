@@ -115,6 +115,7 @@ class Game{
 			void execDrink(Game* game, Item* item);
 			void execDrop(Game* game, Item* item);
 			void execEat(Game* game, Item* item);
+			void execExchange(Game* game, Item* item, Item* request);
 			void execFree(Game* game, Item* item);
 			void execInsert(Game* game, Item* item, Container* container);
 			void execPour(Game* game, Item* item);

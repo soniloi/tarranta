@@ -111,6 +111,7 @@
 #define CTRL_ITEM_EDIBLE 0x2000 // Whether the item is any sort of food or drink
 #define CTRL_ITEM_GIVES_INVISIBILITY 0x4000 // Whether wearing or carrying the item grants the player invisibility
 #define CTRL_ITEM_TREASURE 0x8000 // Whether the item is a treasure or not
+#define CTRL_ITEM_FACTORY 0x10000 // Whether the item may be created by the machine in the factory
 
 // Useful locations
 #define LOCATION_AIRLOCKE 31 // The airlock just off the Recreation Hub
@@ -122,10 +123,11 @@
 #define LOCATION_CONTAINER 2 // When an item has this location, it means it is in a container
 #define LOCATION_DOCKING 21 // The west end of the docking bay
 #define LOCATION_DOCKINGCONTROL 19 // The docking control area
-#define LOCATION_TREASURESTORE 23 // The place the player must bring treasures to
+#define LOCATION_FACTORY 118 // The factory containing the machine
 #define LOCATION_GARDEN 27 // The garden dome, at ground level
 #define LOCATION_HOT 87 // The Hot room
 #define LOCATION_INVENTORY 1 // When an item has this location, it means it is in the inventory
+#define LOCATION_OBSERVATORY 126 // The upper part of the observatory
 #define LOCATION_LAUNCH 102 // Where you launch the dinghy from
 #define LOCATION_NOWHERE 0 // The nothing place
 #define LOCATION_RECHUB 34 // The recreation hub
@@ -141,6 +143,7 @@
 #define LOCATION_START_1 79
 #define LOCATION_TELEPORT_0 107 // Location of teleporter connected to Experiment Area
 #define LOCATION_TELEPORT_1 128 // Location of teleporter connected to Chasm
+#define LOCATION_TREASURESTORE 23 // The place the player must bring treasures to
 #define LOCATION_TREETOP 28 // Location of the treetop in the garden (note: not the one in the dream)
 
 // Assorted
@@ -234,6 +237,7 @@
 #define CMD_DRINK 0x6472696E6B000000
 #define CMD_DROP 0x64726F7000000000
 #define CMD_EAT 0x6561740000000000
+#define CMD_EXCHANGE 0x65786368616E6765
 #define CMD_FREE 0x6672656500000000
 #define CMD_GIVE 0x6769766500000000
 #define CMD_INSERT 0x696E736572740000
@@ -254,6 +258,7 @@
 #define ITEM_BUCCANEE 0x62756363616E6565
 #define ITEM_BUTTON 0x627574746F6E0000
 #define ITEM_CABLE 0x6361626C65000000
+#define ITEM_CARTRIDG 0x6361727472696467
 #define ITEM_CAULDRON 0x6361756C64726F6E
 #define ITEM_COIN 0x636F696E00000000
 #define ITEM_CONSOLE 0x636F6E736F6C6500
@@ -269,7 +274,9 @@
 #define ITEM_KEY 0x6B65790000000000
 #define ITEM_KOHLRABI 0x6B6F686C72616269
 #define ITEM_LAMP 0x6C616D7000000000
+#define ITEM_LENS 0x6C656E7300000000
 #define ITEM_LION 0x6C696F6E00000000
+#define ITEM_MACHINE 0x6D616368696E6500
 #define ITEM_MATCHES 0x6D61746368657300
 #define ITEM_MEDALLIO 0x6D6564616C6C696F
 #define ITEM_MILK 0x6D696C6B00000000

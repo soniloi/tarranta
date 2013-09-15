@@ -1170,6 +1170,52 @@ void Game::Executor::execDrop(Game* game, Item* item){
 }
 
 /*
+ *	Execute command to give Item item, and request that item with code request be dispensed in return
+ *	Requires presence of machine, and the only item that may be exchanged is the cartridge
+ *	request is an item that is not the null item
+ */
+void Game::Executor::execExchange(Game* game, Item* item, Item* request){
+
+	int itemlocid = request->getLocation()->getID();
+
+	if(!request->hasAttribute(CTRL_ITEM_FACTORY)) // Requested item is not a factory-made item
+		Terminal::wrpro("The machine does not know how to create that.");
+	else if(itemlocid != LOCATION_NOWHERE) // Requested item has already been made (is already in play)
+		Terminal::wrpro("The machine has already dispensed that item and will not do so again for the time being.");
+	else{ // Requested item will be created, and cartridge sent to some new location
+
+		Location* newloc;
+		uint64_t reqcode = request->getCode();
+
+		Location* factory = game->station->get(LOCATION_FACTORY);
+
+		if(reqcode == ITEM_LENS) // Player requests lens
+			newloc = game->station->get(LOCATION_OBSERVATORY);
+		else
+			newloc = game->station->get(LOCATION_NOWHERE); // Default to prevent segmentation faults; do *not* allow this to get executed
+
+		game->player->extractFromInventory(item); // Player drops cartridge; do *not* destroy item as we simply wish to reset its location
+		newloc->deposit(item);
+		item->setLocation(newloc);
+
+		factory->deposit(request);
+		request->setLocation(factory); // Place requested item in factory
+
+		Terminal::wrpro("The machine accepts your cartridge and dispenses the " + Statics::codeToStr(reqcode) + ".");
+		
+	}
+
+	/*
+	if machine not present, say no thx
+	if item is not cartridge, say no thx
+	if no such item exists, player keeps cartridge and gets nothing
+		else if item exists, but machine cannot make it, player keeps cartridge and gets nothing
+		else if item exists and machine can make it, but machine has already dispensed that item (more specifically, if item is reachable; if it has gone to NOWHERE it can be made again), player keeps cartridge and gets nothing
+		otherwise cartridge is consumed (sent to another location, depending on what was asked for) and item is dispensed
+		*/
+}
+
+/*
  *	Execute command to release an item from inventory
  */
 void Game::Executor::execFree(Game* game, Item* item){
