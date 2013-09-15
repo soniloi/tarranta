@@ -228,7 +228,18 @@ void Game::Dispatcher::dispatchInventoryArg(Game* game, Command* command, Item* 
 		}
 		case CMD_DROP: game->executor.execDrop(game, item); break;
 		case CMD_FREE: game->executor.execFree(game, item); break;
-		case CMD_GIVE: game->executor.execGive(game, item); break;
+		case CMD_GIVE: {
+			string furtherinput = Terminal::rdstr("Who or what would you like to give the " + item->getShortname() + " to? ");
+			vector<uint64_t> secondarg = Tokeniser::splitToCodes(furtherinput, SPACE);
+			Item* receiver = game->items->get(secondarg[0]);
+			if(receiver == game->items->get(ITEM_NULL)) // No such item as that specified as receiver
+				Terminal::wrpro("I do not know who or what that is.");
+			else if(!game->player->hasInPresent(receiver)) // Item specified as receiver does not exist
+				Terminal::wrpro("I see no " + receiver->getShortname() + " here to give it to.");
+			else // Receiver exists, in player's vicinity
+				game->executor.execGive(game, item, receiver);
+			break;
+		}
 		case CMD_INSERT: {
 				
 			list<Container*> containers = game->player->getSuitableContainers(item); // Retrieve list of container items capable of holding this item

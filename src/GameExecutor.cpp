@@ -639,13 +639,12 @@ void Game::Executor::execEmpty(Game* game, Container* container){
 /*
  *	Execute command to give this item to someone at this location
  */
-void Game::Executor::execGive(Game* game, Item* item){
-	uint64_t code = item->getCode();
-	Item* receiver;
+void Game::Executor::execGive(Game* game, Item* item, Item* receiver){
+	uint64_t itemcode = item->getCode();
+	uint64_t reccode = receiver->getCode();
 
-	receiver = game->player->getLocation()->get(ITEM_LION);
-	if(receiver){ // Player has chosen to feed the lion
-		if(code == ITEM_KOHLRABI){
+	if(reccode == ITEM_LION){ // Player wishes to feed lion
+		if(itemcode == ITEM_KOHLRABI){
 			Terminal::wrpro(game->general->get(STR_LIONKILL)); // Lion does not like cabbage and kills player
 			game->player->extractFromInventory(item);
 			item->setLocation(game->station->get(LOCATION_NOWHERE));
@@ -656,29 +655,23 @@ void Game::Executor::execGive(Game* game, Item* item){
 			game->player->extractFromInventory(item);
 			item->setLocation(game->station->get(LOCATION_NOWHERE));
 		}
-		else{
+		else
 			Terminal::wrpro(game->general->get(STR_LIONYAWN)); // Lion is not interested
-		}
-		return;
 	}
 
-	receiver = game->player->getLocation()->get(ITEM_TROLL);
-	if(receiver){
+	else if(reccode == ITEM_TROLL){ // Player wishes to feed troll
 		if(item->hasAttribute(CTRL_ITEM_EDIBLE)){
 			Terminal::wrpro(game->general->get(STR_TROLLED));
 			game->player->extractFromInventory(item);
 			item->setLocation(game->station->get(LOCATION_NOWHERE));
 			game->player->kill();
 		}
-		else{
+		else
 			Terminal::wrpro(game->general->get(STR_TROLYAWN));
-		}
-		return;
 	}
 
-	receiver = game->player->getLocation()->get(ITEM_SKELETON);
-	if(receiver){
-		if(code == ITEM_MILK){
+	else if(reccode == ITEM_SKELETON){
+		if(itemcode == ITEM_MILK){
 			Terminal::wrpro("I am reasonably sure that if the skeleton had eyes, they would be lighting up right now. Content, it climbs back into the grave to return to its eternal rest. It is quickly consumed by the earth. In the spot where it had been, you find an old brooch.");
 			game->destroyItem(item);
 			game->destroyItem(receiver);
@@ -688,14 +681,12 @@ void Game::Executor::execGive(Game* game, Item* item){
 			loc->deposit(brooch);
 			game->player->incrementScore(SCORE_PUZZLE);
 		}
-		else{
+		else
 			Terminal::wrpro("The skeleton is uninterested in what you are offering.");
-		}
-		return;
 	}
 
-	Terminal::wrpro(game->general->get(STR_GIVEYAWN));
-
+	else
+		Terminal::wrpro("The " + Statics::codeToStr(reccode) + " is not interested in your " + Statics::codeToStr(itemcode));
 }
 
 /*
