@@ -819,6 +819,7 @@ void Game::Executor::execRead(Game* game, Item* item){
  */
 void Game::Executor::execRepair(Game* game, Item* item){
 		uint64_t code = item->getCode();
+
 		if(code == ITEM_CONSOLE){
 			Item* wire = game->items->get(ITEM_WIRE);
 			if(!game->player->hasInPresent(wire))
@@ -835,8 +836,10 @@ void Game::Executor::execRepair(Game* game, Item* item){
 				Terminal::wrpro(game->general->get(STR_CONSOLE));
 			}
 		}
+
 		else if(code == ITEM_PANEL)
 			Terminal::wrpro("The control panel has already been repaired.");
+
 		else
 			Terminal::wrpro(game->general->get(STR_NONOHOW));
 }
@@ -1200,6 +1203,8 @@ void Game::Executor::execExchange(Game* game, Item* item, Item* request){
 
 		if(reqcode == ITEM_LENS) // Player requests lens
 			newloc = game->station->get(LOCATION_OBSERVATORY);
+		else if(reqcode == ITEM_WIRE)
+			newloc = game->station->get(LOCATION_SENSOR);
 		else
 			newloc = game->station->get(LOCATION_NOWHERE); // Default to prevent segmentation faults; do *not* allow this to get executed
 
@@ -1213,15 +1218,6 @@ void Game::Executor::execExchange(Game* game, Item* item, Item* request){
 		Terminal::wrpro("The machine accepts your cartridge and dispenses the " + Statics::codeToStr(reqcode) + ".");
 		
 	}
-
-	/*
-	if machine not present, say no thx
-	if item is not cartridge, say no thx
-	if no such item exists, player keeps cartridge and gets nothing
-		else if item exists, but machine cannot make it, player keeps cartridge and gets nothing
-		else if item exists and machine can make it, but machine has already dispensed that item (more specifically, if item is reachable; if it has gone to NOWHERE it can be made again), player keeps cartridge and gets nothing
-		otherwise cartridge is consumed (sent to another location, depending on what was asked for) and item is dispensed
-		*/
 }
 
 /*

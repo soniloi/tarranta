@@ -113,6 +113,14 @@
 #define CTRL_ITEM_TREASURE 0x8000 // Whether the item is a treasure or not
 #define CTRL_ITEM_FACTORY 0x10000 // Whether the item may be created by the machine in the factory
 
+// Assorted
+#define INVENTORY_CAPACITY 10 // Initial default capacity of inventory
+#define DEATH_CHANCE 1 // One in this number of moves of a random hazard will lead to death
+#define DEATH_PLACES 60 // The number of places a fall or a snomp will kill you will be between zero and this
+#define PENALTY_HINT -10 // Number of points given to player when they ask for a hint
+#define MAX_MOVES 400 // The maximum number of moves the player may make during a single game
+#define MAX_MOVES_EVENT (MAX_MOVES/4) // All random events must be displayed within this number of moves
+
 // Useful locations
 #define LOCATION_AIRLOCKE 31 // The airlock just off the Recreation Hub
 #define LOCATION_AIRLOCKEOUT 36 // The outside area just outside Airlock East
@@ -134,6 +142,7 @@
 #define LOCATION_RIVERBRIDGE 101 // On the river, under the bridge
 #define LOCATION_SAFE_0 LOCATION_RECHUB
 #define LOCATION_SAFE_1 50
+#define LOCATION_SENSOR 52 // The sensor room off the control hub
 #define LOCATION_SHIP 49 // The pirate ship
 #define LOCATION_SHUTTLE 23 // The broken shuttle
 #define LOCATION_SLEEP_0 91 // Location where player leaves/re-enters waking world
@@ -145,14 +154,6 @@
 #define LOCATION_TELEPORT_1 128 // Location of teleporter connected to Chasm
 #define LOCATION_TREASURESTORE 23 // The place the player must bring treasures to
 #define LOCATION_TREETOP 28 // Location of the treetop in the garden (note: not the one in the dream)
-
-// Assorted
-#define INVENTORY_CAPACITY 10 // Initial default capacity of inventory
-#define DEATH_CHANCE 1 // One in this number of moves of a random hazard will lead to death
-#define DEATH_PLACES 60 // The number of places a fall or a snomp will kill you will be between zero and this
-#define PENALTY_HINT -10 // Number of points given to player when they ask for a hint
-#define MAX_MOVES 400 // The maximum number of moves the player may make during a single game
-#define MAX_MOVES_EVENT (MAX_MOVES/4) // All random events must be displayed within this number of moves
 
 /*
  *	Useful uint_64s
