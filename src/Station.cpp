@@ -3,7 +3,7 @@
 /*
  *	Constructor
  */
-Station::Station(FileReader& reader){
+Station::Station(FileReader& reader, int& linecount){
 
 	vector<int*> links;
 
@@ -14,7 +14,7 @@ Station::Station(FileReader& reader){
 		vector<string> tokens = Tokeniser::splitToVector(line, REGEX_FILE);
 
 		if(tokens.size() < MIN_TOKENS_LOCATION){ // Basic range check
-			cerr << "Bad or corrupt datafile: insufficient tokens." << endl;
+			cerr << "Bad or corrupt datafile: insufficient tokens on line " << linecount << endl;
 			exit(EXIT_FAILURE);
 		}
 
@@ -72,6 +72,7 @@ Station::Station(FileReader& reader){
 		links.push_back(link); // Add link data for this location to corresponding links vector
 
 		line = reader.getline();
+		linecount++;
 
 	}
 	

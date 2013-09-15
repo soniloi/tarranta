@@ -3,15 +3,16 @@
 /*
  *	Constructor
  */
-CommandCollection::CommandCollection(FileReader& reader){
+CommandCollection::CommandCollection(FileReader& reader, int& linecount){
 
 	string line = reader.getline();
 
 	while(line.compare(FILE_DELIMITER_SECTION)){
 
 		vector<string> tokens = Tokeniser::splitToVector(line, REGEX_FILE);
-		if(tokens.size() < MIN_TOKENS_COMMAND){
-			cerr << "Bad or corrupt datafile: insufficient tokens." << endl;
+
+		if(tokens.size() < MIN_TOKENS_COMMAND){ // Basic range check
+			cerr << "Bad or corrupt datafile: insufficient tokens on line " << linecount << endl;
 			exit(EXIT_FAILURE);
 		}
 
@@ -63,6 +64,7 @@ CommandCollection::CommandCollection(FileReader& reader){
 		#endif
 
 		line = reader.getline();
+		linecount++;
 	}
 
 }

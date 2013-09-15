@@ -4,7 +4,7 @@
  *	Constructor
  *	Takes an istream representing the file it is reading from
  */
-StringCollection::StringCollection(FileReader& reader){
+StringCollection::StringCollection(FileReader& reader, int& linecount){
 
 	string line = reader.getline();
 
@@ -13,7 +13,7 @@ StringCollection::StringCollection(FileReader& reader){
 		vector<string> tokens = Tokeniser::splitToVector(line, REGEX_FILE);
 
 		if(tokens.size() < MIN_TOKENS_STRING){ // Basic range check
-			cerr << "Bad or corrupt datafile: insufficient tokens." << endl;
+			cerr << "Bad or corrupt datafile: insufficient tokens on line " << linecount << endl;
 			exit(EXIT_FAILURE);
 		}
 
@@ -22,6 +22,7 @@ StringCollection::StringCollection(FileReader& reader){
 		this->strings.insert(pair<uint64_t, string>(key, value));
 
 		line = reader.getline();
+		linecount++;
 	}
 
 

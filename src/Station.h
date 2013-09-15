@@ -19,7 +19,7 @@ class Station{
 		vector<Location*> locations;
 
 	public:
-		Station(FileReader& reader);
+		Station(FileReader& reader, int& linecount);
 		~Station();
 		int getLocationCount();
 		Location* get(unsigned int index);

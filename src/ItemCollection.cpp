@@ -4,7 +4,7 @@
  *	Constructor
  *	We require a pointer to the associated Station object at this point so we can set initial locations
  */
-ItemCollection::ItemCollection(FileReader& reader, Station* station){
+ItemCollection::ItemCollection(FileReader& reader, int& linecount, Station* station){
 
 	string line = reader.getline();
 
@@ -13,7 +13,7 @@ ItemCollection::ItemCollection(FileReader& reader, Station* station){
 		vector<string> tokens = Tokeniser::splitToVector(line, REGEX_FILE);
 
 		if(tokens.size() < MIN_TOKENS_ITEM){ // Basic range check
-			cerr << "Bad or corrupt datafile: insufficient tokens." << endl;
+			cerr << "Bad or corrupt datafile: insufficient tokens on line " << linecount << endl;
 			exit(EXIT_FAILURE);
 		}
 
@@ -22,6 +22,11 @@ ItemCollection::ItemCollection(FileReader& reader, Station* station){
 
 		int initloc;
 		Statics::strToInt(initloc, tokens.at(INDEX_IINITLOC));
+
+		if(initloc >= station->getLocationCount()){
+			cerr << "Bad or corrupt datafile: location out-of-range on line " << linecount << endl;
+			exit(EXIT_FAILURE);
+		}
 
 		int sz;
 		Statics::strToInt(sz, tokens.at(INDEX_ISIZE));
@@ -52,6 +57,7 @@ ItemCollection::ItemCollection(FileReader& reader, Station* station){
 		this->items[cd] = item;
 
 		line = reader.getline();
+		linecount++;
 	}
 
 }

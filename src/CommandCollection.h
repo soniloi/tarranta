@@ -20,7 +20,7 @@ class CommandCollection{
 		map<uint64_t, Command*> commands;
 
 	public:
-		CommandCollection(FileReader& reader);
+		CommandCollection(FileReader& reader, int& linecount);
 		~CommandCollection();
 		Command* get(uint64_t cd);
 		string listNonSecret();

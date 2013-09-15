@@ -15,7 +15,7 @@ class StringCollection{
 
 	public:
 		friend class Game;
-		StringCollection(FileReader& reader);
+		StringCollection(FileReader& reader, int& linecount);
 		~StringCollection();
 		string get(uint64_t key); // Fetches a string with a certain key
 		void clear(uint64_t key); // Erases a string with a certain key

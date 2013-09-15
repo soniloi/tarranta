@@ -7,15 +7,25 @@ Game::Game(string filename){
 
 	srand(time(0)); // Seed for random number generator
 
+	int linecount = ONE; // Lines in datafile are one-indexed
+
 	FileReader filein(filename);
 
-	this->commands = new CommandCollection(filein);
-	this->station = new Station(filein);
- 	this->items = new ItemCollection(filein, station);
- 	this->hints = new StringCollection(filein);
- 	this->explanations = new StringCollection(filein);
- 	this->general = new StringCollection(filein);
- 	this->randomevents = new StringCollection(filein);
+	this->commands = new CommandCollection(filein, linecount);
+	linecount++; // Skip section divider
+	this->station = new Station(filein, linecount);
+	linecount++; // Skip section divider
+ 	this->items = new ItemCollection(filein, linecount, station);
+ 	linecount++; // Skip section divider
+ 	this->hints = new StringCollection(filein, linecount);
+ 	linecount++; // Skip section divider
+ 	this->explanations = new StringCollection(filein, linecount);
+ 	linecount++; // Skip section divider
+ 	this->general = new StringCollection(filein, linecount);
+ 	linecount++; // Skip section divider
+ 	this->randomevents = new StringCollection(filein, linecount);
+ 	linecount++; // Skip section divider
+
  	this->player = new Player(this->station->get(LOCATION_START_0), this->station->get(LOCATION_SAFE_0));
 
  	for(map<uint64_t, string>::iterator it = this->randomevents->strings.begin() ; it != this->randomevents->strings.end() ; it++){

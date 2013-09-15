@@ -15,7 +15,7 @@ class ItemCollection{
 		map<uint64_t, Item*> items;
 
 	public:
-		ItemCollection(FileReader& reader, Station* station);
+		ItemCollection(FileReader& reader, int& linecount, Station* station);
 		~ItemCollection();
 		Item* get(uint64_t cd);
 
