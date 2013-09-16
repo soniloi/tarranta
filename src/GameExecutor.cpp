@@ -394,43 +394,49 @@ void Game::Executor::execCall(Game* game, uint64_t arg){
 
 		// TODO: insert score, and also prevent re-calling of STR_SHIP
 
-		// Change player's start & safe locations on death; they must now be west of the checkpoint rather than east
-		game->player->setWakeLocation(game->station->get(LOCATION_START_1));
-		game->player->setSafeLocation(game->station->get(LOCATION_SAFE_1));
+		if(game->items->get(STR_SHIP)->getLocation()->getID() != LOCATION_NOWHERE)
+			Terminal::wrpro(game->general->get(STR_SHIPALRE));
 
-		Location* loc;
-		Location* loc1;
-		Item* item;
+		else{
+			// Change player's start & safe locations on death; they must now be west of the checkpoint rather than east
+			game->player->setWakeLocation(game->station->get(LOCATION_START_1));
+			game->player->setSafeLocation(game->station->get(LOCATION_SAFE_1));
 
-		// Insert the bloodthirsty corsair at the checkpoint
-		loc = game->station->get(LOCATION_CHECKPOINT);
-		item = game->items->get(ITEM_CORSAIR);
-		loc->deposit(item);
-		item->setLocation(loc);
+			Location* loc;
+			Location* loc1;
+			Item* item;
 
-		// Insert the bloodthirsty buccaneer at the docking control area
-		loc = game->station->get(LOCATION_DOCKINGCONTROL);
-		item = game->items->get(ITEM_BUCCANEE);
-		loc->deposit(item);
-		item->setLocation(loc);
+			// Insert the bloodthirsty corsair at the checkpoint
+			loc = game->station->get(LOCATION_CHECKPOINT);
+			item = game->items->get(ITEM_CORSAIR);
+			loc->deposit(item);
+			item->setLocation(loc);
 
-		// Insert the pirate ship (Item) into the docking bay
-		loc = game->station->get(LOCATION_DOCKING);
-		item = game->items->get(ITEM_SHIP);
-		loc->deposit(item);
-		item->setLocation(loc);
+			// Insert the bloodthirsty buccaneer at the docking control area
+			loc = game->station->get(LOCATION_DOCKINGCONTROL);
+			item = game->items->get(ITEM_BUCCANEE);
+			loc->deposit(item);
+			item->setLocation(loc);
 
-		// Link the pirate ship (Location) to the docking bay
-		loc = game->station->get(LOCATION_DOCKING);
-		loc1 = game->station->get(LOCATION_SHIP);
-		loc->setDirection(CMD_EAST, loc1);
-		loc->setDirection(CMD_SOUTHEAS, loc1);
+			// Insert the pirate ship (Item) into the docking bay
+			loc = game->station->get(LOCATION_DOCKING);
+			item = game->items->get(ITEM_SHIP);
+			loc->deposit(item);
+			item->setLocation(loc);
 
-		// Unlink the shuttle from the southeast of the docking bay
-		loc = game->station->get(LOCATION_SHUTTLE);
-		loc->setDirection(CMD_SOUTH, game->station->get(LOCATION_NOWHERE));
+			// Link the pirate ship (Location) to the docking bay
+			loc = game->station->get(LOCATION_DOCKING);
+			loc1 = game->station->get(LOCATION_SHIP);
+			loc->setDirection(CMD_EAST, loc1);
+			loc->setDirection(CMD_SOUTHEAS, loc1);
 
-		Terminal::wrpro("You send a distress call to the unknown ship.");
+			// Unlink the shuttle from the southeast of the docking bay
+			loc = game->station->get(LOCATION_SHUTTLE);
+			loc->setDirection(CMD_SOUTH, game->station->get(LOCATION_NOWHERE));
+
+			Terminal::wrpro(game->general->get(STR_DISTRESS));
+			game->player->incrementScore(SCORE_PUZZLE);
+		}
 	}
 	else
 		Terminal::wrpro(game->general->get(STR_NONOHOW));
