@@ -3,8 +3,10 @@
 /*
  *	Constructor
  *	Takes an istream representing the file it is reading from
+ *	linecount is the current line number in file
+ *	puzzlecount is the number of strings representing solved puzzles that have been found
  */
-StringCollection::StringCollection(FileReader& reader, int& linecount){
+StringCollection::StringCollection(FileReader& reader, int& linecount, int& puzzlecount){
 
 	string line = reader.getline();
 
@@ -20,6 +22,10 @@ StringCollection::StringCollection(FileReader& reader, int& linecount){
 		uint64_t key = Statics::strToCode(tokens.at(INDEX_SKEY));
 		string value = tokens.at(INDEX_SVALUE);
 		this->strings.insert(pair<uint64_t, string>(key, value));
+
+		if(tokens.size() > MIN_TOKENS_STRING){ // If there is any other value, it represents a puzzle that has been solved
+			puzzlecount++;
+		}
 
 		line = reader.getline();
 		linecount++;

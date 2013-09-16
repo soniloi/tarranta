@@ -102,3 +102,19 @@ Item* ItemCollection::get(uint64_t cd){
 	return it->second;
 
 }
+
+/*
+ *	Count the number of items with a certain attribute
+ */
+int ItemCollection::countItemsWithAttribute(int attribute){
+
+	int result = 0;
+
+	for(map<uint64_t, Item*>::iterator it = this->items.begin() ; it != this->items.end() ; it++){
+		if(it->second->hasAttribute(attribute))
+			result++; // Add the item's self-value, if relevant
+	}
+
+	return result;
+
+}

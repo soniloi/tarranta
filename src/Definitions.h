@@ -15,7 +15,7 @@
 // Scoring
 #define SCORE_ESCAPE 50 // Points given for escaping the asteroid
 #define SCORE_PUZZLE 20 // Points given for solving some puzzle
-#define SCORE_TREASURE 5 // Points given for depositing a treasure in the right place; this counts for double if player escapes asteroid with it
+#define SCORE_TREASURE 10 // Points given for depositing a treasure in the right place; this counts for double if player escapes asteroid with it
 
 // Basic stuff
 #define ZERO 0
@@ -378,6 +378,7 @@
 #define STR_SHARDS 0x7368617264730000
 #define STR_SHIP 0x7368697000000000
 #define STR_SHMAGIC 0x73686D6167696300
+#define STR_SKELMILK 0x736B656C6D696C6B // When player gives milk to the skeleton
 #define STR_SLEEP 0x736C656570000000
 #define STR_SLEEPNO 0x736C6565706E6F00
 #define STR_SNOMP 0x736E6F6D70000000
@@ -387,6 +388,7 @@
 #define STR_TAKENOCA 0x74616B656E6F6361
 #define STR_TAKEGOOD 0x74616B65676F6F64
 #define STR_TELEPORT 0x74656C65706F7274
+#define STR_TETHER 0x7465746865720000
 #define STR_TOAST 0x746F617374000000
 #define STR_TROLL 0x74726F6C6C000000
 #define STR_TROLLED 0x74726F6C6C656400

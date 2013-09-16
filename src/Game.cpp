@@ -8,6 +8,7 @@ Game::Game(string filename){
 	srand(time(0)); // Seed for random number generator
 
 	int linecount = ONE; // Lines in datafile are one-indexed
+	int puzzlecount = ZERO; // Number of strings found that represent solved puzzled
 
 	FileReader filein(filename);
 
@@ -17,16 +18,19 @@ Game::Game(string filename){
 	linecount++; // Skip section divider
  	this->items = new ItemCollection(filein, linecount, station);
  	linecount++; // Skip section divider
- 	this->hints = new StringCollection(filein, linecount);
+ 	this->hints = new StringCollection(filein, linecount, puzzlecount);
  	linecount++; // Skip section divider
- 	this->explanations = new StringCollection(filein, linecount);
+ 	this->explanations = new StringCollection(filein, linecount, puzzlecount);
  	linecount++; // Skip section divider
- 	this->general = new StringCollection(filein, linecount);
+ 	this->general = new StringCollection(filein, linecount, puzzlecount);
  	linecount++; // Skip section divider
- 	this->randomevents = new StringCollection(filein, linecount);
+ 	this->randomevents = new StringCollection(filein, linecount, puzzlecount);
  	linecount++; // Skip section divider
 
  	this->player = new Player(this->station->get(LOCATION_START_0), this->station->get(LOCATION_SAFE_0));
+
+ 	this->maxpoints = (puzzlecount*SCORE_PUZZLE);
+ 	this->maxpoints += (this->items->countItemsWithAttribute(CTRL_ITEM_TREASURE)*SCORE_TREASURE);
 
  	for(map<uint64_t, string>::iterator it = this->randomevents->strings.begin() ; it != this->randomevents->strings.end() ; it++){
 		int move;
@@ -67,10 +71,10 @@ int Game::calculateScore(){
 	Location* trove = this->station->get(LOCATION_TREASURESTORE);
 	int treasureCount = trove->countItemsWithAttribute(CTRL_ITEM_TREASURE);
 
-	if(this->escaped && trove->getDirection(CMD_SOUTH) != this->station->get(LOCATION_NOWHERE))
-		score += (treasureCount * SCORE_TREASURE * TWO); // Add the treasure-based scores at double value for escaping with them
+	if(this->escaped && (trove->getDirection(CMD_SOUTH)->getID() == LOCATION_SHIP))
+		score += (treasureCount * SCORE_TREASURE); // Add the treasure-based scores at double value for escaping with them
 	else
-		score += (treasureCount * SCORE_TREASURE); // Add the treasure-based scores at ordinary value for not escaping with them
+		score += (treasureCount * (SCORE_TREASURE >> ONE)); // Add the treasure-based scores at ordinary value for not escaping with them
 
 	if(score < 0)
 		score = 0; // Don't be mean

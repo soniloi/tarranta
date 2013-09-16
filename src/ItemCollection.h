@@ -18,5 +18,6 @@ class ItemCollection{
 		ItemCollection(FileReader& reader, int& linecount, Station* station);
 		~ItemCollection();
 		Item* get(uint64_t cd);
+		int countItemsWithAttribute(int attribute);
 
 };

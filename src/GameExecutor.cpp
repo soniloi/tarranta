@@ -259,15 +259,14 @@ void Game::Executor::execQuit(Game* game){
  */
 void Game::Executor::execScore(Game* game, bool final){
 	stringstream ss;
-	if(final)
-		ss << "Your final score was ";
-	else
-		ss << "Your current score is ";
-	ss << game->calculateScore() << " points. You ";
-	if(final) 
-		ss << "died " << game->player->getDeaths() << " times, and gave " << game->player->getMoves() << " instructions.";
-	else
-		ss << "have died " << game->player->getDeaths() << " times, and given " << game->player->getMoves() << " instructions.";
+	if(final){
+		ss << "Your final score was " << game->calculateScore() << " points of a possible " << game->maxpoints << ". ";
+		ss << "You died " << game->player->getDeaths() << " times, and gave " << game->player->getMoves() << " instructions.";
+	}
+	else{
+		ss << "Your current score is " << game->calculateScore() << " points. ";
+		ss << "You have died " << game->player->getDeaths() << " times, and given " << game->player->getMoves() << " instructions.";
+	}
 	Terminal::wrpro(ss.str());
 }
 
@@ -455,9 +454,9 @@ void Game::Executor::execFly(Game* game, uint64_t arg){
 		if(game->player->getLocation()->getID() == LOCATION_SHIP){
 			Terminal::wrpro("You steal the pirate ship and fly away in it. Congratulations, you have successfully escaped from Asterbase Tarranta.");
 			game->player->incrementScore(SCORE_ESCAPE);
-			execScore(game, true);
 			game->on = false;
 			game->escaped = true;
+			execScore(game, true);
 		}
 		else
 			Terminal::wrpro("You are not in any ship that is capable of flying.");
@@ -530,7 +529,7 @@ void Game::Executor::execTether(Game* game, uint64_t arg){
 			shuttle->setDirection(CMD_SOUTH, ship);
 			game->destroyItem(cable);
 			game->player->incrementScore(SCORE_PUZZLE);
-			Terminal::wrpro("You use the cable to tether the shuttle to the ship.");
+			Terminal::wrpro(game->general->get(STR_TETHER));
 		}
 	}
 	else
@@ -672,7 +671,7 @@ void Game::Executor::execGive(Game* game, Item* item, Item* receiver){
 
 	else if(reccode == ITEM_SKELETON){
 		if(itemcode == ITEM_MILK){
-			Terminal::wrpro("I am reasonably sure that if the skeleton had eyes, they would be lighting up right now. Content, it climbs back into the grave to return to its eternal rest. It is quickly consumed by the earth. In the spot where it had been, you find an old brooch.");
+			Terminal::wrpro(game->general->get(STR_SKELMILK));
 			game->destroyItem(item);
 			game->destroyItem(receiver);
 			Location* loc = game->player->getLocation();
