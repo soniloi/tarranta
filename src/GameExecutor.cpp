@@ -264,8 +264,7 @@ void Game::Executor::execScore(Game* game, bool final){
 		ss << "You died " << game->player->getDeaths() << " times, and gave " << game->player->getMoves() << " instructions.";
 	}
 	else{
-		ss << "Your current score is " << game->calculateScore() << " points. ";
-		ss << "You have died " << game->player->getDeaths() << " times, and given " << game->player->getMoves() << " instructions.";
+		ss << "Your current score is " << game->calculateScore() << " points.";
 	}
 	Terminal::wrpro(ss.str());
 }
@@ -330,7 +329,9 @@ void Game::Executor::execTezazzle(Game* game){
  *	Execute command to display current game version to player
  */
 void Game::Executor::execVersion(Game* game){
-	Terminal::wrpro(game->general->get(STR_VERSION));
+	stringstream ss;
+	ss << game->general->get(STR_VERSION) << " (" << game->maxpoints << " points).";
+	Terminal::wrpro(ss.str());
 }
 
 /*

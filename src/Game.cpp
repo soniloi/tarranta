@@ -31,6 +31,7 @@ Game::Game(string filename){
 
  	this->maxpoints = (puzzlecount*SCORE_PUZZLE);
  	this->maxpoints += (this->items->countItemsWithAttribute(CTRL_ITEM_TREASURE)*SCORE_TREASURE);
+ 	this->maxpoints += SCORE_ESCAPE;
 
  	for(map<uint64_t, string>::iterator it = this->randomevents->strings.begin() ; it != this->randomevents->strings.end() ; it++){
 		int move;
