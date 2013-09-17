@@ -13,11 +13,11 @@ void Game::Dispatcher::dispatchMovement(Game* game, Command* command){
 
 	else if(next == game->station->get(LOCATION_NOWHERE)){ // No location in desired direction
 		if(command->is(CMD_BACK)) // game->player requested 'back', but cannot go back from here for whatever reason
-			Terminal::wrpro("I do not remember how I got here, or I cannot get back there directly. Please give a direction.");
+			Terminal::wrpro(game->general->get(STR_MOVNOREM));
 		else if(command->is(CMD_OUT)) // game->player requested 'out', but out is ambiguous here
-			Terminal::wrpro("I cannot tell in from out here. Please give a direction.");
+			Terminal::wrpro(game->general->get(STR_MOVNOOUT));
 		else
-			Terminal::wrpro("You cannot go that way.");
+			Terminal::wrpro(game->general->get(STR_MOVNOWAY));
 	}
 
 	else{ // Location exists in desired direction
@@ -48,16 +48,16 @@ void Game::Dispatcher::dispatchMovement(Game* game, Command* command){
 			else if(game->player->hasLight())
 				Terminal::wrpro("You cannot get past the " + ob->getShortname() + ".");
 			else
-				Terminal::wrpro("Some obstruction at this location will not let you go that way.");
+				Terminal::wrpro(game->general->get(STR_MOVOBST));
 		}
 		else if(!next->hasAir() && !game->player->hasInInventoryWithAttribute(CTRL_ITEM_GIVES_AIR)){ // Refuse to move if there is no air
-			Terminal::wrpro("There is no breathable atmosphere in that direction. I refuse to proceed.");
+			Terminal::wrpro(game->general->get(STR_MOVNOAIR));
 		}
 		else if(command->is(CMD_UP) && game->player->hasGravity() && current->hasAttribute(CTRL_LOC_NEEDSNO_GRAVITY)){ // Gravity preventing player from going up
-			Terminal::wrpro("You cannot currently reach the ceiling.");
+			Terminal::wrpro(game->general->get(STR_MOVNOCEI));
 		}
 		else if(command->is(CMD_DOWN) && game->player->hasGravity() && !current->hasAttribute(CTRL_LOC_HAS_FLOOR)){ // Too far down
-			Terminal::wrpro("Attempting such a downward journey would kill you.");
+			Terminal::wrpro(game->general->get(STR_MOVNODOW));
 		}
 		else{ // Movement to be attempted
 
@@ -197,7 +197,7 @@ void Game::Dispatcher::dispatchPresentArg(Game* game, Command* command, Item* it
 					game->executor.execWater(game, item, (*it));
 				}
 				else // If player has selected an invalid option
-					Terminal::wrpro("I gave no such option.");
+					Terminal::wrpro(game->general->get(STR_NOOPTION));
 			}
 
 			break;
@@ -310,7 +310,7 @@ void Game::Dispatcher::dispatchInventoryArg(Game* game, Command* command, Item* 
 					}
 				}
 				else{ // If player has selected an invalid option
-					Terminal::wrpro("I gave no such option.");
+					Terminal::wrpro(game->general->get(STR_NOOPTION));
 				}
 
 
@@ -322,7 +322,7 @@ void Game::Dispatcher::dispatchInventoryArg(Game* game, Command* command, Item* 
 
 		case CMD_POUR: {
 			if(!item->hasAttribute(CTRL_ITEM_LIQUID))
-				Terminal::wrpro("I do not know how to pour something that is not liquid.");
+				Terminal::wrpro(game->general->get(STR_NONOPOUR));
 			else
 				game->executor.execDrop(game, item); 
 			break;

@@ -140,13 +140,11 @@ void Game::play(){
 					this->executor.execQuit(this);
 			}
 
-			else{ // Issue any warnings due, but only if player is not dead
+			else if(this->on){ // Perform the turn-based checks, but only if the game is still going
+
 				if(!player->hasLight())
 					Terminal::wrpro(general->get(STR_LAMPNO));
 
-			}
-
-			if(this->on){ // Perform the turn-based checks, but only if the game is still going
 				int move = this->player->getMoves();
 
 				if(move >= MAX_MOVES){

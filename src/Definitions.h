@@ -118,7 +118,7 @@
 #define DEATH_CHANCE 1 // One in this number of moves of a random hazard will lead to death
 #define DEATH_PLACES 60 // The number of places a fall or a snomp will kill you will be between zero and this
 #define PENALTY_HINT -10 // Number of points given to player when they ask for a hint
-#define MAX_MOVES 400 // The maximum number of moves the player may make during a single game
+#define MAX_MOVES 1000 // The maximum number of moves the player may make during a single game
 #define MAX_MOVES_EVENT (MAX_MOVES/4) // All random events must be displayed within this number of moves
 
 // Useful locations
@@ -346,7 +346,15 @@
 #define STR_LIONWHET 0x6C696F6E77686574
 #define STR_LIONWOLF 0x6C696F6E776F6C66
 #define STR_LIONYAWN 0x6C696F6E7961776E
+#define STR_MOVNOAIR 0x6D6F766E6F616972
+#define STR_MOVNOCEI 0x6D6F766E6F636569
+#define STR_MOVNODOW 0x6D6F766E6F646F77
+#define STR_MOVNOOUT 0x6D6F766E6F6F7574
+#define STR_MOVNOREM 0x6D6F766E6F72656D
+#define STR_MOVNOWAY 0x6D6F766E6F776179
+#define STR_MOVOBST 0x6D6F766F62737400
 #define STR_NOCONTAI 0x6E6F636F6E746169
+#define STR_NOEQUIP 0x6E6F657175697000
 #define STR_NOFISH 0x6E6F666973680000
 #define STR_NOFIT 0x6E6F666974000000
 #define STR_NOFITWEA 0x6E6F666974776561
@@ -354,9 +362,10 @@
 #define STR_NOINTERE 0x6E6F696E74657265
 #define STR_NOLIGHT 0x6E6F6C6967687400
 #define STR_NOMATCH 0x6E6F6D6174636800
-#define STR_NONET 0x6E6F6E6574000000
 #define STR_NONOHOW 0x6E6F6E6F686F7700
+#define STR_NONOPOUR 0x6E6F6E6F706F7572
 #define STR_NONOWHAT 0x6E6F6E6F77686174
+#define STR_NOOPTION 0x6E6F6F7074696F6E
 #define STR_NOSTRONG 0x6E6F7374726F6E67
 #define STR_NOTUIGIN 0x6E6F74756967696E
 #define STR_NOWISEAT 0x6E6F776973656174
@@ -383,7 +392,8 @@
 #define STR_SKELMILK 0x736B656C6D696C6B // When player gives milk to the skeleton
 #define STR_SLEEP 0x736C656570000000
 #define STR_SLEEPNO 0x736C6565706E6F00
-#define STR_SNOMP 0x736E6F6D70000000
+#define STR_SNOMP 0x736E6F6D70000000 // Explanation of a snomp
+#define STR_SNOMPEAT 0x736E6F6D70656174 // When a snomp happens along and eats player
 #define STR_STUMBLE 0x7374756D626C6500
 #define STR_TAKENOSE 0x74616B656E6F7365
 #define STR_TAKEALRE 0x74616B65616C7265

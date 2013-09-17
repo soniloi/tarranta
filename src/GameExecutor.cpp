@@ -76,7 +76,7 @@ void Game::Executor::execMovement(Game* game, Location* current, Location* next)
 	if(!game->player->hasNosnomp() && !next->hasNosnomp()){ // Player moving from snomp space to snomp space, may get eaten...
 		int life = rand()%DEATH_CHANCE;
 		if(!life){ // Player has been caught by a snomp and eaten
-			Terminal::wrpro("A snomp happens by and eats you.");
+			Terminal::wrpro(game->general->get(STR_SNOMPEAT));
 			game->player->kill();
 		}
 	}
@@ -89,10 +89,6 @@ void Game::Executor::execMovement(Game* game, Location* current, Location* next)
 			next->setDirection(CMD_BACK, game->station->get(LOCATION_NOWHERE));
 		game->player->setLocation(next);
 		Terminal::wrpro(game->player->getLocationArrival());
-
-		if(!next->hasAir()){ // Check whether next location has ambient air
-			Terminal::wrpro("Just a friendly warning: there is no ambient atmosphere at this location.");
-		}
 
 	}
 
@@ -173,7 +169,7 @@ void Game::Executor::execCsb(Game* game){
 void Game::Executor::execFish(Game* game){
 
 	if(!game->player->hasInInventory(game->items->get(ITEM_NET))){
-		Terminal::wrpro(game->general->get(STR_NONET));
+		Terminal::wrpro(game->general->get(STR_NOEQUIP));
 		return;
 	}
 	Item* glint = game->items->get(ITEM_GLINT);
@@ -214,7 +210,7 @@ void Game::Executor::execKnit(Game* game){
 	Item* needles = game->items->get(ITEM_NEEDLES);
 	Item* yarn = game->items->get(ITEM_YARN);
 	if(!game->player->hasInInventory(needles) || !game->player->hasInInventory(yarn)){
-		Terminal::wrpro("You do not have the equipment needed.");
+		Terminal::wrpro(game->general->get(STR_NOEQUIP));
 		return;
 	}
 
@@ -391,8 +387,6 @@ void Game::Executor::execZiqua(Game* game){
  */
 void Game::Executor::execCall(Game* game, uint64_t arg){
 	if(game->player->getLocation()->getID() == LOCATION_COMMS && arg == STR_SHIP){
-
-		// TODO: insert score, and also prevent re-calling of STR_SHIP
 
 		if(game->items->get(STR_SHIP)->getLocation()->getID() != LOCATION_NOWHERE)
 			Terminal::wrpro(game->general->get(STR_SHIPALRE));
@@ -779,21 +773,24 @@ void Game::Executor::execPush(Game* game, Item* item){
 		SwitchableItem* switchable = (SwitchableItem*) item;
 		if(switchable->isOn()){ // Switch had been on, so turn off
 			switchable->setOn(false);
+			Terminal::wrpro("It is now in the off position.");
 			if(code == ITEM_BUTTON){ // If button is pressed, turn gravity on in the anteroom
 				game->station->get(LOCATION_ANTEROOM)->setAttribute(CTRL_LOC_HAS_GRAVITY, true);
 				Terminal::wrpro(game->general->get(STR_NOHAPPEN));
 			}
-			Terminal::wrpro("It is now in the off position.");
 		}
 		else{ // Switch had been off, so turn on
 			switchable->setOn(true);
+			Terminal::wrpro("It is now in the on position.");
 			if(code == ITEM_BUTTON){ // If button is pressed, turn gravity off in the anteroom
 				game->station->get(LOCATION_ANTEROOM)->setAttribute(CTRL_LOC_HAS_GRAVITY, false);
 				Terminal::wrpro(game->general->get(STR_NOHAPPEN));
 			}
-			Terminal::wrpro("It is now in the on position.");
 		}
 	}
+
+	else
+		Terminal::wrpro(game->general->get(STR_NONOHOW));
 
 }
 
@@ -985,7 +982,7 @@ void Game::Executor::execTake(Game* game, Item* item){
 				}
 			}
 			else{ // If player has selected an invalid option
-				Terminal::wrpro("I gave no such option.");
+				Terminal::wrpro(game->general->get(STR_NOOPTION));
 			}
 		}
 
