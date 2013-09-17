@@ -104,7 +104,7 @@ void Game::Parser::parseInput(Game* game, string line){
 			else{
 
 				if(!tentativeArg){ // Argument required, but not given
-					string targstr = Terminal::rdstr("What is it you want me to " + commstr + "?");
+					string targstr = Terminal::rdstr("What is it you want me to " + commstr + "? ");
 					vector<uint64_t> supparg = Tokeniser::splitToCodes(targstr, SPACE);
 					if(supparg.size() > ZERO)
 						tentativeArg = supparg[ZERO];

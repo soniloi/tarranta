@@ -196,13 +196,7 @@ string Terminal::rdpro(){
  *	Will align to other prompts by truncation
  */
 string Terminal::rdstr(string str){
-
-	string pr(promptpro);
-	pr += str;
-	pr += NL;
-	pr += prompttab;
-
-	Terminal::wr(pr);
+	Terminal::wr(promptpro + str);
 	return Terminal::rd();
 }
 

@@ -241,7 +241,7 @@ void Game::Executor::execPlugh(Game* game){
  */
 void Game::Executor::execQuit(Game* game){
 
-	string input = Terminal::rdstr("Are you sure?");
+	string input = Terminal::rdstr("Are you sure? ");
 	vector<uint64_t> confirm = Tokeniser::splitToCodes(input, SPACE);
 	if(confirm.size() == ONE && (confirm[0] != STR_Y && confirm[0] != STR_YES))
 		return;
