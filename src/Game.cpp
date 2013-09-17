@@ -129,8 +129,12 @@ void Game::play(){
 
 			if(!player->isAlive()){ // Something in this move killed the player, see whether they want to live again or quit now
 				Terminal::wrpro(this->general->get(STR_DESREINC));
-				string reanimate = Terminal::rdstr(general->get(STR_ASKREINC));
-				if(!reanimate.compare("y") || !reanimate.compare("yes")){
+				string input = Terminal::rdstr(general->get(STR_ASKREINC));
+				vector<uint64_t> reanimate = Tokeniser::splitToCodes(input, SPACE);
+
+				cerr << reanimate[0] << endl;
+
+				if(reanimate.size() == ONE && (reanimate[0] == STR_Y || reanimate[0] == STR_YES)){
 					this->player->reincarnate();
 					this->forgetReturnLocation();
 					Terminal::wrpro(general->get(STR_DOREINC));

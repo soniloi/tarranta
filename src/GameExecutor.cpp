@@ -241,8 +241,9 @@ void Game::Executor::execPlugh(Game* game){
  */
 void Game::Executor::execQuit(Game* game){
 
-	string s = Terminal::rdstr("Are you sure?");
-	if(s.compare("y") && s.compare("yes"))
+	string input = Terminal::rdstr("Are you sure?");
+	vector<uint64_t> confirm = Tokeniser::splitToCodes(input, SPACE);
+	if(confirm.size() == ONE && (confirm[0] != STR_Y && confirm[0] != STR_YES))
 		return;
 
 	execScore(game, true);
@@ -474,8 +475,9 @@ void Game::Executor::execHint(Game* game, uint64_t arg){
 	if(hint.empty())
 		Terminal::wrpro(game->hints->get(HINT_DEFAULT));
 	else{
-		string confirm = Terminal::rdstr("There is something more I can tell you about this, but you will have to accept a point penalty. Is this okay? ");
-		if(!confirm.compare("y") || !confirm.compare("yes")){
+		string input = Terminal::rdstr("There is something more I can tell you about this, but you will have to accept a point penalty. Is this okay? ");
+		vector<uint64_t> confirm = Tokeniser::splitToCodes(input, SPACE);
+		if(confirm.size() == ONE && (confirm[0] == STR_Y || confirm[0] == STR_YES)){
 			Terminal::wrpro(hint);
 			game->hints->clear(arg);
 			game->player->incrementScore(PENALTY_HINT);
@@ -738,21 +740,20 @@ void Game::Executor::execPlay(Game* game, Item* item){
 	uint64_t code = item->getCode();
 
 	if(code == ITEM_WHISTLE){
-		string tune = Terminal::rdstr("What would you like to play? ");
-		if(tune.empty())
+		string input = Terminal::rdstr("What would you like to play? ");
+		if(input.empty())
 			Terminal::wrpro("Do not waste my time, s'il vous plait");
 		else{
 			Item* listener = game->player->getLocation()->get(ITEM_LION);
-			for(unsigned int i = 0 ; i < tune.length() ; i++)
-				tune[i] = tolower(tune[i]);
-			if((listener != NULL) && (!tune.compare(game->general->get(STR_CABBAGE)))){
-				stringstream ss;
+			vector<uint64_t> tune = Tokeniser::splitToCodes(input, SPACE);
+			if(listener != NULL && tune.size() == ONE && tune[0] == STR_CABBAGE){
+				//stringstream ss;
 				Terminal::wrpro(game->general->get(STR_LIONTUNE));
 				listener->setAttribute(CTRL_ITEM_OBSTRUCTION, false); // Lion will no longer obstruct the player
 				game->player->incrementScore(SCORE_PUZZLE);
 			}
 			else
-				Terminal::wrpro("You play \"" + tune + "\" on the whistle.");
+				Terminal::wrpro("You play \"" + input + "\" on the whistle.");
 		}
 	}
 
@@ -935,8 +936,9 @@ void Game::Executor::execTake(Game* game, Item* item){
 		}
 
 		else if(containers.size() == ONE){ // Exactly one available container
-			string confirm = Terminal::rdstr("Take " + item->getShortname() + " in " + containers.front()->getShortname() + "? ");
-			if(!confirm.compare("y") || !confirm.compare("yes")){
+			string input = Terminal::rdstr("Take " + item->getShortname() + " in " + containers.front()->getShortname() + "? ");
+			vector<uint64_t> confirm = Tokeniser::splitToCodes(input, SPACE);
+			if(confirm.size() == ONE && (confirm[0] == STR_Y || confirm[0] == STR_YES)){
 				if(item == containers.front()) // Smartarse wants to insert the item into itself
 					Terminal::wrpro(game->general->get(STR_CONTRECU));
 				else if(!containers.front()->isEmpty()) // Something is currently in container

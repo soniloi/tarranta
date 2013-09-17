@@ -170,8 +170,9 @@ void Game::Dispatcher::dispatchPresentArg(Game* game, Command* command, Item* it
 			}
 
 			else if(containers.size() == ONE){ // Exactly one available liquid
-				string confirm = Terminal::rdstr("Water "  + item->getShortname() + " with " + containers.front()->getItemWithin()->getShortname() + "? ");
-				if(!confirm.compare("y") || !confirm.compare("yes")){
+				string input = Terminal::rdstr("Water "  + item->getShortname() + " with " + containers.front()->getItemWithin()->getShortname() + "? ");
+				vector<uint64_t> confirm = Tokeniser::splitToCodes(input, SPACE);
+				if(confirm.size() == ONE && (confirm[0] == STR_Y || confirm[0] == STR_YES)){
 					game->executor.execWater(game, item, containers.front());
 				}
 			}
@@ -270,8 +271,9 @@ void Game::Dispatcher::dispatchInventoryArg(Game* game, Command* command, Item* 
 			}
 
 			else if(containers.size() == ONE){ // Exactly one available container
-				string confirm = Terminal::rdstr("Insert " + item->getShortname() + " into " + containers.front()->getShortname() + "? ");
-				if(!confirm.compare("y") || !confirm.compare("yes")){
+				string input = Terminal::rdstr("Insert " + item->getShortname() + " into " + containers.front()->getShortname() + "? ");
+				vector<uint64_t> confirm = Tokeniser::splitToCodes(input, SPACE);
+				if(confirm.size() == ONE && (confirm[0] == STR_Y || confirm[0] == STR_YES)){
 					if(item == containers.front()) // Smartarse wants to insert the item into itself
 						Terminal::wrpro(game->general->get(STR_CONTRECU));
 					else if(!containers.front()->isEmpty()) // Something is currently in container
