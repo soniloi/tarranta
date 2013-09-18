@@ -219,6 +219,7 @@ void Game::Executor::execKnit(Game* game){
 	Item* jumper = game->items->get(ITEM_JUMPER);
 	loc->deposit(jumper); // Jumper now appears instead
 	jumper->setLocation(loc);
+	game->player->incrementScore(SCORE_PUZZLE);
 	Terminal::wrpro(game->general->get(STR_KNITJUMP));
 }
 

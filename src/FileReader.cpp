@@ -8,7 +8,7 @@ FileReader::FileReader(string filename){
   this->file.open(filename.c_str());
   if(!file.good()){
     cout << "Error opening file, exiting." << endl;
-    exit(1);
+    exit(EXIT_FAILURE);
   }
 
 	this->bufferIndex = 0;
@@ -18,7 +18,7 @@ FileReader::FileReader(string filename){
 	  this->buffer = file.get();
 	else{
 		cout << "Input file is empty, exiting" << endl;
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 
 }

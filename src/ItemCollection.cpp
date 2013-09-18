@@ -23,7 +23,7 @@ ItemCollection::ItemCollection(FileReader& reader, int& linecount, Station* stat
 		int initloc;
 		Statics::strToInt(initloc, tokens.at(INDEX_IINITLOC));
 
-		if(initloc >= station->getLocationCount()){
+		if(initloc >= station->getLocationCount()){ // Initial location given is out-of-range (greater than the number of locations)
 			cerr << "Bad or corrupt datafile: location out-of-range on line " << linecount << endl;
 			exit(EXIT_FAILURE);
 		}
@@ -33,6 +33,11 @@ ItemCollection::ItemCollection(FileReader& reader, int& linecount, Station* stat
 
 		string shortn = tokens.at(INDEX_ISHORT);
 		uint64_t cd = Statics::strToCode(shortn);
+
+		if(this->items.find(cd) != this->items.end()){ // Item name is not unique
+			cerr << "Bad or corrupt datafile: duplicate item name on line " << linecount << endl;
+			exit(EXIT_FAILURE);
+		}
 
 		string longn = tokens.at(INDEX_ILONG);
 		string fulln = tokens.at(INDEX_IFULL);

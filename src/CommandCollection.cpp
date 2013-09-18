@@ -21,6 +21,11 @@ CommandCollection::CommandCollection(FileReader& reader, int& linecount){
 
 		uint64_t primary = Statics::strToCode(tokens.at(INDEX_CPRIMARY));
 
+		if(this->commands.find(primary) != this->commands.end()){ // Command name is not unique
+			cerr << "Bad or corrupt datafile: duplicate command name on line " << linecount << endl;
+			exit(EXIT_FAILURE);
+		}
+
 		/*
 		 *	Write-enabled testing includes read-enabled testing
 		 *	This arrangement prevents WRITE test commands from being compiled if READ test ones are not
@@ -58,6 +63,10 @@ CommandCollection::CommandCollection(FileReader& reader, int& linecount){
 
 			for(unsigned int i=(INDEX_CSTATUS+ONE) ; i<tokens.size() ; i++){
 				uint64_t cd = Statics::strToCode(tokens.at(i));
+				if(this->commands.find(cd) != this->commands.end()){ // Command key is not unique
+					cerr << "Bad or corrupt datafile: duplicate command name on line " << linecount << endl;
+					exit(EXIT_FAILURE);
+				}
 				this->commands.insert(pair<uint64_t, Command*>(cd, command)); // Add command to collection under alias keys
 			}
 		}
