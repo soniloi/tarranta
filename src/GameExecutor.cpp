@@ -241,8 +241,7 @@ void Game::Executor::execPlugh(Game* game){
  */
 void Game::Executor::execQuit(Game* game){
 
-	string input = Terminal::rdstr("Are you sure? ");
-	vector<uint64_t> confirm = Tokeniser::splitToCodes(input, SPACE);
+	vector<uint64_t> confirm = Terminal::readCodes("Are you sure? ");
 	if(confirm.size() == ONE && (confirm[0] != STR_Y && confirm[0] != STR_YES))
 		return;
 
@@ -475,8 +474,8 @@ void Game::Executor::execHint(Game* game, uint64_t arg){
 	if(hint.empty())
 		Terminal::wrpro(game->hints->get(HINT_DEFAULT));
 	else{
-		string input = Terminal::rdstr("There is something more I can tell you about this, but you will have to accept a point penalty. Is this okay? ");
-		vector<uint64_t> confirm = Tokeniser::splitToCodes(input, SPACE);
+		Terminal::wrpro("There is something more I can tell you about this, but you will have to accept a point penalty.");
+		vector<uint64_t> confirm = Terminal::readCodes("Is this all right? ");
 		if(confirm.size() == ONE && (confirm[0] == STR_Y || confirm[0] == STR_YES)){
 			Terminal::wrpro(hint);
 			game->hints->clear(arg);
@@ -740,20 +739,18 @@ void Game::Executor::execPlay(Game* game, Item* item){
 	uint64_t code = item->getCode();
 
 	if(code == ITEM_WHISTLE){
-		string input = Terminal::rdstr("What would you like to play? ");
-		if(input.empty())
+		vector<uint64_t> tune = Terminal::readCodes("What would you like to play? ");
+		if(tune.empty())
 			Terminal::wrpro("Do not waste my time, s'il vous plait");
 		else{
 			Item* listener = game->player->getLocation()->get(ITEM_LION);
-			vector<uint64_t> tune = Tokeniser::splitToCodes(input, SPACE);
 			if(listener != NULL && tune.size() == ONE && tune[0] == STR_CABBAGE){
-				//stringstream ss;
 				Terminal::wrpro(game->general->get(STR_LIONTUNE));
 				listener->setAttribute(CTRL_ITEM_OBSTRUCTION, false); // Lion will no longer obstruct the player
 				game->player->incrementScore(SCORE_PUZZLE);
 			}
 			else
-				Terminal::wrpro("You play \"" + input + "\" on the whistle.");
+				Terminal::wrpro("You play \"" + Statics::codeToStr(tune[0]) + "\" on the whistle.");
 		}
 	}
 
@@ -936,8 +933,7 @@ void Game::Executor::execTake(Game* game, Item* item){
 		}
 
 		else if(containers.size() == ONE){ // Exactly one available container
-			string input = Terminal::rdstr("Take " + item->getShortname() + " in " + containers.front()->getShortname() + "? ");
-			vector<uint64_t> confirm = Tokeniser::splitToCodes(input, SPACE);
+			vector<uint64_t> confirm = Terminal::readCodes("Take " + item->getShortname() + " in " + containers.front()->getShortname() + "? ");
 			if(confirm.size() == ONE && (confirm[0] == STR_Y || confirm[0] == STR_YES)){
 				if(item == containers.front()) // Smartarse wants to insert the item into itself
 					Terminal::wrpro(game->general->get(STR_CONTRECU));

@@ -108,11 +108,11 @@ void Game::play(){
 	this->on = true;
 	while(this->on){
 
-		string line = Terminal::rdloc(player->getLocation());
+		vector<uint64_t> input = Terminal::readCodesLocation(player->getLocation()->getStub());
 
-		if(!line.empty()){
+		if(!input.empty()){
 
-			this->parser.parseInput(this, line);
+			this->parser.parseInput(this, input);
 			
 			this->player->incrementMoves();
 
@@ -129,11 +129,7 @@ void Game::play(){
 
 			if(!player->isAlive()){ // Something in this move killed the player, see whether they want to live again or quit now
 				Terminal::wrpro(this->general->get(STR_DESREINC));
-				string input = Terminal::rdstr(general->get(STR_ASKREINC));
-				vector<uint64_t> reanimate = Tokeniser::splitToCodes(input, SPACE);
-
-				cerr << reanimate[0] << endl;
-
+				vector<uint64_t> reanimate = Terminal::readCodes(general->get(STR_ASKREINC));
 				if(reanimate.size() == ONE && (reanimate[0] == STR_Y || reanimate[0] == STR_YES)){
 					this->player->reincarnate();
 					this->forgetReturnLocation();

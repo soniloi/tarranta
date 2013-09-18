@@ -8,7 +8,8 @@
 #include <string>
 #include <sstream>
 #include <iostream>
-#include "Location.h"
+#include <vector>
+#include "Tokeniser.h"
 #include "Definitions.h"
 
 using namespace std;
@@ -36,13 +37,9 @@ class Terminal{
 		static void reset();
  		static void wrtab(string str);
  		static void wrpro(string str);
- 		static string rdtab(string str);
- 		static string rdtab();
- 		static string rdpro();
  		static string rdstr(string str);
- 		static string rdloc(Location* loc);
- 		static void wrpro(stringstream ss);
- 		static void wrtab(stringstream ss);
+ 		static vector<uint64_t> readCodes(string prompt);
+ 		static vector<uint64_t> readCodesLocation(string locname);
 };
 
 #endif

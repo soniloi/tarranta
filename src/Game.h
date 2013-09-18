@@ -42,7 +42,7 @@ class Game{
 
 		class Parser{
 		public:
-			void parseInput(Game* game, string line);
+			void parseInput(Game* game, vector<uint64_t> input);
 		};
 
 		class Dispatcher{

@@ -170,8 +170,7 @@ void Game::Dispatcher::dispatchPresentArg(Game* game, Command* command, Item* it
 			}
 
 			else if(containers.size() == ONE){ // Exactly one available liquid
-				string input = Terminal::rdstr("Water "  + item->getShortname() + " with " + containers.front()->getItemWithin()->getShortname() + "? ");
-				vector<uint64_t> confirm = Tokeniser::splitToCodes(input, SPACE);
+				vector<uint64_t> confirm = Terminal::readCodes("Water "  + item->getShortname() + " with " + containers.front()->getItemWithin()->getShortname() + "? ");
 				if(confirm.size() == ONE && (confirm[0] == STR_Y || confirm[0] == STR_YES)){
 					game->executor.execWater(game, item, containers.front());
 				}
@@ -234,8 +233,7 @@ void Game::Dispatcher::dispatchInventoryArg(Game* game, Command* command, Item* 
 			else if(item->getCode() != ITEM_CARTRIDG)
 				Terminal::wrpro("The machine rejects the item you offer in exchange.");
 			else{
-				string furtherinput = Terminal::rdstr("What would you like the machine to dispense in exchange? ");
-				vector<uint64_t> secondarg = Tokeniser::splitToCodes(furtherinput, SPACE);
+				vector<uint64_t> secondarg = Terminal::readCodes("What would you like the machine to dispense in exchange? ");
 				Item* request = game->items->get(secondarg[0]);
 				if(request->getCode() == ITEM_NULL)
 						Terminal::wrpro("The machine does not know what that item is.");
@@ -247,8 +245,7 @@ void Game::Dispatcher::dispatchInventoryArg(Game* game, Command* command, Item* 
 		}
 		case CMD_FREE: game->executor.execFree(game, item); break;
 		case CMD_GIVE: {
-			string furtherinput = Terminal::rdstr("Who or what would you like to give the " + item->getShortname() + " to? ");
-			vector<uint64_t> secondarg = Tokeniser::splitToCodes(furtherinput, SPACE);
+			vector<uint64_t> secondarg = Terminal::readCodes("Who or what would you like to give the " + item->getShortname() + " to? ");
 			Item* receiver = game->items->get(secondarg[0]);
 			if(receiver == game->items->get(ITEM_NULL)) // No such item as that specified as receiver
 				Terminal::wrpro("I do not know who or what that is.");
@@ -271,8 +268,7 @@ void Game::Dispatcher::dispatchInventoryArg(Game* game, Command* command, Item* 
 			}
 
 			else if(containers.size() == ONE){ // Exactly one available container
-				string input = Terminal::rdstr("Insert " + item->getShortname() + " into " + containers.front()->getShortname() + "? ");
-				vector<uint64_t> confirm = Tokeniser::splitToCodes(input, SPACE);
+				vector<uint64_t> confirm = Terminal::readCodes("Insert " + item->getShortname() + " into " + containers.front()->getShortname() + "? ");
 				if(confirm.size() == ONE && (confirm[0] == STR_Y || confirm[0] == STR_YES)){
 					if(item == containers.front()) // Smartarse wants to insert the item into itself
 						Terminal::wrpro(game->general->get(STR_CONTRECU));

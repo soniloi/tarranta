@@ -164,34 +164,6 @@ string Terminal::rd(){
 }
 
 /*
- *	Get string from cin using tabbed prompt
- */
-string Terminal::rdtab(string str){
-	Terminal::wrtab(str, ZERO);
-	Terminal::wrtab(prompttab);
-
-	string result;
-	cin >> result;
-	return result;
-}
-
-/*
- *	Get string from cin using tabbed prompt
- */
-string Terminal::rdtab(){
-	Terminal::wr(prompttab);
-	return Terminal::rd();
-}
-
-/*
- *	Get string from cin using full prompt
- */
-string Terminal::rdpro(){
-	Terminal::wr(promptpro);
-	return Terminal::rd();
-}
-
-/*
  *	Get string from cin using something specified as a prompt
  *	Will align to other prompts by truncation
  */
@@ -201,31 +173,27 @@ string Terminal::rdstr(string str){
 }
 
 /*
- *	Get string from cin using a stub of a location string within a prompt
+ *	Get string from cin and convert it to a vector of codes
  */
-string Terminal::rdloc(Location* location){
-
-	string pr(location->getStub());
-	while((pr.length() + promptend.length()) < promptpro.length())
-		pr += SPACE;
-	
-	pr.resize(promptpro.length() - promptend.length());
-	pr += promptend;
-
-	Terminal::wr(pr);
-	return Terminal::rd();
-
+vector<uint64_t> Terminal::readCodes(string prompt){
+	string input = Terminal::rdstr(prompt);
+	return Tokeniser::splitToCodes(input, SPACE);
 }
 
 /*
- *	Same as above, but accepting stringstreams as well
+ *	Get string from cin and convert it to a vector of codes,
+ *		using a stub of a location string within a prompt
  */
-void Terminal::wrpro(stringstream ss){
-	Terminal::wrpro(ss.str());
+vector<uint64_t> Terminal::readCodesLocation(string locname){
+
+	while((locname.length() + promptend.length()) < promptpro.length())
+		locname += SPACE;
+	
+	locname.resize(promptpro.length() - promptend.length());
+	locname += promptend;
+	Terminal::wr(locname);
+
+	string input = Terminal::rd();
+	return Tokeniser::splitToCodes(input, SPACE);
+
 }
-
-void Terminal::wrtab(stringstream ss){
-	Terminal::wrtab(ss.str());
-}
-
-

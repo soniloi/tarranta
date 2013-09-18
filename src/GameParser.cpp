@@ -3,9 +3,7 @@
 /*
  *	Parse user input
  */
-void Game::Parser::parseInput(Game* game, string line){
-
-		vector<uint64_t> input = Tokeniser::splitToCodes(line, SPACE);
+void Game::Parser::parseInput(Game* game, vector<uint64_t> input){
 
 		Command* command = NULL;
 		Item* item = NULL;
@@ -22,9 +20,7 @@ void Game::Parser::parseInput(Game* game, string line){
 
 				Command* suppcommand = NULL;
 				if(input.size() < TWO){
-					string supplementary = Terminal::rdstr(game->general->get(STR_WHICHWAY));
-
-					vector<uint64_t> supparg = Tokeniser::splitToCodes(supplementary, SPACE);
+					vector<uint64_t> supparg = Terminal::readCodes(game->general->get(STR_WHICHWAY));
 					if(supparg.size() > ZERO)
 						suppcommand = game->commands->get(supparg[ZERO]);
 				}
@@ -104,8 +100,7 @@ void Game::Parser::parseInput(Game* game, string line){
 			else{
 
 				if(!tentativeArg){ // Argument required, but not given
-					string targstr = Terminal::rdstr("What is it you want me to " + commstr + "? ");
-					vector<uint64_t> supparg = Tokeniser::splitToCodes(targstr, SPACE);
+					vector<uint64_t> supparg = Terminal::readCodes("What is it you want me to " + commstr + "? ");
 					if(supparg.size() > ZERO)
 						tentativeArg = supparg[ZERO];
 				}
