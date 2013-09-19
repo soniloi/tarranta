@@ -645,7 +645,22 @@ void Game::Executor::execGive(Game* game, Item* item, Item* receiver){
 	uint64_t itemcode = item->getCode();
 	uint64_t reccode = receiver->getCode();
 
-	if(reccode == ITEM_LION){ // Player wishes to feed lion
+	if(reccode == ITEM_GUNSLING){ // Player wishes to give something to gunslinger
+		if(itemcode == ITEM_MAGAZINE){ // Gunslinger is delighted with magazine
+			Location* loc = game->player->getLocation();
+			Item* cartridge = game->items->get(ITEM_CARTRIDG);
+			loc->deposit(cartridge);
+			cartridge->setLocation(loc);
+			game->destroyItem(item);
+			game->destroyItem(receiver);
+			game->player->incrementScore(SCORE_PUZZLE);
+			Terminal::wrpro(game->general->get(STR_GUNSLING));
+		}
+		else
+			Terminal::wrpro("The gunslinger is uninterested in what you are offering.");
+	}
+
+	else if(reccode == ITEM_LION){ // Player wishes to feed lion
 		if(itemcode == ITEM_KOHLRABI){
 			Terminal::wrpro(game->general->get(STR_LIONKILL)); // Lion does not like cabbage and kills player
 			game->player->extractFromInventory(item);
@@ -661,18 +676,7 @@ void Game::Executor::execGive(Game* game, Item* item, Item* receiver){
 			Terminal::wrpro(game->general->get(STR_LIONYAWN)); // Lion is not interested
 	}
 
-	else if(reccode == ITEM_TROLL){ // Player wishes to feed troll
-		if(item->hasAttribute(CTRL_ITEM_EDIBLE)){
-			Terminal::wrpro(game->general->get(STR_TROLLED));
-			game->player->extractFromInventory(item);
-			item->setLocation(game->station->get(LOCATION_NOWHERE));
-			game->player->kill();
-		}
-		else
-			Terminal::wrpro(game->general->get(STR_TROLYAWN));
-	}
-
-	else if(reccode == ITEM_SKELETON){
+	else if(reccode == ITEM_SKELETON){ // Player wishes to give something to skeleton
 		if(itemcode == ITEM_MILK){
 			Terminal::wrpro(game->general->get(STR_SKELMILK));
 			game->destroyItem(item);
@@ -687,8 +691,19 @@ void Game::Executor::execGive(Game* game, Item* item, Item* receiver){
 			Terminal::wrpro("The skeleton is uninterested in what you are offering.");
 	}
 
+	else if(reccode == ITEM_TROLL){ // Player wishes to feed troll
+		if(item->hasAttribute(CTRL_ITEM_EDIBLE)){
+			Terminal::wrpro(game->general->get(STR_TROLLED));
+			game->player->extractFromInventory(item);
+			item->setLocation(game->station->get(LOCATION_NOWHERE));
+			game->player->kill();
+		}
+		else
+			Terminal::wrpro(game->general->get(STR_TROLYAWN));
+	}
+
 	else
-		Terminal::wrpro("The " + Statics::codeToStr(reccode) + " is not interested in your " + Statics::codeToStr(itemcode));
+		Terminal::wrpro("The " + Statics::codeToStr(reccode) + " is not interested in your " + Statics::codeToStr(itemcode) + ".");
 }
 
 /*
