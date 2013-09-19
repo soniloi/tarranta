@@ -275,13 +275,14 @@ string Location::getBasic(){
 /*
  *	Return string representing a list of items in a map
  *	attributes parameter refers to the types of items that are to be displayed; refer to the Definitions file for this
- *		by default, if this is not set then all items are included	
+ *		by default, if this is not set then all items are included
+ *	Items marked as silent are never displayed in Location descriptions
  */
 string Location::itemListToString(map<uint64_t, Item*> things, int attributes=0){
 
 	string str;
 	for(map<uint64_t, Item*>::iterator it = things.begin() ; it != things.end() ; it++){
-		if(!attributes || it->second->hasAttribute(attributes)){
+		if(!it->second->hasAttribute(CTRL_ITEM_SILENT) && (!attributes || it->second->hasAttribute(attributes))){
 			str += "\nThere is " + it->second->getLongname() + " here";
 			if(it->second->hasAttribute(CTRL_ITEM_OBSTRUCTION) || it->second->hasAttribute(CTRL_ITEM_TREASURE))
 				str += EXCLAMATION;

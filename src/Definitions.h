@@ -112,6 +112,7 @@
 #define CTRL_ITEM_GIVES_INVISIBILITY 0x4000 // Whether wearing or carrying the item grants the player invisibility
 #define CTRL_ITEM_TREASURE 0x8000 // Whether the item is a treasure or not
 #define CTRL_ITEM_FACTORY 0x10000 // Whether the item may be created by the machine in the factory
+#define CTRL_ITEM_SILENT 0x20000 // Whether the item should be shown in location descriptions
 
 // Assorted
 #define INVENTORY_CAPACITY 10 // Initial default capacity of inventory
