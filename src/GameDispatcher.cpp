@@ -41,7 +41,8 @@ void Game::Dispatcher::dispatchMovement(Game* game, Command* command){
 						Terminal::wrpro(game->general->get(STR_PIRATVG2));
 				else{ // Player is invisible to deaf pirate, so can proceed
 					Terminal::wrpro(game->general->get(STR_PIRATSN2));
-					game->executor.execMovement(game, current, next);
+					//game->executor.execMovement(game, current, next);
+					game->movementexec->execMovement(current, next);
 				}
 			}
 			
@@ -60,9 +61,8 @@ void Game::Dispatcher::dispatchMovement(Game* game, Command* command){
 			Terminal::wrpro(game->general->get(STR_MOVNODOW));
 		}
 		else{ // Movement to be attempted
-
-			game->executor.execMovement(game, current, next);
-
+			//game->executor.execMovement(game, current, next);
+			game->movementexec->execMovement(current, next);
 		}
 
 	}

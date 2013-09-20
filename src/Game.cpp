@@ -44,6 +44,8 @@ Game::Game(string filename){
  	this->on = false;
  	this->escaped = false;
 
+	this->movementexec = new MovementExecutor(this);
+
 }
 
 /*
@@ -58,6 +60,9 @@ Game::~Game(){
 	delete this->explanations;
 	delete this->general;
 	delete this->randomevents;
+
+	delete this->movementexec;
+
 	Terminal::reset();
 }
 

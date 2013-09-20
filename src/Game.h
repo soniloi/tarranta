@@ -54,6 +54,14 @@ class Game{
 			void dispatchInventoryArg(Game* game, Command* command, Item* item);
 		};
 
+		class MovementExecutor{
+		private:
+			Game* game;
+		public:
+			MovementExecutor(Game* game);
+			void execMovement(Location* current, Location* next);
+		};
+
 		class Executor{
 		public:
 
@@ -66,7 +74,6 @@ class Game{
 			void execGrab(Game* game, uint64_t arg);
 			#endif
 
-			void execMovement(Game* game, Location* current, Location* next);
 			void execAbracada(Game* game);
 			void execAvnarand(Game* game);
 			void execChimbu(Game* game);
@@ -126,6 +133,8 @@ class Game{
 		Game::Parser parser;
 		Game::Dispatcher dispatcher;
 		Game::Executor executor;
+
+		Game::MovementExecutor* movementexec;
 
 	public:
 		Game(string filename);
