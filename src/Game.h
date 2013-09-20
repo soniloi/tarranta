@@ -143,24 +143,24 @@ class Game{
 			void execPour(Item* item);
 			void execThrow(Item* item);
 		};
-		
-		class Executor{
-		public:
 
+		class TestingExecutor{ // Conditionally-compiled class used for various levels of testing
+		private:
+			Game* game;
+		public:
+			TestingExecutor(Game* game);
 			#ifdef TESTING_READ
-			void execNode(Game* game);
+			void execNode();
 			#endif
 
 			#ifdef TESTING_WRITE
-			void execFlash(Game* game, uint64_t arg);
-			void execGrab(Game* game, uint64_t arg);
+			void execFlash(uint64_t arg);
+			void execGrab(uint64_t arg);
 			#endif
-
 		};
 
 		Game::Parser parser;
 		Game::Dispatcher dispatcher;
-		Game::Executor executor;
 
 		Game::MovementExecutor* movementexec;
 		Game::NoargExecutor* noargexec;
@@ -168,10 +168,13 @@ class Game{
 		Game::PresentargExecutor* presentargexec;
 		Game::InventoryargExecutor* inventoryargexec;
 
+		#ifdef TESTING_READ
+		Game::TestingExecutor* testingexec;
+		#endif
+
 	public:
 		Game(string filename);
 		~Game();
 		void play();
-
 
 };

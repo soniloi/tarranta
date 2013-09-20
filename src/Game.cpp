@@ -50,6 +50,10 @@ Game::Game(string filename){
 	this->presentargexec = new PresentargExecutor(this);
 	this->inventoryargexec = new InventoryargExecutor(this);
 
+	#ifdef TESTING_READ
+	this->testingexec = new TestingExecutor(this);
+	#endif
+
 }
 
 /*
@@ -70,6 +74,10 @@ Game::~Game(){
 	delete this->anyargexec;
 	delete this->presentargexec;
 	delete this->inventoryargexec;
+
+	#ifdef TESTING_READ
+	delete this->testingexec;
+	#endif
 
 	Terminal::reset();
 }
@@ -106,7 +114,7 @@ void Game::play(){
 	 */
 	#ifdef TESTING_WRITE
 
-	this->executor.execGrab(this, ITEM_LAMP); // Grab lamp
+	this->testingexec->execGrab(ITEM_LAMP); // Grab lamp
 	this->presentargexec->execLight((SwitchableItem*) this->items->get(ITEM_LAMP)); // Switch lamp on
 
 	#endif

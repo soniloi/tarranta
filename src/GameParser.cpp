@@ -69,14 +69,14 @@ void Game::Parser::parseInput(Game* game, vector<uint64_t> input){
 				#ifdef TESTING_WRITE // WRITE commands do not exist when READ ones do not
 				if(command->isTestingWrite()){
 					if(command->is(CTRL_COMMAND_TESTING_FLASH))
-						game->executor.execFlash(game, tentativeArg);
+						game->testingexec->execFlash(tentativeArg);
 					else if(command->is(CTRL_COMMAND_TESTING_GRAB))
-						game->executor.execGrab(game, tentativeArg);
+						game->testingexec->execGrab(tentativeArg);
 				}
 				#endif
 			if(command->isTestingRead()){
 				if(command->is(CTRL_COMMAND_TESTING_NODE))
-					game->executor.execNode(game);
+					game->testingexec->execNode();
 			}
 			#endif
 
