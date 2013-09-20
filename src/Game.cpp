@@ -112,7 +112,9 @@ void Game::play(){
 	/*
 	 *	When testing at WRITE level, give player some automatic starting items
 	 */
-	#ifdef TESTING_WRITE
+	//#ifdef TESTING_WRITE 
+
+	#if defined (TESTING_READ) && defined (TESTING_WRITE)
 
 	this->testingexec->execGrab(ITEM_LAMP); // Grab lamp
 	this->presentargexec->execLight((SwitchableItem*) this->items->get(ITEM_LAMP)); // Switch lamp on

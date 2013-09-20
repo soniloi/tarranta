@@ -389,7 +389,9 @@
 #define STR_PIRATSN2 0x7069726174736E32 // When player attempts to sneak past deaf pirate
 #define STR_PLUGH 0x706C756768000000
 #define STR_ROBOT 0x726F626F74000000
-#define STR_SHARDS 0x7368617264730000
+#define STR_SHATFALL 0x7368617466616C6C // When a fragile item shatters on falling through the floor
+#define STR_SHATHERE 0x7368617468657265 // When a fragile item shatters on being dropped carelessly
+#define STR_SHATTHRO 0x736861747468726F // When a fragile item is thrown
 #define STR_SHIP 0x7368697000000000
 #define STR_SHIPALRE 0x73686970616C7265 // When the player has already summoned the ship and attempts to call again
 #define STR_SHMAGIC 0x73686D6167696300

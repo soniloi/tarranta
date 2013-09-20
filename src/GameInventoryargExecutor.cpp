@@ -80,7 +80,7 @@ void Game::InventoryargExecutor::execDrop(Item* item){
 		else{
 			Terminal::wrpro("Because there is no floor here, it falls down. You hear it hit the ground far below.");
 			if(item->hasAttribute(CTRL_ITEM_FRAGILE)){
-				Terminal::wrpro("Fragile as it was, you hear it break into pieces as it makes contact with a surface. You also hear a little cleaner bot come out to collect the remains.");
+				Terminal::wrpro(game->general->get(STR_SHATFALL));
 				game->destroyItem(item);
 			}
 			else{
@@ -90,7 +90,10 @@ void Game::InventoryargExecutor::execDrop(Item* item){
 			}
 		}
 	}
-
+	else if(item->hasAttribute(CTRL_ITEM_FRAGILE) && game->player->getLocation()->hasAttribute(CTRL_LOC_HAS_GRAVITY)){ // Fragile item breaks due to being dropped carelessly
+		Terminal::wrpro(game->general->get(STR_SHATHERE));
+		game->destroyItem(item);
+	}
 	else{
 		Terminal::wrpro(game->general->get(STR_DROPGOOD));
 		current->deposit(item); // Add item to current location's item list
@@ -143,13 +146,13 @@ void Game::InventoryargExecutor::execExchange(Item* item, Item* request){
  */
 void Game::InventoryargExecutor::execFree(Item* item){
 	uint64_t code = item->getCode();
+	execDrop(item);
+
 	Location* current = game->player->getLocation();
-	Item* attackee = current->get(ITEM_WOLF);
+	Item* wolf = current->get(ITEM_WOLF);
 
-	this->execDrop(item);
-
-	if((code == ITEM_LION) && (attackee != NULL)){ // Lion will attack and drive off wolf if released in same location
-		current->extract(attackee); // Remove wolf from location
+	if((code == ITEM_LION) && (wolf->getCode() != ITEM_NULL)){ // Lion will attack and drive off wolf if released in same location
+		current->extract(wolf); // Remove wolf from location
 		Terminal::wrpro(game->general->get(STR_LIONWOLF));
 		game->player->incrementScore(SCORE_PUZZLE);
 	}
@@ -238,9 +241,8 @@ void Game::InventoryargExecutor::execInsert(Item* item, Container* container){
  */
 void Game::InventoryargExecutor::execThrow(Item* item){
 	Terminal::wrpro("You throw as hard as you can.");
-	if(item->hasAttribute(CTRL_ITEM_FRAGILE) && game->player->getLocation()->hasAttribute(CTRL_LOC_HAS_GRAVITY)){
-		Terminal::wrpro("Fragile as it is, it breaks into pieces on contact with a nearby surface.");
-		Terminal::wrpro(game->general->get(STR_SHARDS));
+	if(item->hasAttribute(CTRL_ITEM_FRAGILE)){
+		Terminal::wrpro(game->general->get(STR_SHATTHRO));
 		game->destroyItem(item);
 	}
 	else
