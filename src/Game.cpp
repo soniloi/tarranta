@@ -47,6 +47,7 @@ Game::Game(string filename){
 	this->movementexec = new MovementExecutor(this);
 	this->noargexec = new NoargExecutor(this);
 	this->anyargexec = new AnyargExecutor(this);
+	this->presentargexec = new PresentargExecutor(this);
 
 }
 
@@ -66,6 +67,7 @@ Game::~Game(){
 	delete this->movementexec;
 	delete this->noargexec;
 	delete this->anyargexec;
+	delete this->presentargexec;
 
 	Terminal::reset();
 }
@@ -103,7 +105,7 @@ void Game::play(){
 	#ifdef TESTING_WRITE
 
 	this->executor.execGrab(this, ITEM_LAMP); // Grab lamp
-	this->executor.execLight(this, (SwitchableItem*) this->items->get(ITEM_LAMP)); // Switch lamp on
+	this->presentargexec->execLight((SwitchableItem*) this->items->get(ITEM_LAMP)); // Switch lamp on
 
 	#endif
 

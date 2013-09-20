@@ -101,6 +101,32 @@ class Game{
 			void execTether(uint64_t arg);
 		};
 
+		class PresentargExecutor{ // Class handling commands that have one argument, an Item that must be present in player's vicinity
+		private:
+			Game* game;
+		public:
+			PresentargExecutor(Game* game);
+			void execAttack(Item* item);
+			void execBurn(Item* item);
+			void execDescribe(Item* item);
+			void execEmpty(Container* container);
+			void execIgnore(Item* item);
+			void execLaunch(Item* item);
+			void execLight(SwitchableItem* switchable);
+			void execLock(Item* item);
+			void execOpen(Item* item);
+			void execPlay(Item* item);
+			void execPush(Item* item);
+			void execQuench(SwitchableItem* switchable);
+			void execRead(Item* item);
+			void execRepair(Item* item);
+			void execRob(Item* item);
+			void execRub(Item* item);
+			void execTake(Item* item);
+			void execUnlock(Item* item);
+			void execWater(Item* item, Container* container);
+		};
+
 		class Executor{
 		public:
 
@@ -113,32 +139,13 @@ class Game{
 			void execGrab(Game* game, uint64_t arg);
 			#endif
 
-			void execAttack(Game* game, Item* item);
-			void execBurn(Game* game, Item* item);
-			void execDescribe(Game* game, Item* item);
-			void execEmpty(Game* game, Container* container);
-			void execGive(Game* game, Item* item, Item* receiver);
-			void execIgnore(Game* game, Item* item);
-			void execLaunch(Game* game, Item* item);
-			void execLight(Game* game, SwitchableItem* switchable);
-			void execLock(Game* game, Item* item);
-			void execOpen(Game* game, Item* item);
-			void execPlay(Game* game, Item* item);
-			void execPush(Game* game, Item* item);
-			void execQuench(Game* game, SwitchableItem* switchable);
-			void execRead(Game* game, Item* item);
-			void execRepair(Game* game, Item* item);
-			void execRob(Game* game, Item* item);
-			void execRub(Game* game, Item* item);
-			void execTake(Game* game, Item* item);
-			void execUnlock(Game* game, Item* item);
-			void execWater(Game* game, Item* item, Container* container);
 			void execCook(Game* game, Item* item);
 			void execDrink(Game* game, Item* item);
 			void execDrop(Game* game, Item* item);
 			void execEat(Game* game, Item* item);
 			void execExchange(Game* game, Item* item, Item* request);
 			void execFree(Game* game, Item* item);
+			void execGive(Game* game, Item* item, Item* receiver);
 			void execInsert(Game* game, Item* item, Container* container);
 			void execPour(Game* game, Item* item);
 			void execThrow(Game* game, Item* item);
@@ -151,6 +158,7 @@ class Game{
 		Game::MovementExecutor* movementexec;
 		Game::NoargExecutor* noargexec;
 		Game::AnyargExecutor* anyargexec;
+		Game::PresentargExecutor* presentargexec;
 
 	public:
 		Game(string filename);

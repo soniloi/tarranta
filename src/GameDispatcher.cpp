@@ -126,40 +126,40 @@ void Game::Dispatcher::dispatchPresentArg(Game* game, Command* command, Item* it
 
 	switch(command->getCode()){
 
-		case CMD_ATTACK: game->executor.execAttack(game, item); break;
-		case CMD_BURN: game->executor.execBurn(game, item); break;
-		case CMD_DESCRIBE: game->executor.execDescribe(game, item); break;
+		case CMD_ATTACK: game->presentargexec->execAttack(item); break;
+		case CMD_BURN: game->presentargexec->execBurn(item); break;
+		case CMD_DESCRIBE: game->presentargexec->execDescribe(item); break;
 
 		case CMD_EMPTY:{
 			if(!item->hasAttribute(CTRL_ITEM_CONTAINER)) // Item is not a container
 				Terminal::wrpro("I do not know how to empty such a thing.");
 			else // Item is a container
-				game->executor.execEmpty(game, (Container*) item);
+				game->presentargexec->execEmpty((Container*) item);
 			break;
 		}
-		case CMD_IGNORE: game->executor.execIgnore(game, item); break;
-		case CMD_LAUNCH: game->executor.execLaunch(game, item); break;
+		case CMD_IGNORE: game->presentargexec->execIgnore(item); break;
+		case CMD_LAUNCH: game->presentargexec->execLaunch(item); break;
 		case CMD_LIGHT:{
 			if(!item->hasAttribute(CTRL_ITEM_SWITCHABLE)) // Item is not a switchable item
 				Terminal::wrpro("I do not know how to switch such a thing on.");
 			else // Item is a switchable item
-				game->executor.execLight(game, (SwitchableItem*) item);
+				game->presentargexec->execLight((SwitchableItem*) item);
 			break;
 		}
-		case CMD_PLAY: game->executor.execPlay(game, item); break;
-		case CMD_PUSH: game->executor.execPush(game, item); break;
+		case CMD_PLAY: game->presentargexec->execPlay(item); break;
+		case CMD_PUSH: game->presentargexec->execPush(item); break;
 		case CMD_QUENCH:{
 			if(!item->hasAttribute(CTRL_ITEM_SWITCHABLE)) // Item is not a switchable item
 				Terminal::wrpro("I do not know how to switch such a thing off.");
 			else // Item is a switchable item
-				game->executor.execQuench(game, (SwitchableItem*) item);
+				game->presentargexec->execQuench((SwitchableItem*) item);
 			break;
 		}
-		case CMD_REPAIR: game->executor.execRepair(game, item); break;
-		case CMD_READ: game->executor.execRead(game, item); break;
-		case CMD_ROB: game->executor.execRob(game, item); break;
-		case CMD_RUB: game->executor.execRub(game, item); break;
-		case CMD_TAKE: game->executor.execTake(game, item); break;
+		case CMD_REPAIR: game->presentargexec->execRepair(item); break;
+		case CMD_READ: game->presentargexec->execRead(item); break;
+		case CMD_ROB: game->presentargexec->execRob(item); break;
+		case CMD_RUB: game->presentargexec->execRub(item); break;
+		case CMD_TAKE: game->presentargexec->execTake(item); break;
 
 		case CMD_WATER: {
 
@@ -172,7 +172,7 @@ void Game::Dispatcher::dispatchPresentArg(Game* game, Command* command, Item* it
 			else if(containers.size() == ONE){ // Exactly one available liquid
 				vector<uint64_t> confirm = Terminal::readCodes("Water "  + item->getShortname() + " with " + containers.front()->getItemWithin()->getShortname() + "? ");
 				if(confirm.size() == ONE && (confirm[0] == STR_Y || confirm[0] == STR_YES)){
-					game->executor.execWater(game, item, containers.front());
+					game->presentargexec->execWater(item, containers.front());
 				}
 			}
 
@@ -194,7 +194,7 @@ void Game::Dispatcher::dispatchPresentArg(Game* game, Command* command, Item* it
 				else if((unsigned) choice[0]-ASCII_OFFSET <= containers.size()){ // If player wishes to pour a liquid
 					list<Container*>::iterator it = containers.begin();
 					advance(it, choice[0]-ASCII_OFFSET-ONE); // Iterate to correct position in list
-					game->executor.execWater(game, item, (*it));
+					game->presentargexec->execWater(item, (*it));
 				}
 				else // If player has selected an invalid option
 					Terminal::wrpro(game->general->get(STR_NOOPTION));
