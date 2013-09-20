@@ -121,6 +121,7 @@
 #define PENALTY_HINT -10 // Number of points given to player when they ask for a hint
 #define MAX_MOVES 1000 // The maximum number of moves the player may make during a single game
 #define MAX_MOVES_EVENT (MAX_MOVES/4) // All random events must be displayed within this number of moves
+#define MAX_RESPONSE_TRIES 3 // The number of times to ask player for a yes/no response and just assuming it is no
 
 // Useful locations
 #define LOCATION_AIRLOCKE 31 // The airlock just off the Recreation Hub
@@ -312,6 +313,7 @@
 // Codes for strings
 #define STR_ALREADON 0x616C726561646F6E
 #define STR_ALREADOF 0x616C726561646F66
+#define STR_AMBIG 0x616D626967000000 // Player's response to a question was ambiguous
 #define STR_ASH 0x6173680000000000
 #define STR_ASHMOUSE 0x6173686D6F757365
 #define STR_ASKREINC 0x61736B7265696E63
@@ -357,6 +359,8 @@
 #define STR_MOVNOREM 0x6D6F766E6F72656D
 #define STR_MOVNOWAY 0x6D6F766E6F776179
 #define STR_MOVOBST 0x6D6F766F62737400
+#define STR_N 0x6E00000000000000
+#define STR_NO 0x6E6F000000000000
 #define STR_NOCONTAI 0x6E6F636F6E746169
 #define STR_NOEQUIP 0x6E6F657175697000
 #define STR_NOFISH 0x6E6F666973680000

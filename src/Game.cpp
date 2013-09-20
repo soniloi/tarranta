@@ -152,8 +152,7 @@ void Game::play(){
 
 			if(!player->isAlive()){ // Something in this move killed the player, see whether they want to live again or quit now
 				Terminal::wrpro(this->general->get(STR_DESREINC));
-				vector<uint64_t> reanimate = Terminal::readCodes(general->get(STR_ASKREINC));
-				if(reanimate.size() == ONE && (reanimate[0] == STR_Y || reanimate[0] == STR_YES)){
+				if(this->confirm(general->get(STR_ASKREINC))){
 					this->player->reincarnate();
 					this->forgetReturnLocation();
 					Terminal::wrpro(general->get(STR_DOREINC));

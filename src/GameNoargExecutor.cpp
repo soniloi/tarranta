@@ -154,14 +154,12 @@ void Game::NoargExecutor::execPlugh(){
  *	Execute command to end game
  */
 void Game::NoargExecutor::execQuit(){
-
-	vector<uint64_t> confirm = Terminal::readCodes("Are you sure? ");
-	if(confirm.size() == ONE && (confirm[0] != STR_Y && confirm[0] != STR_YES))
-		return;
-
-	execScore(true);
-	game->on = false;
-
+	if(game->confirm("Are you sure? ")){
+		execScore(true);
+		game->on = false;
+	}
+	else
+		Terminal::wrpro(game->general->get(STR_OK));
 }
 
 /*

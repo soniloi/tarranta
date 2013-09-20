@@ -100,8 +100,7 @@ void Game::AnyargExecutor::execHint(uint64_t arg){
 		Terminal::wrpro(game->hints->get(HINT_DEFAULT));
 	else{
 		Terminal::wrpro("There is something more I can tell you about this, but you will have to accept a point penalty.");
-		vector<uint64_t> confirm = Terminal::readCodes("Is this all right? ");
-		if(confirm.size() == ONE && (confirm[0] == STR_Y || confirm[0] == STR_YES)){
+		if(game->confirm("Is this all right? ")){
 			Terminal::wrpro(hint);
 			game->hints->clear(arg);
 			game->player->incrementScore(PENALTY_HINT);

@@ -351,19 +351,19 @@ void Game::PresentargExecutor::execTake(Item* item){
 		}
 
 		else if(containers.size() == ONE){ // Exactly one available container
-			vector<uint64_t> confirm = Terminal::readCodes("Take " + item->getShortname() + " in " + containers.front()->getShortname() + "? ");
-			if(confirm.size() == ONE && (confirm[0] == STR_Y || confirm[0] == STR_YES)){
+			if(game->confirm("Take " + item->getShortname() + " in " + containers.front()->getShortname() + "? ")){
 				if(item == containers.front()) // Smartarse wants to insert the item into itself
 					Terminal::wrpro(game->general->get(STR_CONTRECU));
 				else if(!containers.front()->isEmpty()) // Something is currently in container
 					Terminal::wrpro(game->general->get(STR_CONTFULL));
 				else{
-					//game->player->getLocation()->extract(item); // Remove item from location
 					item->setLocation(game->station->get(LOCATION_CONTAINER)); // Set item's location to "container"
 					containers.front()->insertItem(item); // Insert item into desired container
 					Terminal::wrpro(item->getShortname() + " taken in " + containers.front()->getShortname() + ".");
 				}
 			}
+			else
+				Terminal::wrpro(game->general->get(STR_OK));
 
 		}
 

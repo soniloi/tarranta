@@ -28,16 +28,41 @@ class Game{
 
 		int calculateScore();
 
+		/*
+		 *	Prevent player from going 'back'
+		 */
 		inline void forgetReturnLocation(){
 			player->getLocation()->setDirection(CMD_BACK, station->get(LOCATION_NOWHERE)); // Set the return location to the nowhere place
 		}
 
+		/*
+		 *	Send an item to nowhere
+		 */
 		inline void destroyItem(Item* item){
 			if(!player->hasInInventory(item)) // Item was at location, not in inventory
 				item->getLocation()->extract(item);
 			else // Item was in inventory, not at location
 				player->extractFromInventory(item);
 			item->setLocation(station->get(LOCATION_NOWHERE));
+		}
+
+		/*
+		 *	Generic confirmation sequence
+		 */
+		inline bool confirm(string prompt){
+			for(int i = 0 ; i < MAX_RESPONSE_TRIES ; i++){
+				vector<uint64_t> confirmation = Terminal::readCodes(prompt);
+				if(confirmation.size() == ONE){
+					if(confirmation[0] == STR_Y || confirmation[0] == STR_YES)
+						return true;
+					else if(confirmation[0] == STR_N || confirmation[0] == STR_NO)
+						return false;
+					else
+						Terminal::wrpro(this->general->get(STR_AMBIG));
+				}
+			}
+			Terminal::wrpro("I will take that as a no."); // Player has run out of attempts, default to no/false
+			return false;
 		}
 
 		class Parser{
