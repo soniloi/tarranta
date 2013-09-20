@@ -88,6 +88,19 @@ class Game{
 			void execZiqua();
 		};
 
+		class AnyargExecutor{ // Class handling commands that have one argument of unspecified type
+		private:
+			Game* game;
+		public:
+			AnyargExecutor(Game* game);
+			void execCall(uint64_t arg);
+			void execExplain(uint64_t arg);
+			void execFly(uint64_t arg);
+			void execHint(uint64_t arg);
+			void execSay(uint64_t arg);
+			void execTether(uint64_t arg);
+		};
+
 		class Executor{
 		public:
 
@@ -100,12 +113,6 @@ class Game{
 			void execGrab(Game* game, uint64_t arg);
 			#endif
 
-			void execCall(Game* game, uint64_t arg);
-			void execExplain(Game* game, uint64_t arg);
-			void execFly(Game* game, uint64_t arg);
-			void execHint(Game* game, uint64_t arg);
-			void execSay(Game* game, uint64_t arg);
-			void execTether(Game* game, uint64_t arg);
 			void execAttack(Game* game, Item* item);
 			void execBurn(Game* game, Item* item);
 			void execDescribe(Game* game, Item* item);
@@ -143,6 +150,7 @@ class Game{
 
 		Game::MovementExecutor* movementexec;
 		Game::NoargExecutor* noargexec;
+		Game::AnyargExecutor* anyargexec;
 
 	public:
 		Game(string filename);

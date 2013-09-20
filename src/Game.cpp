@@ -46,6 +46,7 @@ Game::Game(string filename){
 
 	this->movementexec = new MovementExecutor(this);
 	this->noargexec = new NoargExecutor(this);
+	this->anyargexec = new AnyargExecutor(this);
 
 }
 
@@ -64,6 +65,7 @@ Game::~Game(){
 
 	delete this->movementexec;
 	delete this->noargexec;
+	delete this->anyargexec;
 
 	Terminal::reset();
 }

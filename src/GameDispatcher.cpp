@@ -104,12 +104,12 @@ void Game::Dispatcher::dispatchNoArg(Game* game, Command* command){
 void Game::Dispatcher::dispatchAnyArg(Game* game, Command* command, uint64_t arg){
 
 	switch(command->getCode()){
-		case CMD_CALL: game->executor.execCall(game, arg); break;
-		case CMD_EXPLAIN: game->executor.execExplain(game, arg); break;
-		case CMD_FLY: game->executor.execFly(game, arg); break;
-		case CMD_HINT: game->executor.execHint(game, arg); break;
-		case CMD_SAY: game->executor.execSay(game, arg); break;
-		case CMD_TETHER: game->executor.execTether(game, arg); break;
+		case CMD_CALL: game->anyargexec->execCall(arg); break;
+		case CMD_EXPLAIN: game->anyargexec->execExplain(arg); break;
+		case CMD_FLY: game->anyargexec->execFly(arg); break;
+		case CMD_HINT: game->anyargexec->execHint(arg); break;
+		case CMD_SAY: game->anyargexec->execSay(arg); break;
+		case CMD_TETHER: game->anyargexec->execTether(arg); break;
 	}
 
 }
