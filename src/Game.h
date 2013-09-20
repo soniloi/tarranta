@@ -54,12 +54,38 @@ class Game{
 			void dispatchInventoryArg(Game* game, Command* command, Item* item);
 		};
 
-		class MovementExecutor{
+		class MovementExecutor{ // Class handling movement commands
 		private:
 			Game* game;
 		public:
 			MovementExecutor(Game* game);
 			void execMovement(Location* current, Location* next);
+		};
+
+		class NoargExecutor{ // Class handling commands that no user-input arguments
+		private:
+			Game* game;
+		public:
+			NoargExecutor(Game* game);
+			void execAbracada();
+			void execAvnarand();
+			void execChimbu();
+			void execCommands();
+			void execCsb();
+			void execFish();
+			void execHelp();
+			void execInventor();
+			void execKnit();
+			void execLook();
+			void execPlugh();
+			void execQuit();
+			void execScore(bool final);
+			void execSleep();
+			void execTezazzle();
+			void execVersion();
+			void execXyro();
+			void execXyzzy();
+			void execZiqua();
 		};
 
 		class Executor{
@@ -74,25 +100,6 @@ class Game{
 			void execGrab(Game* game, uint64_t arg);
 			#endif
 
-			void execAbracada(Game* game);
-			void execAvnarand(Game* game);
-			void execChimbu(Game* game);
-			void execCommands(Game* game);
-			void execCsb(Game* game);
-			void execFish(Game* game);
-			void execHelp(Game* game);
-			void execInventor(Game* game);
-			void execKnit(Game* game);
-			void execLook(Game* game);
-			void execPlugh(Game* game);
-			void execQuit(Game* game);
-			void execScore(Game* game, bool final);
-			void execSleep(Game* game);
-			void execTezazzle(Game* game);
-			void execVersion(Game* game);
-			void execXyro(Game* game);
-			void execXyzzy(Game* game);
-			void execZiqua(Game* game);
 			void execCall(Game* game, uint64_t arg);
 			void execExplain(Game* game, uint64_t arg);
 			void execFly(Game* game, uint64_t arg);
@@ -135,6 +142,7 @@ class Game{
 		Game::Executor executor;
 
 		Game::MovementExecutor* movementexec;
+		Game::NoargExecutor* noargexec;
 
 	public:
 		Game(string filename);

@@ -45,6 +45,7 @@ Game::Game(string filename){
  	this->escaped = false;
 
 	this->movementexec = new MovementExecutor(this);
+	this->noargexec = new NoargExecutor(this);
 
 }
 
@@ -62,6 +63,7 @@ Game::~Game(){
 	delete this->randomevents;
 
 	delete this->movementexec;
+	delete this->noargexec;
 
 	Terminal::reset();
 }
@@ -142,7 +144,7 @@ void Game::play(){
 					Terminal::wrtab(player->getLocationArrival());
 				}
 				else
-					this->executor.execQuit(this);
+					this->noargexec->execQuit();
 			}
 
 			else if(this->on){ // Perform the turn-based checks, but only if the game is still going
@@ -154,7 +156,7 @@ void Game::play(){
 
 				if(move >= MAX_MOVES){
 					Terminal::wrpro("You have been wandering around so long here that you die of exhaustion.");
-					this->executor.execScore(this, true);
+					this->noargexec->execScore(true);
 					this->on = false;
 				}
 

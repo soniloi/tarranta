@@ -75,25 +75,25 @@ void Game::Dispatcher::dispatchMovement(Game* game, Command* command){
 void Game::Dispatcher::dispatchNoArg(Game* game, Command* command){
 
 	switch(command->getCode()){
-		case CMD_ABRACADA: game->executor.execAbracada(game); break;
-		case CMD_AVNARAND: game->executor.execAvnarand(game); break;
-		case CMD_CHIMBU: game->executor.execChimbu(game); break;
-		case CMD_COMMANDS: game->executor.execCommands(game); break;
-		case CMD_CSB: game->executor.execCsb(game); break;
-		case CMD_FISH: game->executor.execFish(game); break;
-		case CMD_HELP: game->executor.execHelp(game); break;
-		case CMD_INVENTOR: game->executor.execInventor(game); break;
-		case CMD_KNIT: game->executor.execKnit(game); break;
-		case CMD_LOOK: game->executor.execLook(game); break;
-		case CMD_PLUGH: game->executor.execPlugh(game); break;
-		case CMD_QUIT: game->executor.execQuit(game); break;
-		case CMD_SCORE: game->executor.execScore(game, false); break;
-		case CMD_SLEEP: game->executor.execSleep(game); break;
-		case CMD_TEZAZZLE: game->executor.execTezazzle(game); break;
-		case CMD_VERSION: game->executor.execVersion(game); break;
-		case CMD_XYRO: game->executor.execXyro(game); break;
-		case CMD_XYZZY: game->executor.execXyzzy(game); break;
-		case CMD_ZIQUA: game->executor.execZiqua(game); break;
+		case CMD_ABRACADA: game->noargexec->execAbracada(); break;
+		case CMD_AVNARAND: game->noargexec->execAvnarand(); break;
+		case CMD_CHIMBU: game->noargexec->execChimbu(); break;
+		case CMD_COMMANDS: game->noargexec->execCommands(); break;
+		case CMD_CSB: game->noargexec->execCsb(); break;
+		case CMD_FISH: game->noargexec->execFish(); break;
+		case CMD_HELP: game->noargexec->execHelp(); break;
+		case CMD_INVENTOR: game->noargexec->execInventor(); break;
+		case CMD_KNIT: game->noargexec->execKnit(); break;
+		case CMD_LOOK: game->noargexec->execLook(); break;
+		case CMD_PLUGH: game->noargexec->execPlugh(); break;
+		case CMD_QUIT: game->noargexec->execQuit(); break;
+		case CMD_SCORE: game->noargexec->execScore(false); break;
+		case CMD_SLEEP: game->noargexec->execSleep(); break;
+		case CMD_TEZAZZLE: game->noargexec->execTezazzle(); break;
+		case CMD_VERSION: game->noargexec->execVersion(); break;
+		case CMD_XYRO: game->noargexec->execXyro(); break;
+		case CMD_XYZZY: game->noargexec->execXyzzy(); break;
+		case CMD_ZIQUA: game->noargexec->execZiqua(); break;
 	}
 
 }
