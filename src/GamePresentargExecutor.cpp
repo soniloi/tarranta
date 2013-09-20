@@ -190,6 +190,7 @@ void Game::PresentargExecutor::execPush(Item* item){
 			Terminal::wrpro("It is now in the off position.");
 			if(code == ITEM_BUTTON){ // If button is pressed, turn gravity on in the anteroom
 				game->station->get(LOCATION_ANTEROOM)->setAttribute(CTRL_LOC_HAS_GRAVITY, true);
+				game->station->get(LOCATION_OBSERVATORY)->setAttribute(CTRL_LOC_HAS_GRAVITY, true);
 				Terminal::wrpro(game->general->get(STR_NOHAPPEN));
 			}
 		}
@@ -198,6 +199,7 @@ void Game::PresentargExecutor::execPush(Item* item){
 			Terminal::wrpro("It is now in the on position.");
 			if(code == ITEM_BUTTON){ // If button is pressed, turn gravity off in the anteroom
 				game->station->get(LOCATION_ANTEROOM)->setAttribute(CTRL_LOC_HAS_GRAVITY, false);
+				game->station->get(LOCATION_OBSERVATORY)->setAttribute(CTRL_LOC_HAS_GRAVITY, false);
 				Terminal::wrpro(game->general->get(STR_NOHAPPEN));
 			}
 		}
