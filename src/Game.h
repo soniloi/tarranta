@@ -127,6 +127,23 @@ class Game{
 			void execWater(Item* item, Container* container);
 		};
 
+		class InventoryargExecutor{ // Class handling commands that have one argument, an Item that the player is carrying
+		private:
+			Game* game;
+		public:
+			InventoryargExecutor(Game* game);
+			void execCook(Item* item);
+			void execDrink(Item* item);
+			void execDrop(Item* item);
+			void execEat(Item* item);
+			void execExchange(Item* item, Item* request);
+			void execFree(Item* item);
+			void execGive(Item* item, Item* receiver);
+			void execInsert(Item* item, Container* container);
+			void execPour(Item* item);
+			void execThrow(Item* item);
+		};
+		
 		class Executor{
 		public:
 
@@ -139,16 +156,6 @@ class Game{
 			void execGrab(Game* game, uint64_t arg);
 			#endif
 
-			void execCook(Game* game, Item* item);
-			void execDrink(Game* game, Item* item);
-			void execDrop(Game* game, Item* item);
-			void execEat(Game* game, Item* item);
-			void execExchange(Game* game, Item* item, Item* request);
-			void execFree(Game* game, Item* item);
-			void execGive(Game* game, Item* item, Item* receiver);
-			void execInsert(Game* game, Item* item, Container* container);
-			void execPour(Game* game, Item* item);
-			void execThrow(Game* game, Item* item);
 		};
 
 		Game::Parser parser;
@@ -159,6 +166,7 @@ class Game{
 		Game::NoargExecutor* noargexec;
 		Game::AnyargExecutor* anyargexec;
 		Game::PresentargExecutor* presentargexec;
+		Game::InventoryargExecutor* inventoryargexec;
 
 	public:
 		Game(string filename);

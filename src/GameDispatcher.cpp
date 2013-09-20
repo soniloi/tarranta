@@ -218,15 +218,15 @@ void Game::Dispatcher::dispatchInventoryArg(Game* game, Command* command, Item* 
 	}
 
 	switch(command->getCode()){
-		case CMD_COOK: game->executor.execCook(game, item); break;
+		case CMD_COOK: game->inventoryargexec->execCook(item); break;
 		case CMD_DRINK: {
 			if(!item->hasAttribute(CTRL_ITEM_LIQUID))
 				Terminal::wrpro("I do not know how to drink something that is not liquid.");
 			else
-				game->executor.execDrink(game, item); 
+				game->inventoryargexec->execDrink(item); 
 			break;
 		}
-		case CMD_DROP: game->executor.execDrop(game, item); break;
+		case CMD_DROP: game->inventoryargexec->execDrop(item); break;
 		case CMD_EXCHANGE: {
 			if(!game->player->hasInPresent(game->items->get(ITEM_MACHINE)))
 				Terminal::wrpro("I see nowhere here that it can be exchanged.");
@@ -238,12 +238,12 @@ void Game::Dispatcher::dispatchInventoryArg(Game* game, Command* command, Item* 
 				if(request->getCode() == ITEM_NULL)
 						Terminal::wrpro("The machine does not know what that item is.");
 				else
-					game->executor.execExchange(game, item, request);
+					game->inventoryargexec->execExchange(item, request);
 			}
 
 			break;
 		}
-		case CMD_FREE: game->executor.execFree(game, item); break;
+		case CMD_FREE: game->inventoryargexec->execFree(item); break;
 		case CMD_GIVE: {
 			vector<uint64_t> secondarg = Terminal::readCodes("Who or what would you like to give the " + item->getShortname() + " to? ");
 			Item* receiver = game->items->get(secondarg[0]);
@@ -252,7 +252,7 @@ void Game::Dispatcher::dispatchInventoryArg(Game* game, Command* command, Item* 
 			else if(!game->player->hasInPresent(receiver)) // Item specified as receiver does not exist
 				Terminal::wrpro("I see no " + receiver->getShortname() + " here to give it to.");
 			else // Receiver exists, in player's vicinity
-				game->executor.execGive(game, item, receiver);
+				game->inventoryargexec->execGive(item, receiver);
 			break;
 		}
 		case CMD_INSERT: {
@@ -275,7 +275,7 @@ void Game::Dispatcher::dispatchInventoryArg(Game* game, Command* command, Item* 
 					else if(!containers.front()->isEmpty()) // Something is currently in container
 						Terminal::wrpro(game->general->get(STR_CONTFULL));
 					else{
-						game->executor.execInsert(game, item, containers.front());
+						game->inventoryargexec->execInsert(item, containers.front());
 					}
 				}
 			}
@@ -304,7 +304,7 @@ void Game::Dispatcher::dispatchInventoryArg(Game* game, Command* command, Item* 
 					else if(!(*it)->isEmpty()) // Something is currently in container
 						Terminal::wrpro(game->general->get(STR_CONTFULL));
 					else{
-						game->executor.execInsert(game, item, (*it));
+						game->inventoryargexec->execInsert(item, (*it));
 					}
 				}
 				else{ // If player has selected an invalid option
@@ -322,10 +322,10 @@ void Game::Dispatcher::dispatchInventoryArg(Game* game, Command* command, Item* 
 			if(!item->hasAttribute(CTRL_ITEM_LIQUID))
 				Terminal::wrpro(game->general->get(STR_NONOPOUR));
 			else
-				game->executor.execDrop(game, item); 
+				game->inventoryargexec->execDrop(item); 
 			break;
 		}
-		case CMD_THROW: game->executor.execThrow(game, item); break;
+		case CMD_THROW: game->inventoryargexec->execThrow(item); break;
 	}
 
 }

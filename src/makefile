@@ -1,4 +1,4 @@
-OBJS = Tarranta.o Game.o GameParser.o GameDispatcher.o GameExecutor.o GameMovementExecutor.o GameNoargExecutor.o GameAnyargExecutor.o GamePresentargExecutor.o Station.o ItemCollection.o CommandCollection.o StringCollection.o Location.o Player.o Item.o Container.o SwitchableItem.o Inventory.o Command.o Tokeniser.o Statics.o Terminal.o FileReader.o
+OBJS = Tarranta.o Game.o GameParser.o GameDispatcher.o GameExecutor.o GameMovementExecutor.o GameNoargExecutor.o GameAnyargExecutor.o GamePresentargExecutor.o GameTestingExecutor.o GameInventoryargExecutor.o Station.o ItemCollection.o CommandCollection.o StringCollection.o Location.o Player.o Item.o Container.o SwitchableItem.o Inventory.o Command.o Tokeniser.o Statics.o Terminal.o FileReader.o
 LFLAGS = -Wall -g
 CFLAGS = -Wall -c -g -Os
 CC = clang++
@@ -33,6 +33,12 @@ GameAnyargExecutor.o: Game.h GameAnyargExecutor.cpp Station.h ItemCollection.h C
 
 GamePresentargExecutor.o: Game.h GamePresentargExecutor.cpp Station.h ItemCollection.h CommandCollection.h StringCollection.h Location.h Player.h Inventory.h Item.h Container.h SwitchableItem.h Definitions.h Statics.h FileReader.h Tokeniser.h Terminal.h
 	$(COMPILE) GamePresentargExecutor.cpp
+
+GameInventoryargExecutor.o: Game.h GameInventoryargExecutor.cpp Station.h ItemCollection.h CommandCollection.h StringCollection.h Location.h Player.h Inventory.h Item.h Container.h SwitchableItem.h Definitions.h Statics.h FileReader.h Tokeniser.h Terminal.h
+	$(COMPILE) GameInventoryargExecutor.cpp
+
+GameTestingExecutor.o: Game.h GameTestingExecutor.cpp Station.h ItemCollection.h CommandCollection.h StringCollection.h Location.h Player.h Inventory.h Item.h Container.h SwitchableItem.h Definitions.h Statics.h FileReader.h Tokeniser.h Terminal.h
+	$(COMPILE) GameTestingExecutor.cpp
 
 Station.o: Station.h Station.cpp Location.h Item.h Container.h SwitchableItem.h Definitions.h Statics.h Tokeniser.h
 	$(COMPILE) Station.cpp

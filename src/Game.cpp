@@ -48,6 +48,7 @@ Game::Game(string filename){
 	this->noargexec = new NoargExecutor(this);
 	this->anyargexec = new AnyargExecutor(this);
 	this->presentargexec = new PresentargExecutor(this);
+	this->inventoryargexec = new InventoryargExecutor(this);
 
 }
 
@@ -68,6 +69,7 @@ Game::~Game(){
 	delete this->noargexec;
 	delete this->anyargexec;
 	delete this->presentargexec;
+	delete this->inventoryargexec;
 
 	Terminal::reset();
 }
