@@ -7,12 +7,10 @@ int main(){
 
 	cout << "\033[H\033[2J\n"; // Clear console
 
-	#ifdef TESTING_READ
-	cout << " *** Running with extended READ commands available ***" << endl << endl;
-	#endif
-
-	#ifdef TESTING_WRITE
-	cout << " *** Running with extended WRITE commands available ***" << endl << endl;
+	#if defined (TESTING_WRITE) && defined (TESTING_READ)
+	cout << " *** Running at testing level WRITE ***" << endl << endl;
+	#elif defined (TESTING_READ)
+	cout << " *** Running at testing level READ ***" << endl << endl;
 	#endif
 
 	Game game(DATAFILE);
