@@ -1,5 +1,5 @@
 /*
- *	class representing items that can be switched on and off
+ *	Class representing items that can be switched on and off
  */
 #ifndef SWITCHABLE_H
 #define SWITCHABLE_H
@@ -14,7 +14,6 @@ class SwitchableItem: public Item{
 
 	public:
 		SwitchableItem(uint64_t cd, int stat, string longn, string fulln, string writ, int sz): Item(cd, stat, longn, fulln, writ, sz){
-//			cerr << "Constructor: SwitchableItem\tName\t" << Statics::codeToStr(cd) << ", type is:\t" << typeid(*this).name() << "\tallocating: " << sizeof(*this) << endl << endl;
 			this->code = cd;
 			this->status = stat;
 			this->longname = longn;
@@ -22,7 +21,7 @@ class SwitchableItem: public Item{
 			this->writing = writ;
 			this->size = sz;
 			this->on = false; // On initialisation, item is off
-		}; // This refused to compile if I put it in a separate implementation class (so don't); presumably something to do with inheritance
+		}; // This will not compile if in a separate implementation file (needs to be able to see constructor)
 		~SwitchableItem();
 		bool isOn();
 		void setOn(bool b);

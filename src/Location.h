@@ -16,7 +16,7 @@
 
 using namespace std;
 
-class Item; // Forward declaration of Item class
+class Item; // Forward declaration of Item classes
 class Container;
 
 class Location{

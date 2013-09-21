@@ -7,7 +7,7 @@
 #include <string>
 #include <iostream>
 #include <inttypes.h>
-//#include "Location.h" // For the love of god avoid having to #include this, it's far more trouble than it's worth; stick to forward declarations
+//#include "Location.h" // Avoid having to #include this if possible; leads to circular dependency issues
 #include "Definitions.h"
 #include "Statics.h"
 
@@ -33,7 +33,7 @@ class Item{
 		friend class Inventory;
 		Item(uint64_t cd, int stat, string longn, string fulln, string writ, int sz);
 		virtual ~Item() {}; // Default destructor, nothing to see here
-		uint64_t getCode(); // I think I'll need this as I'm reluctant to have this class give friendship to Location
+		uint64_t getCode();
 		Location* getLocation();
 		bool isPresent(Location* current);
 		bool hasAttribute(int attribute);

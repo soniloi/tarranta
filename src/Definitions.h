@@ -438,5 +438,5 @@
 /*
  *	Useful strings
  */
-#define DATAFILE "/home/soniloi/soi/toyenmelinto/tarranta/src/tarranta.dat"
+#define DATAFILE "tarranta.dat"
 #define FILE_DELIMITER_SECTION "---" // The string used to delimit sections of the datafile

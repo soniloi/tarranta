@@ -1,6 +1,5 @@
 /*
- *	Class representing a player of Tarranta
- *	Mainly just a way of keeping some of the game attributes tidy
+ *	Class representing a game player
  */
 #ifndef PLAYER_H
 #define PLAYER_H

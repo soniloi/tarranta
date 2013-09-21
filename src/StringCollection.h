@@ -1,6 +1,6 @@
 /*
  *	Class representing a map of uint64_t to string
- *	These would be strings read in from file and mapped to a particular key
+ *	These would be strings read in from file and mapped to a particular key, where string key is first converted to a long long
  */
 #include <string>
 #include <map>

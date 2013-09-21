@@ -1,5 +1,5 @@
 /*
- *	A basic string tokeniser
+ *	Class containing assorted tokenisers
  */
 #ifndef TOKENISER_H
 #define TOKENISER_H
