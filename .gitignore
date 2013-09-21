@@ -12,7 +12,7 @@
 *.la
 *.a
 
-# Assorted test files
+# Assorted Test Outputs
 *.out
 
 # Specific Directories
@@ -20,4 +20,4 @@ bitfile/*
 musings/*
 
 # Compiled Binary
-tarrant
+src/tarranta
