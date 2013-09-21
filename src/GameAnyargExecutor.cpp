@@ -78,14 +78,18 @@ void Game::AnyargExecutor::execExplain(uint64_t arg){
 void Game::AnyargExecutor::execFly(uint64_t arg){
 	if(arg == ITEM_SHIP){
 		if(game->player->getLocation()->getID() == LOCATION_SHIP){
-			Terminal::wrpro("You steal the pirate ship and fly away in it. Congratulations, you have successfully escaped from Asterbase Tarranta.");
-			game->player->incrementScore(SCORE_ESCAPE);
-			game->on = false;
-			game->escaped = true;
-			game->noargexec->execScore(true);
+			if(game->player->hasInInventory(game->items->get(ITEM_KEY))){
+				Terminal::wrpro(game->general->get(STR_SHIPFLY));
+				game->player->incrementScore(SCORE_ESCAPE);
+				game->on = false;
+				game->escaped = true;
+				game->noargexec->execScore(true);
+			}
+			else
+				Terminal::wrpro(game->general->get(STR_NOKEY));
 		}
 		else
-			Terminal::wrpro("You are not in any ship that is capable of flying.");
+			Terminal::wrpro(game->general->get(STR_NOSHIP));
 	}
 	else
 		Terminal::wrpro(game->general->get(STR_NONOHOW));
@@ -99,14 +103,12 @@ void Game::AnyargExecutor::execHint(uint64_t arg){
 	if(hint.empty())
 		Terminal::wrpro(game->hints->get(HINT_DEFAULT));
 	else{
-		Terminal::wrpro("There is something more I can tell you about this, but you will have to accept a point penalty.");
-		if(game->confirm("Is this all right? ")){
+		Terminal::wrpro(game->general->get(STR_HINTWARN));
+		if(game->confirm(game->general->get(STR_ASKOK))){
 			Terminal::wrpro(hint);
 			game->hints->clear(arg);
 			game->player->incrementScore(PENALTY_HINT);
 		}
-		else
-			Terminal::wrpro(game->general->get(STR_OK));
 	}
 }
 

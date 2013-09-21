@@ -340,7 +340,7 @@ void Game::PresentargExecutor::execTake(Item* item){
 	else if(item->hasAttribute(CTRL_ITEM_LIQUID)){ // Liquids cannot be carried directly, but must be in containers
 
 		if(item->getLocation() == game->station->get(LOCATION_CONTAINER	)){ // Liquid is currently in a container somewhere else, so we prevent player from taking more until that disappears
-			Terminal::wrpro("I think you have had enough for now, do you not agree?");
+			Terminal::wrpro(game->general->get(STR_ENOUGH));
 			return;
 		}
 
@@ -362,9 +362,6 @@ void Game::PresentargExecutor::execTake(Item* item){
 					Terminal::wrpro(item->getShortname() + " taken in " + containers.front()->getShortname() + ".");
 				}
 			}
-			else
-				Terminal::wrpro(game->general->get(STR_OK));
-
 		}
 
 		else{ // Multiple available containers
@@ -377,7 +374,7 @@ void Game::PresentargExecutor::execTake(Item* item){
 				i++;
 			} 
 			Terminal::wrtab("\t0. None of these");
-			string choice = Terminal::rdstr("Please choose one: ");
+			string choice = Terminal::rdstr(game->general->get(STR_CHOOSE));
 			if(choice.length() > ONE)
 				Terminal::wrpro("I do not understand that selection.");
 			else if(choice[0] == '0'){ // If player wishes to cancel insert

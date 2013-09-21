@@ -55,13 +55,15 @@ class Game{
 				if(confirmation.size() == ONE){
 					if(confirmation[0] == STR_Y || confirmation[0] == STR_YES)
 						return true;
-					else if(confirmation[0] == STR_N || confirmation[0] == STR_NO)
+					else if(confirmation[0] == STR_N || confirmation[0] == STR_NO){
+						Terminal::wrpro(this->general->get(STR_OK));
 						return false;
+					}
 					else
 						Terminal::wrpro(this->general->get(STR_AMBIG));
 				}
 			}
-			Terminal::wrpro("I will take that as a no."); // Player has run out of attempts, default to no/false
+			Terminal::wrpro(this->general->get(STR_ASSUMENO)); // Player has run out of attempts, default to no/false
 			return false;
 		}
 

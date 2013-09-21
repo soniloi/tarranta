@@ -15,7 +15,6 @@ class Container: public Item{
 
 	public:
 		Container(uint64_t cd, int stat, string longn, string fulln, string writ, int sz): Item(cd, stat, longn, fulln, writ, sz){
-			//cerr << "Constructor: Container\t\tName\t" << Statics::codeToStr(cd) << ", type is:\t" << typeid(*this).name() << "\tallocating: " << sizeof(*this) << endl << endl;;
 			this->code = cd;
 			this->status = stat;
 			this->longname = longn;
@@ -23,7 +22,7 @@ class Container: public Item{
 			this->writing = writ;
 			this->size = sz;
 			this->within = NULL; // On initialisation, there is nothing in the container
-		}; // This refused to compile if I put it in a separate implementation class (so don't); presumably something to do with inheritance
+		}; // This will not compile if in a separate implementation file (needs to be able to see constructor)
 		~Container();
 		void insertItem(Item* item);
 		Item* getItemWithin();

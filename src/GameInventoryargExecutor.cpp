@@ -12,15 +12,16 @@ Game::InventoryargExecutor::InventoryargExecutor(Game* game){
  */
 void Game::InventoryargExecutor::execCook(Item* item){
 	if(!game->player->hasInPresent(game->items->get(ITEM_CAULDRON))){
-		Terminal::wrpro("You have nothing to cook it in.");
+		Terminal::wrpro(game->general->get(STR_NOCOOKER));
 		return;
 	}
 	uint64_t code = item->getCode();
 	switch(code){
 		case ITEM_RADISHES:{
 			game->destroyItem(item);
-			Terminal::wrpro("You cook the radishes and this produces an elixir. A large quantity of it now sits in the cauldron.");
+			Terminal::wrpro(game->general->get(STR_RADICOOK));
 			game->player->getLocation()->deposit(game->items->get(ITEM_ELIXIR)); // Remember that we do not set liquid to point to its location
+			game->player->incrementScore(SCORE_PUZZLE);
 			break;
 		}
 		default:{
@@ -78,7 +79,7 @@ void Game::InventoryargExecutor::execDrop(Item* item){
 		if(below == game->station->get(LOCATION_NOWHERE)) // Error state; only way this could happen is error in datafile
 			Terminal::wrpro(game->general->get(STR_ERROR));
 		else{
-			Terminal::wrpro("Because there is no floor here, it falls down. You hear it hit the ground far below.");
+			Terminal::wrpro(game->general->get(STR_NOFLOOR));
 			if(item->hasAttribute(CTRL_ITEM_FRAGILE)){
 				Terminal::wrpro(game->general->get(STR_SHATFALL));
 				game->destroyItem(item);

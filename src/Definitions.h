@@ -316,13 +316,17 @@
 #define STR_AMBIG 0x616D626967000000 // Player's response to a question was ambiguous
 #define STR_ASH 0x6173680000000000
 #define STR_ASHMOUSE 0x6173686D6F757365
+#define STR_ASKOK 0x61736B6F6B000000 // Asking player whether a proposal is all right
 #define STR_ASKREINC 0x61736B7265696E63
+#define STR_ASKSURE 0x61736B7375726500 // Asking player whether they are sure
+#define STR_ASSUMENO 0x617373756D656E6F // I will take that as a no
 #define STR_BEANSTAL 0x6265616E7374616C
 #define STR_BOULDPUL 0x626F756C6470756C
 #define STR_BREAD 0x6272656164000000
 #define STR_CABBAGE 0x6361626261676500
 #define STR_CANTSEE 0x63616E7473656500
 #define STR_CANTSEEH 0x63616E7473656568
+#define STR_CHOOSE 0x63686F6F73650000 // When player is asked to choose
 #define STR_CONSOLE 0X636F6E736f6C6500
 #define STR_CONTFULL 0x636F6E7466756C6C
 #define STR_CONTRECU 0x636F6E7472656375
@@ -337,12 +341,15 @@
 #define STR_DRINKWAT 0x6472696E6B776174
 #define STR_DROPFALL 0x64726F7066616C6C
 #define STR_DROPGOOD 0x64726F70676F6F64
+#define STR_ENOUGH 0x656E6F7567680000 // When player has "had enough" of an item
 #define STR_ERROR 0x6572726F72000000
+#define STR_EXHAUST 0x6578686175737400 // When player drops dead of exhaustion (too many moves made)
 #define STR_FAIRY 0x6661697279000000
 #define STR_GENIE 0x67656E6965000000
 #define STR_GIVEYAWN 0x676976657961776E
 #define STR_GUNSLING 0x67756E736C696E67 // When player gives magazine to gunslinger
 #define STR_HELP 0x68656C7000000000
+#define STR_HINTWARN 0x68696E747761726E // Warning the player of point penalty for asking for a hint
 #define STR_IKR 0x696B720000000000
 #define STR_INITIAL 0x696E697469616C00
 #define STR_KNITJUMP 0x6B6E69746A756D70
@@ -361,21 +368,31 @@
 #define STR_MOVOBST 0x6D6F766F62737400
 #define STR_N 0x6E00000000000000
 #define STR_NO 0x6E6F000000000000
+#define STR_NOAIR 0x6E6F616972000000 // When there is no air to breathe and player suffocates
 #define STR_NOCONTAI 0x6E6F636F6E746169
+#define STR_NOCOOKER 0x6E6F636F6F6B6572 // When there is no cauldron to cook in
 #define STR_NOEQUIP 0x6E6F657175697000
 #define STR_NOFISH 0x6E6F666973680000
 #define STR_NOFIT 0x6E6F666974000000
 #define STR_NOFITWEA 0x6E6F666974776561
+#define STR_NOFLOOR 0x6E6F666C66F7200 // When there is no floor at location and dropped item falls through
+#define STR_NOGRAV 0x6E6F677261760000 // When there is no gravity and player floats away
 #define STR_NOHAPPEN 0x6E6F68617070656E
 #define STR_NOINTERE 0x6E6F696E74657265
+#define STR_NOKEY 0x6E6F6B6579000000 // When player needs the key but does not have it
 #define STR_NOLIGHT 0x6E6F6C6967687400
 #define STR_NOMATCH 0x6E6F6D6174636800
+#define STR_NONOEMPT 0x6E6F6E6F656D7074 // Player is trying to empty an unemptyable item
 #define STR_NONOHOW 0x6E6F6E6F686F7700
 #define STR_NONOPOUR 0x6E6F6E6F706F7572
+#define STR_NONOSWOF 0x6E6F6E6F73776F66 // Player is trying to switch off an item without a switch
+#define STR_NONOSWON 0x6E6F6E6F73776F6E // Player is trying to switch on an item without a switch
 #define STR_NONOWHAT 0x6E6F6E6F77686174
 #define STR_NOOPTION 0x6E6F6F7074696F6E
+#define STR_NOSHIP 0x6E6F736869700000 // When player tries to fly ship but is not in ship
 #define STR_NOSTRONG 0x6E6F7374726F6E67
 #define STR_NOTUIGIN 0x6E6F74756967696E
+#define STR_NOTUIGSE 0x6E6F747569677365 // Player has made ambiguous selection
 #define STR_NOWISEAT 0x6E6F776973656174
 #define STR_NOWRITIN 0x6E6F77726974696E
 #define STR_NUGGGOOD 0x6E756767676F6F64
@@ -392,12 +409,14 @@
 #define STR_PIRATSN1 0x7069726174736E31 // When player attempts to sneak past blind pirate
 #define STR_PIRATSN2 0x7069726174736E32 // When player attempts to sneak past deaf pirate
 #define STR_PLUGH 0x706C756768000000
+#define STR_RADICOOK 0x72616469636F6F6B // When player cooks radishes
 #define STR_ROBOT 0x726F626F74000000
 #define STR_SHATFALL 0x7368617466616C6C // When a fragile item shatters on falling through the floor
 #define STR_SHATHERE 0x7368617468657265 // When a fragile item shatters on being dropped carelessly
 #define STR_SHATTHRO 0x736861747468726F // When a fragile item is thrown
 #define STR_SHIP 0x7368697000000000
-#define STR_SHIPALRE 0x73686970616C7265 // When the player has already summoned the ship and attempts to call again
+#define STR_SHIPALRE 0x73686970616C7265 // When player has already summoned the ship and attempts to call again
+#define STR_SHIPFLY 0x73686970666C7900 // When player successfully flies away in pirate ship
 #define STR_SHMAGIC 0x73686D6167696300
 #define STR_SKELMILK 0x736B656C6D696C6B // When player gives milk to the skeleton
 #define STR_SLEEP 0x736C656570000000

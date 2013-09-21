@@ -154,12 +154,10 @@ void Game::NoargExecutor::execPlugh(){
  *	Execute command to end game
  */
 void Game::NoargExecutor::execQuit(){
-	if(game->confirm("Are you sure? ")){
+	if(game->confirm(game->general->get(STR_ASKSURE))){
 		execScore(true);
 		game->on = false;
 	}
-	else
-		Terminal::wrpro(game->general->get(STR_OK));
 }
 
 /*

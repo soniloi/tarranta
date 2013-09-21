@@ -140,13 +140,13 @@ void Game::play(){
 			this->player->incrementMoves();
 
 			if(!player->hasAir()){ // Something player did means they no longer have air; instant death
-				Terminal::wrpro("There is no air here to breathe. You suffocate.");
+				Terminal::wrpro(this->general->get(STR_NOAIR));
 				player->kill();
 			}
 
 			if(!player->hasGravity() && !player->getLocation()->hasAttribute(CTRL_LOC_HAS_CEILING) && 
 				player->getLocation()->getDirection(CMD_UP) == station->get(LOCATION_NOWHERE)){ // Player drifts away because no gravity and outdoors
-				Terminal::wrpro("With no gravity to keep you here you float up, up, and away from the asteroid's surface, never to be seen again.");
+				Terminal::wrpro(this->general->get(STR_NOGRAV));
 				player->kill();
 			}
 
@@ -170,7 +170,7 @@ void Game::play(){
 				int move = this->player->getMoves();
 
 				if(move >= MAX_MOVES){
-					Terminal::wrpro("You have been wandering around so long here that you die of exhaustion.");
+					Terminal::wrpro(this->general->get(STR_EXHAUST));
 					this->noargexec->execScore(true);
 					this->on = false;
 				}

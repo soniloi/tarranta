@@ -132,7 +132,7 @@ void Game::Dispatcher::dispatchPresentArg(Game* game, Command* command, Item* it
 
 		case CMD_EMPTY:{
 			if(!item->hasAttribute(CTRL_ITEM_CONTAINER)) // Item is not a container
-				Terminal::wrpro("I do not know how to empty such a thing.");
+				Terminal::wrpro(game->general->get(STR_NONOEMPT));
 			else // Item is a container
 				game->presentargexec->execEmpty((Container*) item);
 			break;
@@ -141,7 +141,7 @@ void Game::Dispatcher::dispatchPresentArg(Game* game, Command* command, Item* it
 		case CMD_LAUNCH: game->presentargexec->execLaunch(item); break;
 		case CMD_LIGHT:{
 			if(!item->hasAttribute(CTRL_ITEM_SWITCHABLE)) // Item is not a switchable item
-				Terminal::wrpro("I do not know how to switch such a thing on.");
+				Terminal::wrpro(game->general->get(STR_NONOSWON));
 			else // Item is a switchable item
 				game->presentargexec->execLight((SwitchableItem*) item);
 			break;
@@ -150,7 +150,7 @@ void Game::Dispatcher::dispatchPresentArg(Game* game, Command* command, Item* it
 		case CMD_PUSH: game->presentargexec->execPush(item); break;
 		case CMD_QUENCH:{
 			if(!item->hasAttribute(CTRL_ITEM_SWITCHABLE)) // Item is not a switchable item
-				Terminal::wrpro("I do not know how to switch such a thing off.");
+				Terminal::wrpro(game->general->get(STR_NONOSWOF));
 			else // Item is a switchable item
 				game->presentargexec->execQuench((SwitchableItem*) item);
 			break;
@@ -172,9 +172,6 @@ void Game::Dispatcher::dispatchPresentArg(Game* game, Command* command, Item* it
 			else if(containers.size() == ONE){ // Exactly one available liquid
 				if(game->confirm("Water "  + item->getShortname() + " with " + containers.front()->getItemWithin()->getShortname() + "? "))
 					game->presentargexec->execWater(item, containers.front());
-				else
-					Terminal::wrpro(game->general->get(STR_OK));
-
 			}
 
 			else{ // Multiple available liquids
@@ -187,9 +184,9 @@ void Game::Dispatcher::dispatchPresentArg(Game* game, Command* command, Item* it
 					i++;
 				} 
 				Terminal::wrtab("\t0. None of these");
-				string choice = Terminal::rdstr("Please choose one: ");
+				string choice = Terminal::rdstr(game->general->get(STR_CHOOSE));
 				if(choice.length() > ONE)
-					Terminal::wrpro("I do not understand that selection.");
+					Terminal::wrpro(game->general->get(STR_NOTUIGSE));
 				else if(choice[0] == '0') // If player wishes to cancel pour
 					Terminal::wrpro(game->general->get(STR_OK));
 				else if((unsigned) choice[0]-ASCII_OFFSET <= containers.size()){ // If player wishes to pour a liquid
@@ -277,8 +274,6 @@ void Game::Dispatcher::dispatchInventoryArg(Game* game, Command* command, Item* 
 					else
 						game->inventoryargexec->execInsert(item, containers.front());
 				}
-				else
-					Terminal::wrpro(game->general->get(STR_OK));
 			}
 
 			else{ // Multiple available containers
@@ -291,9 +286,9 @@ void Game::Dispatcher::dispatchInventoryArg(Game* game, Command* command, Item* 
 					i++;
 				} 
 				Terminal::wrtab("\t0. None of these");
-				string choice = Terminal::rdstr("Please choose one: ");
+				string choice = Terminal::rdstr(game->general->get(STR_CHOOSE));
 				if(choice.length() > ONE)
-					Terminal::wrpro("I do not understand that selection.");
+					Terminal::wrpro(game->general->get(STR_NOTUIGSE));
 				else if(choice[0] == '0'){ // If player wishes to cancel insert
 					Terminal::wrpro(game->general->get(STR_OK));
 				}
