@@ -2,6 +2,7 @@
 
 /*
  *	Constructor
+ *	Commands to be included depends on testing level; these are conditionally compiled
  */
 CommandCollection::CommandCollection(FileReader& reader, int& linecount){
 
@@ -26,53 +27,6 @@ CommandCollection::CommandCollection(FileReader& reader, int& linecount){
 			exit(EXIT_FAILURE);
 		}
 
-		/*
-		 *	Write-enabled testing includes read-enabled testing
-		 *	This arrangement prevents WRITE test commands from being compiled if READ test ones are not
-		 */
-/*
-		#ifdef TESTING_READ
-
-			#ifdef TESTING_WRITE
-			Command* command = new Command(status, primary); // If testing at WRITE level, allow any commands
-			this->commands.insert(pair<uint64_t, Command*>(primary, command)); // Add command to collection under primary key
-
-			for(unsigned int i=(INDEX_CSTATUS+ONE) ; i<tokens.size() ; i++){
-				uint64_t cd = Statics::strToCode(tokens.at(i));
-				this->commands.insert(pair<uint64_t, Command*>(cd, command)); // Add command to collection under alias keys
-			}
-			#endif
-
-			#ifndef TESTING_WRITE
-				if(!(status & CTRL_COMMAND_TESTING_WRITE)){ // If not testing at WRITE level, do not create WRITE test commands
-					Command* command = new Command(status, primary); // Create new Command
-					this->commands.insert(pair<uint64_t, Command*>(primary, command)); // Add command to collection under primary key
-
-					for(unsigned int i=(INDEX_CSTATUS+ONE) ; i<tokens.size() ; i++){
-						uint64_t cd = Statics::strToCode(tokens.at(i));
-						this->commands.insert(pair<uint64_t, Command*>(cd, command)); // Add command to collection under alias keys
-					}
-				}
-			#endif
-
-		#endif
-
-		#ifndef TESTING_READ
-		if(!(status & CTRL_COMMAND_TESTING_READ)){ // If not testing at READ level, do not create READ test commands
-			Command* command = new Command(status, primary); // Create new Command
-			this->commands.insert(pair<uint64_t, Command*>(primary, command)); // Add command to collection under primary key
-
-			for(unsigned int i=(INDEX_CSTATUS+ONE) ; i<tokens.size() ; i++){
-				uint64_t cd = Statics::strToCode(tokens.at(i));
-				if(this->commands.find(cd) != this->commands.end()){ // Command key is not unique
-					cerr << "Bad or corrupt datafile: duplicate command name on line " << linecount << endl;
-					exit(EXIT_FAILURE);
-				}
-				this->commands.insert(pair<uint64_t, Command*>(cd, command)); // Add command to collection under alias keys
-			}
-		}
-		#endif
-*/
 		#if defined (TESTING_WRITE) && defined (TESTING_READ) // Testing at WRITE level; allow any commands
 		Command* command = new Command(status, primary);
 		this->commands.insert(pair<uint64_t, Command*>(primary, command)); // Add command to collection under primary key
