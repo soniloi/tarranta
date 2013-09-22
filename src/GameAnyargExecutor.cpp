@@ -123,7 +123,7 @@ void Game::AnyargExecutor::execSay(uint64_t arg){
 		game->player->kill();
 	}
 	else if(arg == STR_HELLO && game->player->hasInPresent(game->items->get(ITEM_ALIEN))){ // Player saying hello to alien
-		Terminal::wrpro(game->general->get(STR_ALIFIRST));
+		Terminal::wrpro(game->general->get(STR_ALICHART));
 	}
 }
 

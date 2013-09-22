@@ -266,6 +266,7 @@
 #define ITEM_CABLE 0x6361626C65000000
 #define ITEM_CARTRIDG 0x6361727472696467
 #define ITEM_CAULDRON 0x6361756C64726F6E
+#define ITEM_CHART 0x6368617274000000
 #define ITEM_COIN 0x636F696E00000000
 #define ITEM_CONSOLE 0x636F6E736F6C6500
 #define ITEM_CORSAIR 0x636F727361697200
@@ -305,6 +306,7 @@
 #define ITEM_SKELETON 0x736B656C65746F6E
 #define ITEM_TOAST 0x746F617374000000
 #define ITEM_TOOTH 0x746F6F7468000000
+#define ITEM_TRANSMIT 0x7472616E736D6974
 #define ITEM_TROLL 0x74726F6C6C000000
 #define ITEM_WATER 0x7761746572000000
 #define ITEM_WHISTLE 0x77686973746C6500
@@ -316,10 +318,9 @@
 #define HINT_DEFAULT 0x64656661756C7400 // Just the word "default" in code form
 
 // Codes for strings
-#define STR_ALIFIRST 0x616C696669727374 // What alien says before player has fetched anything
-#define STR_ALISECON 0x616C697365636F6E // What alien says after player brings chart but before transmitter
-#define STR_ALITHIRD 0x616C697468697264 // What alien says after player brings transmitter but before lens
-#define STR_ALIFOURT 0x616C69666F757374 // What alien says after player has brought everything
+#define STR_ALIBEACO 0x616C69626561636F // What alien says when player brings beacon
+#define STR_ALICHART 0x616C696368617274 // What alien says when player brings chart
+#define STR_ALILENS 0x616C696C656E7300 // What alien says when player brings lens
 #define STR_ALREADON 0x616C726561646F6E
 #define STR_ALREADOF 0x616C726561646F66
 #define STR_AMBIG 0x616D626967000000 // Player's response to a question was ambiguous
@@ -359,6 +360,9 @@
 #define STR_GUNSLING 0x67756E736C696E67 // When player gives magazine to gunslinger
 #define STR_HELLO 0x68656C6C6F000000 // A simple greeting
 #define STR_HELP 0x68656C7000000000
+#define STR_HIBEACON 0x6869626561636F6E // When alien wants player to bring beacon
+#define STR_HICHART 0x6869636861727400 // When alien wants player to bring chart
+#define STR_HILENS 0x68696C656E730000 // When alien wants player to bring lens
 #define STR_HINTWARN 0x68696E747761726E // Warning the player of point penalty for asking for a hint
 #define STR_IKR 0x696B720000000000
 #define STR_INITIAL 0x696E697469616C00

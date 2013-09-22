@@ -36,7 +36,18 @@ class Game{
 		}
 
 		/*
-		 *	Send an item to nowhere
+		 *	Send an item to graveyard; this represents 'normal' end of life for that item
+		 */
+		inline void retireItem(Item* item){
+			if(!player->hasInInventory(item)) // Item was at location, not in inventory
+				item->getLocation()->extract(item);
+			else // Item was in inventory, not at location
+				player->extractFromInventory(item);
+			item->setLocation(station->get(LOCATION_GRAVEYARD));
+		}
+
+		/*
+		 *	Send an item to nowhere; this represents destruction of that item
 		 */
 		inline void destroyItem(Item* item){
 			if(!player->hasInInventory(item)) // Item was at location, not in inventory

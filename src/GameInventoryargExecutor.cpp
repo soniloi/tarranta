@@ -166,7 +166,40 @@ void Game::InventoryargExecutor::execGive(Item* item, Item* receiver){
 	uint64_t itemcode = item->getCode();
 	uint64_t reccode = receiver->getCode();
 
-	if(reccode == ITEM_GUNSLING){ // Player wishes to give something to gunslinger
+	if(reccode == ITEM_ALIEN){ // Player wishes to give something to alien
+		if(itemcode == ITEM_CHART){
+			game->retireItem(item);
+			game->player->incrementScore(SCORE_PUZZLE);
+			Terminal::wrpro(game->general->get(STR_ALICHART));
+		}
+		else if(itemcode == ITEM_TRANSMIT){
+			if(game->items->get(ITEM_CHART)->getLocation()->getID() != LOCATION_GRAVEYARD) // Player has not yet given chart
+				Terminal::wrpro("\"I do not have any use for that item right now,\" says the alien.");
+			else{
+				SwitchableItem* beacon = (SwitchableItem*) item;
+				if(!beacon->isOn())
+					Terminal::wrpro("\"I do not have hands like yours. I cannot switch it on\", says the alien.");
+				else{
+					game->retireItem(item);
+					game->player->incrementScore(SCORE_PUZZLE);
+					Terminal::wrpro(game->general->get(STR_ALIBEACO));
+				}
+			}
+		}
+		else if(itemcode == ITEM_LENS){
+			if(game->items->get(ITEM_TRANSMIT)->getLocation()->getID() != LOCATION_GRAVEYARD) // Player has not yet given beacon (or chart)
+				Terminal::wrpro("\"I do not have any use for that item right now,\" says the alien.");
+			else{
+				game->retireItem(item);
+				game->retireItem(receiver);
+				game->player->addToInventory(game->items->get(ITEM_PENDANT));
+				game->player->incrementScore(SCORE_PUZZLE);
+				Terminal::wrpro(game->general->get(STR_ALILENS));
+			}
+		}
+	}
+
+	else if(reccode == ITEM_GUNSLING){ // Player wishes to give something to gunslinger
 		if(itemcode == ITEM_MAGAZINE){ // Gunslinger is delighted with magazine
 			Location* loc = game->player->getLocation();
 			Item* cartridge = game->items->get(ITEM_CARTRIDG);
