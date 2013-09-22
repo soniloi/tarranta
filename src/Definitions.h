@@ -135,6 +135,7 @@
 #define LOCATION_DOCKINGCONTROL 19 // The docking control area
 #define LOCATION_FACTORY 118 // The factory containing the machine
 #define LOCATION_GARDEN 27 // The garden dome, at ground level
+#define LOCATION_GRAVEYARD 3 // Where Items go when they have left the game AS INTENDED (as opposed to by wanton destruction)
 #define LOCATION_HOT 87 // The Hot room
 #define LOCATION_INVENTORY 1 // When an item has this location, it means it is in the inventory
 #define LOCATION_OBSERVATORY 126 // The upper part of the observatory
@@ -154,6 +155,7 @@
 #define LOCATION_START_1 79
 #define LOCATION_TELEPORT_0 107 // Location of teleporter connected to Experiment Area
 #define LOCATION_TELEPORT_1 128 // Location of teleporter connected to Chasm
+#define LOCATION_THOR 106 // The Thor room
 #define LOCATION_TREASURESTORE 23 // The place the player must bring treasures to
 #define LOCATION_TREETOP 28 // Location of the treetop in the garden (note: not the one in the dream)
 
@@ -249,6 +251,7 @@
 
 // Items
 #define ITEM_ACORN 0x61636F726E000000
+#define ITEM_ALIEN 0x616C69656E000000
 #define ITEM_AQUA 0x6171756100000000
 #define ITEM_BEAN 0x6265616E00000000
 #define ITEM_BEANSTAL 0x6265616E7374616C
@@ -291,10 +294,12 @@
 #define ITEM_NUGGET 0x6E75676765740000
 #define ITEM_NULL 0x6E756C6C00000000
 #define ITEM_PANEL 0x70616E656C000000
+#define ITEM_PENDANT 0x70656E64616E7400
 #define ITEM_PLANT 0x706C616E74000000
 #define ITEM_POTION 0x706F74696F6E0000
 #define ITEM_RADISHES 0x7261646973686573
 #define ITEM_ROBOT 0x726F626F74000000
+#define ITEM_ROD 0x726F640000000000
 #define ITEM_SHIP 0x7368697000000000
 #define ITEM_SHUTTLE 0x73687574746C6500
 #define ITEM_SKELETON 0x736B656C65746F6E
@@ -311,6 +316,10 @@
 #define HINT_DEFAULT 0x64656661756C7400 // Just the word "default" in code form
 
 // Codes for strings
+#define STR_ALIFIRST 0x616C696669727374 // What alien says before player has fetched anything
+#define STR_ALISECON 0x616C697365636F6E // What alien says after player brings chart but before transmitter
+#define STR_ALITHIRD 0x616C697468697264 // What alien says after player brings transmitter but before lens
+#define STR_ALIFOURT 0x616C69666F757374 // What alien says after player has brought everything
 #define STR_ALREADON 0x616C726561646F6E
 #define STR_ALREADOF 0x616C726561646F66
 #define STR_AMBIG 0x616D626967000000 // Player's response to a question was ambiguous
@@ -348,6 +357,7 @@
 #define STR_GENIE 0x67656E6965000000
 #define STR_GIVEYAWN 0x676976657961776E
 #define STR_GUNSLING 0x67756E736C696E67 // When player gives magazine to gunslinger
+#define STR_HELLO 0x68656C6C6F000000 // A simple greeting
 #define STR_HELP 0x68656C7000000000
 #define STR_HINTWARN 0x68696E747761726E // Warning the player of point penalty for asking for a hint
 #define STR_IKR 0x696B720000000000
@@ -397,6 +407,7 @@
 #define STR_NOWRITIN 0x6E6F77726974696E
 #define STR_NUGGGOOD 0x6E756767676F6F64
 #define STR_OK 0x6F6B000000000000
+#define STR_PENDRUB 0x70656E6472756200 // Player rubs pendant
 #define STR_PHILISTI 0x7068696C69737469
 #define STR_PIRATBOO 0x7069726174626F6F
 #define STR_PIRATKIL 0x70697261746B696C

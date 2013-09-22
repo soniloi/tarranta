@@ -310,7 +310,9 @@ void Game::PresentargExecutor::execRob(Item* item){
  */
 void Game::PresentargExecutor::execRub(Item* item){
 	uint64_t code = item->getCode();
-	if(code == ITEM_DRAGON){ // Player wishes to rub dragon
+	if(code == ITEM_LAMP) // Player wishes to rub lamp
+		Terminal::wrpro(game->general->get(STR_GENIE));
+	else if(code == ITEM_DRAGON){ // Player wishes to rub dragon
 		game->player->getLocation()->extract(item);
 		item->setLocation(LOCATION_NOWHERE);
 		Terminal::wrpro(game->general->get(STR_DRAGON));
@@ -320,8 +322,15 @@ void Game::PresentargExecutor::execRub(Item* item){
 		game->player->getLocation()->deposit(tooth); // Dragon leaves tooth behind
 		tooth->setLocation(game->player->getLocation());
 	}
-	else if(code == ITEM_LAMP) // Player wishes to rub lamp
-		Terminal::wrpro(game->general->get(STR_GENIE));
+	else if(code == ITEM_PENDANT){ // Rubbing pendant sends rod treasure to Thor room in a flash of lightning
+		Location* thor = game->station->get(LOCATION_THOR);
+		Item* rod = game->items->get(ITEM_ROD);
+		game->destroyItem(rod); // Remove rod from wherever it was
+		rod->setLocation(thor);
+		thor->deposit(rod);
+		Terminal::wrpro(game->general->get(STR_PENDRUB));
+	}
+
 	else
 		Terminal::wrpro(game->general->get(STR_NOINTERE));
 
@@ -376,7 +385,7 @@ void Game::PresentargExecutor::execTake(Item* item){
 			Terminal::wrtab("\t0. None of these");
 			string choice = Terminal::rdstr(game->general->get(STR_CHOOSE));
 			if(choice.length() > ONE)
-				Terminal::wrpro("I do not understand that selection.");
+				Terminal::wrpro(game->general->get(STR_NOTUIGSE));
 			else if(choice[0] == '0'){ // If player wishes to cancel insert
 				Terminal::wrpro(game->general->get(STR_OK));
 			}

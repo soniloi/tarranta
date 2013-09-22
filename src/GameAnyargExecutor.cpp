@@ -122,6 +122,9 @@ void Game::AnyargExecutor::execSay(uint64_t arg){
 		Terminal::wrpro(game->general->get(STR_PIRATKIL));
 		game->player->kill();
 	}
+	else if(arg == STR_HELLO && game->player->hasInPresent(game->items->get(ITEM_ALIEN))){ // Player saying hello to alien
+		Terminal::wrpro(game->general->get(STR_ALIFIRST));
+	}
 }
 
 /*
