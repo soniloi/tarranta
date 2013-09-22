@@ -123,7 +123,12 @@ void Game::AnyargExecutor::execSay(uint64_t arg){
 		game->player->kill();
 	}
 	else if(arg == STR_HELLO && game->player->hasInPresent(game->items->get(ITEM_ALIEN))){ // Player saying hello to alien
-		Terminal::wrpro(game->general->get(STR_ALICHART));
+		if(game->items->get(ITEM_TRANSMIT)->getLocation()->getID() == LOCATION_GRAVEYARD) // Beacon is done, so alien asks for lens
+			Terminal::wrpro(game->general->get(STR_HILENS));
+		else if(game->items->get(ITEM_CHART)->getLocation()->getID() == LOCATION_GRAVEYARD) // Chart is done, so alien asks for beacon
+			Terminal::wrpro(game->general->get(STR_HIBEACON));
+		else
+			Terminal::wrpro(game->general->get(STR_HICHART)); // Alien asks for chart
 	}
 }
 

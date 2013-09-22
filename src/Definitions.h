@@ -321,6 +321,7 @@
 #define STR_ALIBEACO 0x616C69626561636F // What alien says when player brings beacon
 #define STR_ALICHART 0x616C696368617274 // What alien says when player brings chart
 #define STR_ALILENS 0x616C696C656E7300 // What alien says when player brings lens
+#define STR_ALINOUSE 0x616C696E6F757365 // When alien has no use for an item that it will have use for in the future
 #define STR_ALREADON 0x616C726561646F6E
 #define STR_ALREADOF 0x616C726561646F66
 #define STR_AMBIG 0x616D626967000000 // Player's response to a question was ambiguous

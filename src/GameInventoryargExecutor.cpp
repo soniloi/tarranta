@@ -174,11 +174,11 @@ void Game::InventoryargExecutor::execGive(Item* item, Item* receiver){
 		}
 		else if(itemcode == ITEM_TRANSMIT){
 			if(game->items->get(ITEM_CHART)->getLocation()->getID() != LOCATION_GRAVEYARD) // Player has not yet given chart
-				Terminal::wrpro("\"I do not have any use for that item right now,\" says the alien.");
+				Terminal::wrpro(game->general->get(STR_ALINOUSE));
 			else{
 				SwitchableItem* beacon = (SwitchableItem*) item;
-				if(!beacon->isOn())
-					Terminal::wrpro("\"I do not have hands like yours. I cannot switch it on\", says the alien.");
+				if(!beacon->isOn()) // Alien has no hands, so needs beacon switched on for it
+					Terminal::wrpro(game->general->get(STR_ALINOUSE));
 				else{
 					game->retireItem(item);
 					game->player->incrementScore(SCORE_PUZZLE);
@@ -188,7 +188,7 @@ void Game::InventoryargExecutor::execGive(Item* item, Item* receiver){
 		}
 		else if(itemcode == ITEM_LENS){
 			if(game->items->get(ITEM_TRANSMIT)->getLocation()->getID() != LOCATION_GRAVEYARD) // Player has not yet given beacon (or chart)
-				Terminal::wrpro("\"I do not have any use for that item right now,\" says the alien.");
+				Terminal::wrpro(game->general->get(STR_ALINOUSE));
 			else{
 				game->retireItem(item);
 				game->retireItem(receiver);
@@ -197,6 +197,8 @@ void Game::InventoryargExecutor::execGive(Item* item, Item* receiver){
 				Terminal::wrpro(game->general->get(STR_ALILENS));
 			}
 		}
+		else
+			Terminal::wrpro("The alien is uninterested in what you are offering.");
 	}
 
 	else if(reccode == ITEM_GUNSLING){ // Player wishes to give something to gunslinger
