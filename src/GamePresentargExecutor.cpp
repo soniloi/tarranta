@@ -84,26 +84,23 @@ void Game::PresentargExecutor::execDescribe(Item* item){
 void Game::PresentargExecutor::execEmpty(Container* container){
 
 	Item* itemwithin = container->extractItemWithin();
+
 	if(!itemwithin){ // Nothing in the container
 		Terminal::wrpro("It is already empty.");
 		return;
 	}
 
-	if(itemwithin->hasAttribute(CTRL_ITEM_LIQUID)){
+	if(itemwithin->hasAttribute(CTRL_ITEM_LIQUID)){ // Liquids do not survive out of containers, and get poured away
 		Terminal::wrpro("You pour the " + itemwithin->getShortname() + " out of the " + container->getShortname() + ". It falls to the ground and quickly seeps away.");
 		itemwithin->setLocation(game->station->get(LOCATION_NOWHERE));
 	}
 
-	else if(game->player->hasInInventory(container)){ // Item in container, which is in inventory
+	else{ // Non-liquids get taken into inventory, even if container had been at location; this prevents fragile item cheating
 		game->player->addToInventory(itemwithin);
 		itemwithin->setLocation(game->station->get(LOCATION_INVENTORY));
-		Terminal::wrpro("The " + container->getShortname() + " has been emptied of " + itemwithin->getLongname() + ", which you are now holding.");
+		Terminal::wrpro("You take the " + itemwithin->getLongname() + " out of the " + container->getShortname() + ".");
 	}
-	else{ // Item in container, which is at location but not in inventory
-		game->player->getLocation()->deposit(itemwithin);
-		itemwithin->setLocation(game->player->getLocation());
-		Terminal::wrpro("The " + container->getShortname() + " has been emptied of " + itemwithin->getLongname() + ", which now sits on the ground.");
-	}	
+
 }
 
 /*
