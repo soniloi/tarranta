@@ -65,14 +65,15 @@ void Game::PresentargExecutor::execBurn(Item* item){
 	}
 	else if(code == ITEM_TOAST){ // Burn toast and replace with ash
 		game->destroyItem(item);
+		Terminal::wrpro(game->general->get(STR_TOAST));
 		if(game->player->getLocation()->getID() == LOCATION_AIRLOCKE){
-			Terminal::wrpro(game->general->get(STR_TOAST));
-			Terminal::wrpro(game->general->get(STR_ASHMOUSE));
+			Terminal::wrpro(game->general->get(STR_TOASTALM));
 			Location* loc = game->player->getLocation();
 			loc->setAttribute(CTRL_LOC_HAS_AIR, false); // Air has been blown out of the airlock
 			loc->setDirection(CMD_SOUTHWES, game->station->get(LOCATION_AIRLOCKEOUT));
 			game->player->incrementScore(SCORE_PUZZLE);
 		}
+		Terminal::wrpro(game->general->get(STR_ASHMOUSE));
 	}
 	else{
 		Terminal::wrpro(game->general->get(STR_NONOHOW));
