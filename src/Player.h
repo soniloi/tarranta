@@ -42,6 +42,7 @@ class Player{
 		void incrementMoves();
 		void setLocation(Location* loc);
 		bool hasInPresent(Item* item);
+		bool canAccept(Item* item); // Whether item can fit in inventory
 		bool hasInInventory(Item* item);
 		bool hasInInventoryWithAttribute(int attribute);
 		void addToInventory(Item* item);

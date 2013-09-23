@@ -15,6 +15,24 @@ Inventory::~Inventory(){
 }
 
 /*
+ *	Return combined weight of all items in inventory
+ */
+int Inventory::getWeight(){
+	int result = 0;
+	for(map<uint64_t, Item*>::iterator it = this->items.begin() ; it != this->items.end() ; it++){
+		result += it->second->getWeight();
+	}
+	return result;
+}
+
+/*
+ *	Return true if taking item will *not* put weight over maxcapacity
+ */
+bool Inventory::canAccept(Item* item){
+	return ((item->getWeight() + this->getWeight()) <= this->capacity);
+}
+
+/*
  *	Deposit an item into the inventory
  */
 void Inventory::deposit(Item* item){
@@ -28,15 +46,6 @@ void Inventory::deposit(Item* item){
  *	We cannot use map::find on this because we need to search inside any containers also
  */
 Item* Inventory::get(Item* item){
-/*
-	for(map<uint64_t, Item*>::iterator it = this->items.begin() ; it != this->items.end(); it++){
-		if(it->second == item)
-			return it->second;
-
-	}
-
-	return NULL;
-*/
 
 	map<uint64_t, Item*>::iterator it = this->items.find(item->getCode());
 

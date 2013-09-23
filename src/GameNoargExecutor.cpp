@@ -81,25 +81,31 @@ void Game::NoargExecutor::execCsb(){
  */
 void Game::NoargExecutor::execFish(){
 
-	if(!game->player->hasInInventory(game->items->get(ITEM_NET))){
+	if(!game->player->hasInInventory(game->items->get(ITEM_NET))){ // Player does not have a fishing net
 		Terminal::wrpro(game->general->get(STR_NOEQUIP));
 		return;
 	}
+
 	Item* glint = game->items->get(ITEM_GLINT);
-	if(glint->getLocation() != game->player->getLocation()){
+	if(glint->getLocation() != game->player->getLocation()){ // No "glint in the water" at this location (this is the only thing one would be fishing for)
 		Terminal::wrpro(game->general->get(STR_NOFISH));
+		return;
+	}
+
+	Item* nugget = game->items->get(ITEM_NUGGET);
+	if(!game->player->canAccept(nugget)){ // No room in inventory
+		Terminal::wrpro("The item glinting down there is larger than you can carry right now. You will have to drop something.");
 		return;
 	}
 	glint->getLocation()->extract(glint);
 	glint->setLocation(game->station->get(LOCATION_NOWHERE)); // Remove the glint the player is seeing
 
-	Item* nugget = game->items->get(ITEM_NUGGET);
 	game->player->addToInventory(nugget);
 	nugget->setLocation(game->station->get(LOCATION_INVENTORY)); // Give nugget to player
 
 	Terminal::wrpro(game->general->get(STR_NUGGGOOD));
 	game->player->incrementScore(SCORE_PUZZLE);	
-	
+
 }
 
 /*

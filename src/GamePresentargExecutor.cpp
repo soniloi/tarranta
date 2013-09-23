@@ -50,9 +50,18 @@ void Game::PresentargExecutor::execBurn(Item* item){
 	if(code == ITEM_BOOK)
 		Terminal::wrpro(game->general->get(STR_PHILISTI));
 	else if(code == ITEM_BREAD){ // Burn bread and replace with toast
-		game->destroyItem(item);
+		game->retireItem(item);
 		Terminal::wrpro(game->general->get(STR_BREAD));
-		game->player->addToInventory(game->items->get(ITEM_TOAST));
+		Item* toast = game->items->get(ITEM_TOAST);
+		if(!game->player->canAccept(toast)){ // Toast will not fit in inventory
+			Location* loc = game->player->getLocation();
+			loc->deposit(toast);
+			toast->setLocation(loc);
+		}
+		else{ // Toast will fit in inventory
+			game->player->addToInventory(toast);
+			toast->setLocation(game->station->get(LOCATION_INVENTORY));
+		}
 	}
 	else if(code == ITEM_TOAST){ // Burn toast and replace with ash
 		game->destroyItem(item);
@@ -96,9 +105,13 @@ void Game::PresentargExecutor::execEmpty(Container* container){
 	}
 
 	else{ // Non-liquids get taken into inventory, even if container had been at location; this prevents fragile item cheating
-		game->player->addToInventory(itemwithin);
-		itemwithin->setLocation(game->station->get(LOCATION_INVENTORY));
-		Terminal::wrpro("You take the " + itemwithin->getLongname() + " out of the " + container->getShortname() + ".");
+		if(!game->player->canAccept(itemwithin)) // Only exception is where they would not fit in inventory
+			Terminal::wrpro("The item within is larger than you can carry right now. You will have to drop something else first.");
+		else{
+			game->player->addToInventory(itemwithin);
+			itemwithin->setLocation(game->station->get(LOCATION_INVENTORY));
+			Terminal::wrpro("You take the " + itemwithin->getLongname() + " out of the " + container->getShortname() + ".");
+		}
 	}
 
 }
@@ -274,6 +287,9 @@ void Game::PresentargExecutor::execRob(Item* item){
 			Terminal::wrpro(game->general->get(STR_PIRATBOO));
 			game->player->kill();
 		}
+		else if(!game->player->canAccept(key)){ // No space in inventory
+			Terminal::wrpro("You will not be able to carry what the corsair has. You must drop something first.");
+		}
 		else{ // Player successfully robs corsair
 			Terminal::wrpro(game->general->get(STR_PIRATRB1));
 			game->player->addToInventory(key);
@@ -290,6 +306,8 @@ void Game::PresentargExecutor::execRob(Item* item){
 			Terminal::wrpro(game->general->get(STR_PIRATSEE));
 			game->player->kill();
 		}
+		else if(!game->player->canAccept(medallion))
+			Terminal::wrpro("You will not be able to carry what the buccaneer has. You must drop something first.");
 		else{ // Player successfully robs buccanee
 			Terminal::wrpro(game->general->get(STR_PIRATRB2));
 			game->player->addToInventory(medallion);
@@ -343,6 +361,8 @@ void Game::PresentargExecutor::execTake(Item* item){
 		Terminal::wrpro(game->general->get(STR_TAKEALRE));
 	else if(!item->hasAttribute(CTRL_ITEM_MOBILE) | item->hasAttribute(CTRL_ITEM_OBSTRUCTION)) // Item is not portable, or is an obstruction
 		Terminal::wrpro(game->general->get(STR_TAKENOCA));
+	else if(!game->player->canAccept(item)) // Player is already carrying too many things
+		Terminal::wrpro("That item is larger than you can carry right now. You must drop something else first.");
 	else if(item->hasAttribute(CTRL_ITEM_LIQUID)){ // Liquids cannot be carried directly, but must be in containers
 
 		if(item->getLocation() == game->station->get(LOCATION_CONTAINER	)){ // Liquid is currently in a container somewhere else, so we prevent player from taking more until that disappears
@@ -438,10 +458,17 @@ void Game::PresentargExecutor::execWater(Item* item, Container* container){
 
 			Item* plant = game->items->get(ITEM_PLANT);
 
-			if(game->player->hasInInventory(item)){ // Bean had been in inventory, so plant goes in inventory
+			if(game->player->hasInInventory(item)){ // Bean had been in inventory, so plant goes in inventory in preference
 				game->player->extractFromInventory(item);
-				game->player->addToInventory(plant);
-				plant->setLocation(game->station->get(LOCATION_INVENTORY));
+				if(!game->player->canAccept(plant)){ // Plant does not fit in inventory
+					loc->deposit(plant);
+					plant->setLocation(loc);
+					Terminal::wrpro("The plant is larger than you can carry right now, so you set it down.");
+				}
+				else{ // Plant fits in inventory
+					game->player->addToInventory(plant);
+					plant->setLocation(game->station->get(LOCATION_INVENTORY));
+				}
 			}
 			else{ // Bean had been at location, so plant goes to location
 				loc->extract(item);
@@ -476,6 +503,7 @@ void Game::PresentargExecutor::execWater(Item* item, Container* container){
 
 		Item* liquid = container->extractItemWithin();
 		uint64_t liqcode = liquid->getCode();
+		Location* loc = game->player->getLocation();
 
 		if(liqcode == ITEM_POTION){ // Player waters the plant with potion
 
@@ -483,13 +511,19 @@ void Game::PresentargExecutor::execWater(Item* item, Container* container){
 
 			Item* bean = game->items->get(ITEM_BEAN);
 
-			if(game->player->hasInInventory(item)){ // Plant had been in inventory, so bean goes in inventory
+			if(game->player->hasInInventory(item)){ // Plant had been in inventory, so bean goes in inventory in preference
 				game->player->extractFromInventory(item);
-				game->player->addToInventory(bean);
-				bean->setLocation(game->station->get(LOCATION_INVENTORY));
+				if(!game->player->canAccept(bean)){ // Bean does not fit in inventory
+					loc->deposit(bean);
+					bean->setLocation(loc);
+					Terminal::wrpro("The bean is larger than you can carry right now, so you set it down.");
+				}
+				else{ // Bean fits in inventory
+					game->player->addToInventory(bean);
+					bean->setLocation(game->station->get(LOCATION_INVENTORY));
+				}
 			}
 			else{ // Plant had been at location, so bean goes to location
-				Location* loc = game->player->getLocation();
 				loc->extract(item);
 				loc->deposit(bean);
 				bean->setLocation(loc);

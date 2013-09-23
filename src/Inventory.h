@@ -20,6 +20,8 @@ class Inventory{
  		Inventory(int maxcapacity);
  		~Inventory();
  		void deposit(Item* item);
+ 		int getWeight(); // Return combined weight of all items in inventory
+ 		bool canAccept(Item* item); // Return true if taking item will not put weight over maxcapacity
  		Item* get(Item* item); // Return pointer to desired Item without removing from inventory
  		Item* extract(uint64_t cd); // Return pointer to desired Item and remove from inventory
  		bool contains(Item* item); // Return whether an item is contained in inventory

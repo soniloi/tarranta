@@ -172,6 +172,13 @@ bool Player::hasInPresent(Item* item){
 	return false;
 }
 
+/*
+ *	Return whether item can fit in inventory
+ */
+bool Player::canAccept(Item* item){
+	return this->inventory->canAccept(item);
+}
+
 bool Player::hasInInventory(Item* item){
 	return this->inventory->contains(item);
 }

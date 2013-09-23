@@ -115,7 +115,12 @@
 #define CTRL_ITEM_SILENT 0x20000 // Whether the item should be shown in location descriptions
 
 // Assorted
-#define INVENTORY_CAPACITY 10 // Initial default capacity of inventory
+#if defined (TESTING_READ) && defined (TESTING_WRITE)
+#define INVENTORY_CAPACITY 1000 // Enhanced inventory capacity for testing
+#else
+#define INVENTORY_CAPACITY 16 // Initial default capacity of inventory
+#endif
+
 #define DEATH_CHANCE 1 // One in this number of moves of a random hazard will lead to death
 #define DEATH_PLACES 60 // The number of places a fall or a snomp will kill you will be between zero and this
 #define PENALTY_HINT -10 // Number of points given to player when they ask for a hint

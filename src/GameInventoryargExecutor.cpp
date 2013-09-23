@@ -192,7 +192,10 @@ void Game::InventoryargExecutor::execGive(Item* item, Item* receiver){
 			else{
 				game->retireItem(item);
 				game->retireItem(receiver);
-				game->player->addToInventory(game->items->get(ITEM_PENDANT));
+				Location* loc = game->player->getLocation();
+				Item* pendant = game->items->get(ITEM_PENDANT);
+				pendant->setLocation(loc);
+				loc->deposit(pendant);
 				game->player->incrementScore(SCORE_PUZZLE);
 				Terminal::wrpro(game->general->get(STR_ALILENS));
 			}
