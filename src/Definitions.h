@@ -381,6 +381,9 @@
 #define STR_LIONWHET 0x6C696F6E77686574
 #define STR_LIONWOLF 0x6C696F6E776F6C66
 #define STR_LIONYAWN 0x6C696F6E7961776E
+#define STR_MACHINNO 0x6D616368696E6E6F // Machine does not know item player is requesting
+#define STR_MACHIREJ 0x6D6163686972656A // Machine rejects what is offered in exchange
+#define STR_MACHIWAT 0x6D61636869776174 // Machine wants to know what player wants in exchange
 #define STR_MOVNOAIR 0x6D6F766E6F616972
 #define STR_MOVNOCEI 0x6D6F766E6F636569
 #define STR_MOVNODOW 0x6D6F766E6F646F77
@@ -394,6 +397,7 @@
 #define STR_NOCONTAI 0x6E6F636F6E746169
 #define STR_NOCOOKER 0x6E6F636F6F6B6572 // When there is no cauldron to cook in
 #define STR_NOEQUIP 0x6E6F657175697000
+#define STR_NOEXCHAN 0x6E6F65786368616E // Nowhere to exchange item
 #define STR_NOFISH 0x6E6F666973680000
 #define STR_NOFIT 0x6E6F666974000000
 #define STR_NOFITWEA 0x6E6F666974776561
@@ -404,6 +408,7 @@
 #define STR_NOKEY 0x6E6F6B6579000000 // When player needs the key but does not have it
 #define STR_NOLIGHT 0x6E6F6C6967687400
 #define STR_NOMATCH 0x6E6F6D6174636800
+#define STR_NONODRIN 0x6E6F6E6F6472696E // Player is trying to drink something that is not liquid
 #define STR_NONOEMPT 0x6E6F6E6F656D7074 // Player is trying to empty an unemptyable item
 #define STR_NONOHOW 0x6E6F6E6F686F7700
 #define STR_NONOPOUR 0x6E6F6E6F706F7572
@@ -415,6 +420,7 @@
 #define STR_NOSTRONG 0x6E6F7374726F6E67
 #define STR_NOTUIGIN 0x6E6F74756967696E
 #define STR_NOTUIGSE 0x6E6F747569677365 // Player has made ambiguous selection
+#define STR_NOTVALUE 0x6E6F7476616C7565 // Player offers item of insufficient value in exchange for building
 #define STR_NOWISEAT 0x6E6F776973656174
 #define STR_NOWRITIN 0x6E6F77726974696E
 #define STR_NUGGGOOD 0x6E756767676F6F64
