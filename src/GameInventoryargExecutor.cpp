@@ -104,42 +104,51 @@ void Game::InventoryargExecutor::execDrop(Item* item){
 }
 
 /*
- *	Execute command to give Item item, and request that item with code request be dispensed in return
- *	Requires presence of machine, and the only item that may be exchanged is the cartridge
+ *	Execute command to give Item item, and request that Item request be dispensed in return
  *	request is an item that is not the null item
  */
 void Game::InventoryargExecutor::execExchange(Item* item, Item* request){
 
-	int itemlocid = request->getLocation()->getID();
+	if(item->getCode() == ITEM_CARTRIDG){ // Player is at machine
+		int itemlocid = request->getLocation()->getID();
 
-	if(!request->hasAttribute(CTRL_ITEM_FACTORY)) // Requested item is not a factory-made item
-		Terminal::wrpro("The machine does not know how to create that.");
-	else if(itemlocid != LOCATION_NOWHERE) // Requested item has already been made (is already in play)
-		Terminal::wrpro("The machine has already dispensed that item and will not do so again for the time being.");
-	else{ // Requested item will be created, and cartridge sent to some new location
+		if(!request->hasAttribute(CTRL_ITEM_FACTORY)) // Requested item is not a factory-made item
+			Terminal::wrpro("The machine does not know how to create that.");
+		else if(itemlocid != LOCATION_NOWHERE) // Requested item has already been made (is already in play)
+			Terminal::wrpro("The machine has already dispensed that item and will not do so again for the time being.");
+		else{ // Requested item will be created, and cartridge sent to some new location
 
-		Location* newloc;
-		uint64_t reqcode = request->getCode();
+			Location* newloc;
+			uint64_t reqcode = request->getCode();
 
-		Location* factory = game->station->get(LOCATION_FACTORY);
+			Location* factory = game->station->get(LOCATION_FACTORY);
 
-		if(reqcode == ITEM_LENS) // Player requests lens
-			newloc = game->station->get(LOCATION_OBSERVATORY);
-		else if(reqcode == ITEM_WIRE)
-			newloc = game->station->get(LOCATION_SENSOR);
-		else
-			newloc = game->station->get(LOCATION_NOWHERE); // Default to prevent segmentation faults; do *not* allow this to get executed
+			if(reqcode == ITEM_LENS) // Player requests lens
+				newloc = game->station->get(LOCATION_OBSERVATORY);
+			else if(reqcode == ITEM_WIRE)
+				newloc = game->station->get(LOCATION_SENSOR);
+			else
+				newloc = game->station->get(LOCATION_NOWHERE); // Default to prevent segmentation faults; do *not* allow this to get executed
 
-		game->player->extractFromInventory(item); // Player drops cartridge; do *not* destroy item as we simply wish to reset its location
-		newloc->deposit(item);
-		item->setLocation(newloc);
+			game->player->extractFromInventory(item); // Player drops cartridge; do *not* destroy item as we simply wish to reset its location
+			newloc->deposit(item);
+			item->setLocation(newloc);
 
-		factory->deposit(request);
-		request->setLocation(factory); // Place requested item in factory
+			factory->deposit(request);
+			request->setLocation(factory); // Place requested item in factory
 
-		Terminal::wrpro("The machine accepts your cartridge and dispenses the " + Statics::codeToStr(reqcode) + ".");
-		
+			Terminal::wrpro("The machine accepts your cartridge and dispenses the " + Statics::codeToStr(reqcode) + ".");
+			
+		}
 	}
+
+	else if(request->getCode() == ITEM_BUILDING){ // Player is at farm
+		Terminal::wrpro("You give the " + item->getShortname() + " in exchange.");
+		Terminal::wrpro("Congratulations, you have bought the farm.");
+		game->noargexec->execScore(true);
+		game->on = false; // Game over
+	}
+
 }
 
 /*

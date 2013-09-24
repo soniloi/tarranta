@@ -226,19 +226,28 @@ void Game::Dispatcher::dispatchInventoryArg(Game* game, Command* command, Item* 
 		}
 		case CMD_DROP: game->inventoryargexec->execDrop(item); break;
 		case CMD_EXCHANGE: {
-			if(!game->player->hasInPresent(game->items->get(ITEM_MACHINE)))
-				Terminal::wrpro("I see nowhere here that it can be exchanged.");
-			else if(item->getCode() != ITEM_CARTRIDG)
-				Terminal::wrpro("The machine rejects the item you offer in exchange.");
-			else{
-				vector<uint64_t> secondarg = Terminal::readCodes("What would you like the machine to dispense in exchange? ");
-				Item* request = game->items->get(secondarg[0]);
-				if(request->getCode() == ITEM_NULL)
-						Terminal::wrpro("The machine does not know what that item is.");
-				else
-					game->inventoryargexec->execExchange(item, request);
+			if(game->player->hasInPresent(game->items->get(ITEM_MACHINE))){ // Player performing exchange at machine
+				if(item->getCode() != ITEM_CARTRIDG) // Player attempting to exchange something other than cartridge at machine
+					Terminal::wrpro("The machine rejects the item you offer in exchange.");
+				else{
+					vector<uint64_t> secondarg = Terminal::readCodes("What would you like the machine to dispense in exchange? ");
+					Item* request = game->items->get(secondarg[0]);
+					if(request->getCode() == ITEM_NULL)
+							Terminal::wrpro("The machine does not know what that item is.");
+					else
+						game->inventoryargexec->execExchange(item, request);
+				}
 			}
-
+			else if(game->player->hasInPresent(game->items->get(ITEM_BUILDING))){ // Player performing exchange at farm
+				if(!item->hasAttribute(CTRL_ITEM_TREASURE)) // Player attempting to exchange something other than a treasure for farm
+					Terminal::wrpro("That is certainly not valuable enough to exchange for such a fantastic property opportunity.");
+				else{
+					Item* farm = game->items->get(ITEM_BUILDING);
+					game->inventoryargexec->execExchange(item, farm);
+				}
+			}
+			else
+				Terminal::wrpro("I see nowhere here that it can be exchanged.");
 			break;
 		}
 		case CMD_FREE: game->inventoryargexec->execFree(item); break;
