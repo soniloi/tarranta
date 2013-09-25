@@ -13,7 +13,7 @@ Game::PresentargExecutor::PresentargExecutor(Game* game){
 void Game::PresentargExecutor::execAttack(Item* item){
 	uint64_t code = item->getCode();
 
-	if(code == ITEM_DRAGON || code == ITEM_LION || code == ITEM_WOLF)
+	if(code == ITEM_DRAGON || code == ITEM_LION || code == ITEM_WOLF || code == ITEM_DOGS)
 		Terminal::wrpro(game->general->get(STR_NOWISEAT));
 	
 	else if(code == ITEM_BOULDER){
@@ -25,7 +25,7 @@ void Game::PresentargExecutor::execAttack(Item* item){
 			Location* cellar = game->station->get(LOCATION_CELLAR);
 			loc->setDirection(CMD_DOWN, cellar); // Link location to cellar
 			cellar->setDirection(CMD_UP, loc); // Link cellar to location
-			game->destroyItem(item);
+			game->retireItem(item);
 			loc->deposit(game->items->get(ITEM_DUST)); // Boulder is replaced with dust
 			game->player->setStrong(false);
 			game->player->incrementScore(SCORE_PUZZLE);
@@ -66,7 +66,7 @@ void Game::PresentargExecutor::execBurn(Item* item){
 		}
 	}
 	else if(code == ITEM_TOAST){ // Burn toast and replace with ash
-		game->destroyItem(item);
+		game->retireItem(item);
 		Terminal::wrpro(game->general->get(STR_TOAST));
 		if(game->player->getLocation()->getID() == LOCATION_AIRLOCKE){
 			Terminal::wrpro(game->general->get(STR_TOASTALM));
@@ -241,8 +241,8 @@ void Game::PresentargExecutor::execRepair(Item* item){
 			if(!game->player->hasInPresent(wire))
 				Terminal::wrpro("You do not have the component needed to repair the console.");
 			else{
-				game->destroyItem(wire); // Consume wire
-				game->destroyItem(item); // Remove console
+				game->retireItem(wire); // Consume wire
+				game->retireItem(item); // Remove console
 
 				Item* newpanel = game->items->get(ITEM_PANEL);
 				newpanel->setLocation(item->getLocation());
@@ -472,7 +472,7 @@ void Game::PresentargExecutor::execWater(Item* item, Container* container){
 
 			Item* beanstalk = game->items->get(ITEM_BEANSTAL);
 			Item* blossom = game->items->get(ITEM_BLOSSOM);
-			game->destroyItem(item);
+			game->retireItem(item);
 			loc->deposit(beanstalk);
 			loc->deposit(blossom); // Remove bean and replace with beanstalk bearing asterium blossom
 			beanstalk->setLocation(loc);

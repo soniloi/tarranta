@@ -133,7 +133,7 @@ void Game::NoargExecutor::execKnit(){
 		return;
 	}
 
-	game->destroyItem(yarn); // All yarn is consumed
+	game->retireItem(yarn); // All yarn is consumed
 	Location* loc = game->player->getLocation();
 	Item* jumper = game->items->get(ITEM_JUMPER);
 	loc->deposit(jumper); // Jumper now appears instead

@@ -163,7 +163,7 @@ void Game::AnyargExecutor::execTether(uint64_t arg){
 
 			ship->setDirection(CMD_NORTH, shuttle);
 			shuttle->setDirection(CMD_SOUTH, ship);
-			game->destroyItem(cable);
+			game->retireItem(cable);
 			game->player->incrementScore(SCORE_PUZZLE);
 			Terminal::wrpro(game->general->get(STR_TETHER));
 		}

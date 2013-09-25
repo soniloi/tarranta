@@ -91,7 +91,11 @@ void Game::InventoryargExecutor::execDrop(Item* item){
 			}
 		}
 	}
-	else if(item->hasAttribute(CTRL_ITEM_FRAGILE) && game->player->getLocation()->hasAttribute(CTRL_LOC_HAS_GRAVITY)){ // Fragile item breaks due to being dropped carelessly
+	else if(!current->hasAttribute(CTRL_LOC_HAS_LAND)){ // Player dropping item into water
+		game->destroyItem(item);
+		Terminal::wrpro(game->general->get(STR_DROWNITM));
+	}
+	else if(item->hasAttribute(CTRL_ITEM_FRAGILE) && current->hasAttribute(CTRL_LOC_HAS_GRAVITY)){ // Fragile item breaks due to being dropped carelessly
 		Terminal::wrpro(game->general->get(STR_SHATHERE));
 		game->destroyItem(item);
 	}
