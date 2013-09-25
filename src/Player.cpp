@@ -285,7 +285,7 @@ string Player::inventoryToString(){
 }
 
 bool Player::hasLight(){
-	return (this->location->hasLight() || this->hasInInventoryWithAttribute(CTRL_ITEM_GIVES_LIGHT));
+	return (this->location->hasLight() || this->inventory->hasLight()); // Do *not* change this to hasInInventoryWithAttribute (need to check if switched on)
 }
 
 bool Player::hasAir(){
