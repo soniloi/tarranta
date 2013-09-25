@@ -403,7 +403,7 @@
 #define STR_NOFISH 0x6E6F666973680000
 #define STR_NOFIT 0x6E6F666974000000
 #define STR_NOFITWEA 0x6E6F666974776561
-#define STR_NOFLOOR 0x6E6F666C66F7200 // When there is no floor at location and dropped item falls through
+#define STR_NOFLOOR 0x6E6F666C6F6F7200 // When there is no floor at location and dropped item falls through
 #define STR_NOGRAV 0x6E6F677261760000 // When there is no gravity and player floats away
 #define STR_NOHAPPEN 0x6E6F68617070656E
 #define STR_NOINTERE 0x6E6F696E74657265

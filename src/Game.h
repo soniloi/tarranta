@@ -150,7 +150,6 @@ class Game{
 			void execEmpty(Container* container);
 			void execIgnore(Item* item);
 			void execLight(SwitchableItem* switchable);
-			void execLock(Item* item);
 			void execOpen(Item* item);
 			void execPlay(Item* item);
 			void execPush(Item* item);
@@ -160,7 +159,6 @@ class Game{
 			void execRob(Item* item);
 			void execRub(Item* item);
 			void execTake(Item* item);
-			void execUnlock(Item* item);
 			void execWater(Item* item, Container* container);
 		};
 

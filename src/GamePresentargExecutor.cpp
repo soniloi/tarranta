@@ -22,7 +22,9 @@ void Game::PresentargExecutor::execAttack(Item* item){
 		}
 		else{
 			Location* loc = game->player->getLocation();
-			loc->setDirection(CMD_DOWN, game->station->get(LOCATION_CELLAR)); // Link location to cellar
+			Location* cellar = game->station->get(LOCATION_CELLAR);
+			loc->setDirection(CMD_DOWN, cellar); // Link location to cellar
+			cellar->setDirection(CMD_UP, loc); // Link cellar to location
 			game->destroyItem(item);
 			loc->deposit(game->items->get(ITEM_DUST)); // Boulder is replaced with dust
 			game->player->setStrong(false);
@@ -473,6 +475,8 @@ void Game::PresentargExecutor::execWater(Item* item, Container* container){
 			game->destroyItem(item);
 			loc->deposit(beanstalk);
 			loc->deposit(blossom); // Remove bean and replace with beanstalk bearing asterium blossom
+			beanstalk->setLocation(loc);
+			blossom->setLocation(loc);
 			game->player->incrementScore(SCORE_PUZZLE);
 
 			Terminal::wrpro(game->general->get(STR_BEANSTAL));
