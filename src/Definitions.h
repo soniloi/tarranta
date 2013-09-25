@@ -93,7 +93,7 @@
 #define CTRL_LOC_NEEDSNO_LION 0x80
 #define CTRL_LOC_HAS_CEILING 0x100
 #define CTRL_LOC_HAS_FLOOR 0x200
-#define CTRL_LOC_ONWATER 0x400
+#define CTRL_LOC_HAS_LAND 0x400
 
 // Item control
 #define CTRL_ITEM_CONTAINER 0x1 // Whether the item is capable of containing other items
@@ -114,6 +114,7 @@
 #define CTRL_ITEM_TREASURE 0x8000 // Whether the item is a treasure or not
 #define CTRL_ITEM_FACTORY 0x10000 // Whether the item may be created by the machine in the factory
 #define CTRL_ITEM_SILENT 0x20000 // Whether the item should be shown in location descriptions
+#define CTRL_ITEM_GIVES_LAND 0x40000 // Whether the item gives 'land', i.e. acts as a boat or whatever
 
 // Assorted
 #if defined (TESTING_READ) && defined (TESTING_WRITE)
@@ -228,7 +229,6 @@
 #define CMD_DESCRIBE 0x6465736372696265
 #define CMD_EMPTY 0x656D707479000000
 #define CMD_IGNORE 0x69676E6F72650000
-#define CMD_LAUNCH 0x6C61756E63680000
 #define CMD_LIGHT 0x6C69676874000000
 #define CMD_LOCK 0x6C6F636B00000000
 #define CMD_OPEN 0x6F70656E00000000
@@ -359,6 +359,7 @@
 #define STR_DRINKWAT 0x6472696E6B776174
 #define STR_DROPFALL 0x64726F7066616C6C
 #define STR_DROPGOOD 0x64726F70676F6F64
+#define STR_DROWN 0x64726F776E000000 // When player drowns
 #define STR_ENOUGH 0x656E6F7567680000 // When player has "had enough" of an item
 #define STR_ERROR 0x6572726F72000000
 #define STR_EXHAUST 0x6578686175737400 // When player drops dead of exhaustion (too many moves made)
@@ -387,6 +388,7 @@
 #define STR_MOVNOAIR 0x6D6F766E6F616972
 #define STR_MOVNOCEI 0x6D6F766E6F636569
 #define STR_MOVNODOW 0x6D6F766E6F646F77
+#define STR_MOVNOLAN 0x6D6F766E6F6C616E // No land where player is going
 #define STR_MOVNOOUT 0x6D6F766E6F6F7574
 #define STR_MOVNOREM 0x6D6F766E6F72656D
 #define STR_MOVNOWAY 0x6D6F766E6F776179

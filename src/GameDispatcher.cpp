@@ -53,6 +53,9 @@ void Game::Dispatcher::dispatchMovement(Game* game, Command* command){
 		else if(!next->hasAir() && !game->player->hasInInventoryWithAttribute(CTRL_ITEM_GIVES_AIR)){ // Refuse to move if there is no air
 			Terminal::wrpro(game->general->get(STR_MOVNOAIR));
 		}
+		else if(!next->hasLand() && !game->player->hasInInventoryWithAttribute(CTRL_ITEM_GIVES_LAND)){ // Refuse to move if there is no land
+			Terminal::wrpro(game->general->get(STR_MOVNOLAN));
+		}
 		else if(command->is(CMD_UP) && game->player->hasGravity() && current->hasAttribute(CTRL_LOC_NEEDSNO_GRAVITY)){ // Gravity preventing player from going up
 			Terminal::wrpro(game->general->get(STR_MOVNOCEI));
 		}
@@ -136,7 +139,6 @@ void Game::Dispatcher::dispatchPresentArg(Game* game, Command* command, Item* it
 			break;
 		}
 		case CMD_IGNORE: game->presentargexec->execIgnore(item); break;
-		case CMD_LAUNCH: game->presentargexec->execLaunch(item); break;
 		case CMD_LIGHT:{
 			if(!item->hasAttribute(CTRL_ITEM_SWITCHABLE)) // Item is not a switchable item
 				Terminal::wrpro(game->general->get(STR_NONOSWON));

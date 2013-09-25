@@ -52,6 +52,7 @@ class Location{
 		bool hasAir();
 		bool hasGravity();
 		bool hasNosnomp();
+		bool hasLand();
 		string getLongname();
 		string getStub();
 		string getArrival();

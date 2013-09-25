@@ -184,6 +184,13 @@ bool Location::hasGravity(){
 }
 
 /*
+ *	Check whether there is land at this location (as opposed to water)
+ */
+bool Location::hasLand(){
+	return (this->hasAttribute(CTRL_LOC_HAS_LAND));
+}
+
+/*
  *	Check whether there is any protection from snomps at this location
  */
 bool Location::hasNosnomp(){

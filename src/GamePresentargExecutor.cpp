@@ -132,22 +132,6 @@ void Game::PresentargExecutor::execIgnore(Item* item){
 }
 
 /*
- *	Execute command to launch an item
- */
-void Game::PresentargExecutor::execLaunch(Item* item){
-	uint64_t code = item->getCode();
-	Location* loc = game->player->getLocation();
-
-	if(code == ITEM_DINGHY && loc == game->station->get(LOCATION_LAUNCH)){
-		Terminal::wrpro("You launch the dinghy into the River Amethyst. Almost immediately, the powerful current sweeps you downstream; there is no going back now.");
-		game->player->setLocation(game->station->get(LOCATION_RIVERBRIDGE));
-	}
-	else{
-		Terminal::wrpro(game->general->get(STR_NONOHOW));
-	}
-}
-
-/*
  *	Execute command to turn a switchable item on
  */
 void Game::PresentargExecutor::execLight(SwitchableItem* switchable){

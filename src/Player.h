@@ -59,6 +59,7 @@ class Player{
 		bool hasAir();
 		bool hasGravity();
 		bool hasNosnomp();
+		bool hasLand();
 		
 };
 

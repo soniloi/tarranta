@@ -299,3 +299,7 @@ bool Player::hasGravity(){
 bool Player::hasNosnomp(){
 	return (this->location->hasNosnomp() || this->hasInInventoryWithAttribute(CTRL_ITEM_GIVES_NOSNOMP));
 }
+
+bool Player::hasLand(){
+	return (this->location->hasLand() || this->hasInInventoryWithAttribute(CTRL_ITEM_GIVES_LAND));
+}

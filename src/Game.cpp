@@ -112,13 +112,9 @@ void Game::play(){
 	/*
 	 *	When testing at WRITE level, give player some automatic starting items
 	 */
-	//#ifdef TESTING_WRITE 
-
 	#if defined (TESTING_READ) && defined (TESTING_WRITE)
-
 	this->testingexec->execGrab(ITEM_LAMP); // Grab lamp
 	this->presentargexec->execLight((SwitchableItem*) this->items->get(ITEM_LAMP)); // Switch lamp on
-
 	#endif
 
 	Terminal::wrpro(general->get(STR_INITIAL));
@@ -144,7 +140,12 @@ void Game::play(){
 				player->kill();
 			}
 
-			if(!player->hasGravity() && !player->getLocation()->hasAttribute(CTRL_LOC_HAS_CEILING) && 
+			else if(!player->hasLand()){ // Player has ended up in open water
+				Terminal::wrpro(this->general->get(STR_DROWN));
+				player->kill();
+			}
+
+			else if(!player->hasGravity() && !player->getLocation()->hasAttribute(CTRL_LOC_HAS_CEILING) && 
 				player->getLocation()->getDirection(CMD_UP) == station->get(LOCATION_NOWHERE)){ // Player drifts away because no gravity and outdoors
 				Terminal::wrpro(this->general->get(STR_NOGRAV));
 				player->kill();

@@ -149,7 +149,6 @@ class Game{
 			void execDescribe(Item* item);
 			void execEmpty(Container* container);
 			void execIgnore(Item* item);
-			void execLaunch(Item* item);
 			void execLight(SwitchableItem* switchable);
 			void execLock(Item* item);
 			void execOpen(Item* item);
