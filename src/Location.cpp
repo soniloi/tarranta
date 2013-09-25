@@ -247,7 +247,6 @@ Item* Location::get(uint64_t cd){
  *		and remove it from the location
  */
 Item* Location::extract(Item* item){
-
 	for(map<uint64_t, Item*>::iterator it = this->items.begin() ; it != this->items.end() ; it++){
 		if(it->second == item){
 			this->items.erase(it);
@@ -255,6 +254,24 @@ Item* Location::extract(Item* item){
 		}
 	}
 	return item; // TODO: FIX THIS NONSENSE: all these extract methods should probably just be void instead but not changing now due to consistency
+}
+
+
+/*
+ *	Return whether an item with a certain code is at location
+ *	We cannot use map::find on this because we need to search inside any containers also
+ */
+bool Location::contains(Item* item){
+	for(map<uint64_t, Item*>::iterator it = this->items.begin() ; it != this->items.end(); it++){
+		if(it->second == item)
+			return true;
+		if(it->second->hasAttribute(CTRL_ITEM_CONTAINER)){
+			Container* container = (Container*) it->second;
+			if(container->contains(item))
+				return true;
+		}
+	}
+	return false;
 }
 
 /*
@@ -328,15 +345,11 @@ string Location::getAll(){
  *	Return NULL if none present
  */
 Item* Location::getObstruction(){
-
-	// Search all mobile items
-	for(map<uint64_t, Item*>::iterator it = this->items.begin() ; it != this->items.end() ; it++){
+	for(map<uint64_t, Item*>::iterator it = this->items.begin() ; it != this->items.end() ; it++){ // Search all mobile items
 		if(it->second->hasAttribute(CTRL_ITEM_OBSTRUCTION))
 			return it->second;
 	}
-
 	return NULL;
-
 }
 
 /*

@@ -61,6 +61,7 @@ class Location{
 		Location* getDirection(uint64_t dircode);
 		Item* get(uint64_t cd);
 		Item* extract(Item* item);
+		bool contains(Item* item); // Whether a certain item is at location (including in a container at location)
 		Item* getObstruction();
 		list<Container*> getSuitableContainers(Item* item);
 		Container* getParentContainer(Item* item); // Return the container that contains a certain item

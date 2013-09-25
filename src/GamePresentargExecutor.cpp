@@ -352,7 +352,7 @@ void Game::PresentargExecutor::execTake(Item* item){
 		Terminal::wrpro("That item is larger than you can carry right now. You must drop something else first.");
 	else if(item->hasAttribute(CTRL_ITEM_LIQUID)){ // Liquids cannot be carried directly, but must be in containers
 
-		if(item->getLocation() == game->station->get(LOCATION_CONTAINER	)){ // Liquid is currently in a container somewhere else, so we prevent player from taking more until that disappears
+		if(item->getLocation() == game->station->get(LOCATION_CONTAINER)){ // Liquid is currently in a container somewhere else, so we prevent player from taking more until that disappears
 			Terminal::wrpro(game->general->get(STR_ENOUGH));
 			return;
 		}
@@ -415,8 +415,19 @@ void Game::PresentargExecutor::execTake(Item* item){
 	}
 	else{ // Item is portable
 		Location* itemloc = item->getLocation();
-		if(itemloc != NULL && !game->player->hasInInventory(item))
-			itemloc->extract(item);
+		if(itemloc != NULL && !game->player->hasInInventory(item)){
+			if(itemloc->getID() == LOCATION_CONTAINER){ // Item is inside a container at location
+				Container* container = game->player->getLocation()->getParentContainer(item);
+				if(container == NULL)
+					Terminal::wrpro(game->general->get(STR_ERROR)); // This should not happen anyway
+				else
+					container->extractItemWithin();
+			}
+			else // Item is just normally at location
+				itemloc->extract(item);
+		}
+
+
 		item->setLocation(game->station->get(LOCATION_INVENTORY));
 		game->player->addToInventory(item);
 		if(item->hasAttribute(CTRL_ITEM_WORN))

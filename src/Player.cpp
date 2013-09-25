@@ -165,11 +165,7 @@ void Player::setLocation(Location* loc){
 }
 
 bool Player::hasInPresent(Item* item){
-	if(this->inventory->contains(item))
-		return true;
-	if(this->location->get(item->getCode()))
-		return true;
-	return false;
+	return (this->inventory->contains(item) || this->location->contains(item));
 }
 
 /*
