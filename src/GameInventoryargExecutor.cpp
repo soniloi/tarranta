@@ -18,7 +18,7 @@ void Game::InventoryargExecutor::execCook(Item* item){
 	uint64_t code = item->getCode();
 	switch(code){
 		case ITEM_RADISHES:{
-			game->destroyItem(item);
+			game->retireItem(item);
 			Terminal::wrpro(game->general->get(STR_RADICOOK));
 			game->player->getLocation()->deposit(game->items->get(ITEM_ELIXIR)); // Remember that we do not set liquid to point to its location
 			game->player->incrementScore(SCORE_PUZZLE);
@@ -223,8 +223,8 @@ void Game::InventoryargExecutor::execGive(Item* item, Item* receiver){
 			Item* cartridge = game->items->get(ITEM_CARTRIDG);
 			loc->deposit(cartridge);
 			cartridge->setLocation(loc);
-			game->destroyItem(item);
-			game->destroyItem(receiver);
+			game->retireItem(item);
+			game->retireItem(receiver);
 			game->player->incrementScore(SCORE_PUZZLE);
 			Terminal::wrpro(game->general->get(STR_GUNSLING));
 		}
@@ -251,8 +251,8 @@ void Game::InventoryargExecutor::execGive(Item* item, Item* receiver){
 	else if(reccode == ITEM_SKELETON){ // Player wishes to give something to skeleton
 		if(itemcode == ITEM_MILK){
 			Terminal::wrpro(game->general->get(STR_SKELMILK));
-			game->destroyItem(item);
-			game->destroyItem(receiver);
+			game->retireItem(item);
+			game->retireItem(receiver);
 			Location* loc = game->player->getLocation();
 			Item* brooch = game->items->get(ITEM_BROOCH);
 			brooch->setLocation(loc);

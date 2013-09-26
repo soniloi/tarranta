@@ -86,17 +86,31 @@ Game::~Game(){
  *	Calculate the player's score
  *	This is taken both from the player's standing score from puzzles solved,
  *		together with the number of treasures they currently have in the right place
+ *	If player has not flown away, only treasures from shuttle are counted, at half value
+ *	If player has flown away but without tethering shuttle to ship, treasures from ship	and
+ *		inventory are counted at full value, and treasures from shuttle are counted at half value
+ *	If player has flown away and ship is tethered, treasures from shuttle, ship, and inventory
+ *		are counted at full value
  */
 int Game::calculateScore(){
 	int score = this->player->getScore(); // Start with the player's achievement-based scores
 
 	Location* trove = this->station->get(LOCATION_TREASURESTORE);
-	int treasureCount = trove->countItemsWithAttribute(CTRL_ITEM_TREASURE);
+	int troveTreasureCount = trove->countItemsWithAttribute(CTRL_ITEM_TREASURE);
 
-	if(this->escaped && (trove->getDirection(CMD_SOUTH)->getID() == LOCATION_SHIP))
-		score += (treasureCount * SCORE_TREASURE); // Add the treasure-based scores at double value for escaping with them
+	if(this->escaped){
+		Location* ship = this->station->get(LOCATION_SHIP);
+		int shipTreasureCount = ship->countItemsWithAttribute(CTRL_ITEM_TREASURE);
+		score += (shipTreasureCount * SCORE_TREASURE); // Add the ship's treasure-based scores at full value for escaping with them
+
+		if(trove->getDirection(CMD_SOUTH) == ship)
+			score += (troveTreasureCount * SCORE_TREASURE); // Add the treasure-based scores at full value for
+		else
+			score += (troveTreasureCount * (SCORE_TREASURE >> ONE)); // Add the treasure-based scores at half value for not escaping with them
+	}
+
 	else
-		score += (treasureCount * (SCORE_TREASURE >> ONE)); // Add the treasure-based scores at ordinary value for not escaping with them
+		score += (troveTreasureCount * (SCORE_TREASURE >> ONE)); // Add the treasure-based scores at half value for not escaping with them
 
 	if(score < 0)
 		score = 0; // Don't be mean

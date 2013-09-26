@@ -6,7 +6,7 @@
  *	Conditional compilation stuff
  */
 #define TESTING_READ // Will give access to basic tester commands like node
-#define TESTING_WRITE // Will give access to extended tester commands like flash, grab; will not work unless TESTING_READ is defined also
+//#define TESTING_WRITE // Will give access to extended tester commands like flash, grab; will not work unless TESTING_READ is defined also
 
 /*
  *	Useful integers

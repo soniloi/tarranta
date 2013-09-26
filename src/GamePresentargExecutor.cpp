@@ -26,7 +26,11 @@ void Game::PresentargExecutor::execAttack(Item* item){
 			loc->setDirection(CMD_DOWN, cellar); // Link location to cellar
 			cellar->setDirection(CMD_UP, loc); // Link cellar to location
 			game->retireItem(item);
-			loc->deposit(game->items->get(ITEM_DUST)); // Boulder is replaced with dust
+
+			Item* dust = game->items->get(ITEM_DUST);
+			dust->setLocation(loc);
+			loc->deposit(dust); // Boulder is replaced with dust
+
 			game->player->setStrong(false);
 			game->player->incrementScore(SCORE_PUZZLE);
 			Terminal::wrpro(game->general->get(STR_BOULDPUL));
