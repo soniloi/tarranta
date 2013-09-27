@@ -18,10 +18,8 @@ Game::TestingExecutor::TestingExecutor(Game* game){
 void Game::TestingExecutor::execNode(){
 	Location* loc = game->player->getLocation();
 	Location* prevloc = loc->getDirection(CMD_BACK);
-	stringstream nodess;
-	nodess << "You are currently at node: " << loc->getID() << ", \"" << loc->getLongname() << "\". ";
-	nodess << "Your location previous to this was node: " << prevloc->getID() << ", \"" << prevloc->getLongname() << "\".";
-	Terminal::wrpro(nodess.str());
+	Terminal::wrpro("You are currently at node: " + game->itos(loc->getID()) + ", \"" + loc->getLongname() + "\".");
+	Terminal::wrpro("Your previous location was node: " + game->itos(prevloc->getID()) + ", \"" + prevloc->getLongname() + "\".");
 }
 #endif
 

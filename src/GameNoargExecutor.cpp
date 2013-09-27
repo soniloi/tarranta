@@ -170,15 +170,12 @@ void Game::NoargExecutor::execQuit(){
  *	Execute command to display current score to player
  */
 void Game::NoargExecutor::execScore(bool final){
-	stringstream ss;
 	if(final){
-		ss << "Your final score was " << game->calculateScore() << " points of a possible " << game->maxpoints << ". ";
-		ss << "You died " << game->player->getDeaths() << " times, and gave " << game->player->getMoves() << " instructions.";
+		Terminal::wrpro("Your final score was " + game->itos(game->calculateScore()) + " points of a possible " + game->itos(game->maxpoints) + ".");
+		Terminal::wrpro("You died " + game->itos(game->player->getDeaths()) + " times, and gave " + game->itos(game->player->getMoves()) + " instructions.");
 	}
-	else{
-		ss << "Your current score is " << game->calculateScore() << " points.";
-	}
-	Terminal::wrpro(ss.str());
+	else
+		Terminal::wrpro("Your current score is " + game->itos(game->calculateScore()) + " points.");
 }
 
 /*
@@ -241,9 +238,7 @@ void Game::NoargExecutor::execTezazzle(){
  *	Execute command to display current game version to player
  */
 void Game::NoargExecutor::execVersion(){
-	stringstream ss;
-	ss << game->general->get(STR_VERSION) << " (" << game->maxpoints << " points).";
-	Terminal::wrpro(ss.str());
+	Terminal::wrpro(game->general->get(STR_VERSION) + " (" + game->itos(game->maxpoints) + " points).");
 }
 
 /*

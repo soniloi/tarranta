@@ -178,9 +178,7 @@ void Game::Dispatcher::dispatchPresentArg(Game* game, Command* command, Item* it
 				Terminal::wrpro("Water " + item->getShortname() + " with...");
 				int i = ONE;
 				for(list<Container*>::iterator it = containers.begin() ; it != containers.end() ; it++){
-					stringstream ss;
-					ss << TAB << i << ". " << (*it)->getItemWithin()->getShortname();
-					Terminal::wrtab(ss.str()); // List all available liquids
+					Terminal::wrtab(game->listentry(i, (*it)->getItemWithin()->getShortname())); // List all available liquids
 					i++;
 				} 
 				Terminal::wrtab("\t0. None of these");
@@ -289,9 +287,7 @@ void Game::Dispatcher::dispatchInventoryArg(Game* game, Command* command, Item* 
 				Terminal::wrpro("Insert " + item->getShortname() + " into...");
 				int i = ONE;
 				for(list<Container*>::iterator it = containers.begin() ; it != containers.end() ; it++){
-					stringstream ss;
-					ss << TAB << i << ". " << (*it)->getShortname();
-					Terminal::wrtab(ss.str()); // List all available containers
+					Terminal::wrtab(game->listentry(i, (*it)->getShortname())); // List all available containers
 					i++;
 				} 
 				Terminal::wrtab("\t0. None of these");

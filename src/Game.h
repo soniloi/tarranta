@@ -78,6 +78,24 @@ class Game{
 			return false;
 		}
 
+		/*
+		 *	string to list-entry string conversion, where position is position in list
+		 */
+		inline string listentry(int position, string entry){
+			stringstream ss;
+			ss << TAB << position << ". " << entry;
+			return ss.str();
+		}
+
+		/*
+		 *	Generic int to string converter
+		 */
+		inline string itos(int num){
+			stringstream ss;
+			ss << num;
+			return ss.str();
+		}
+
 		class Parser{
 		public:
 			void parseInput(Game* game, vector<uint64_t> input);

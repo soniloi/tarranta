@@ -385,9 +385,7 @@ void Game::PresentargExecutor::execTake(Item* item){
 			Terminal::wrpro("Take " + item->getShortname() + " in...");
 			int i = ONE;
 			for(list<Container*>::iterator it = containers.begin() ; it != containers.end() ; it++){
-				stringstream ss;
-				ss << TAB << i << ". " << (*it)->getShortname();
-				Terminal::wrtab(ss.str()); // List all available containers
+				Terminal::wrtab(game->listentry(i, (*it)->getShortname())); // List all available containers
 				i++;
 			} 
 			Terminal::wrtab("\t0. None of these");

@@ -57,13 +57,6 @@ void Game::Parser::parseInput(Game* game, vector<uint64_t> input){
 
 		else{
 
-			stringstream commstream;
-			commstream << (*command);
-			string commstr = commstream.str();
-
-			stringstream argstream;
-			argstream << std::hex << tentativeArg << std::dec;
-
 			// First check for testing commands, where applicable; we send these directly to the executor without going through the dispatcher
 			#ifdef TESTING_READ
 				#ifdef TESTING_WRITE // WRITE commands do not exist when READ ones do not
@@ -100,7 +93,7 @@ void Game::Parser::parseInput(Game* game, vector<uint64_t> input){
 			else{
 
 				if(!tentativeArg){ // Argument required, but not given
-					vector<uint64_t> supparg = Terminal::readCodes("What is it you want me to " + commstr + "? ");
+					vector<uint64_t> supparg = Terminal::readCodes("What is it you want me to " + command->toString() + "? ");
 					if(supparg.size() > ZERO)
 						tentativeArg = supparg[ZERO];
 				}
