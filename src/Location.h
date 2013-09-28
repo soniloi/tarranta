@@ -60,7 +60,7 @@ class Location{
 		void deposit(Item* item);
 		Location* getDirection(uint64_t dircode);
 		Item* get(uint64_t cd);
-		Item* extract(Item* item);
+		void extract(Item* item);
 		bool contains(Item* item); // Whether a certain item is at location (including in a container at location)
 		Item* getObstruction();
 		list<Container*> getSuitableContainers(Item* item);

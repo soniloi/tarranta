@@ -243,17 +243,15 @@ Item* Location::get(uint64_t cd){
 }
 
 /*
- *	Return pointer to an item from this location,
- *		and remove it from the location
+ *	Return pointer to an item from this location, and remove it from the location
+ *	Has no effect if item was not at location
  */
-Item* Location::extract(Item* item){
+void Location::extract(Item* item){
 	for(map<uint64_t, Item*>::iterator it = this->items.begin() ; it != this->items.end() ; it++){
 		if(it->second == item){
 			this->items.erase(it);
-			return item;
 		}
 	}
-	return item; // TODO: FIX THIS NONSENSE: all these extract methods should probably just be void instead but not changing now due to consistency
 }
 
 

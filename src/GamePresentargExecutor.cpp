@@ -404,7 +404,6 @@ void Game::PresentargExecutor::execTake(Item* item){
 				else if(!(*it)->isEmpty()) // Something is currently in container
 					Terminal::wrpro(game->general->get(STR_CONTFULL));
 				else{
-					//game->player->getLocation()->extract(item); // Remove item from location
 					item->setLocation(game->station->get(LOCATION_CONTAINER)); // Set item's location to "container"
 					(*it)->insertItem(item); // Insert item into desired container
 					Terminal::wrpro(item->getShortname() + " taken in " + (*it)->getShortname() + ".");

@@ -90,6 +90,7 @@ void Game::Dispatcher::dispatchNoArg(Game* game, Command* command){
 		case CMD_QUIT: game->noargexec->execQuit(); break;
 		case CMD_SCORE: game->noargexec->execScore(false); break;
 		case CMD_SLEEP: game->noargexec->execSleep(); break;
+		case CMD_STARE: game->noargexec->execStare(); break;
 		case CMD_TEZAZZLE: game->noargexec->execTezazzle(); break;
 		case CMD_VERSION: game->noargexec->execVersion(); break;
 		case CMD_XYRO: game->noargexec->execXyro(); break;

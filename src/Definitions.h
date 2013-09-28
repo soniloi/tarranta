@@ -149,6 +149,7 @@
 #define LOCATION_LAUNCH 102 // Where you launch the dinghy from
 #define LOCATION_NOWHERE 0 // The nothing place
 #define LOCATION_RECHUB 34 // The recreation hub
+#define LOCATION_REFLECT 120 // The Reflection room
 #define LOCATION_RIVERBRIDGE 101 // On the river, under the bridge
 #define LOCATION_SAFE_0 LOCATION_RECHUB
 #define LOCATION_SAFE_1 50
@@ -210,6 +211,7 @@
 #define CMD_QUIT 0x7175697400000000
 #define CMD_SCORE 0x73636F7265000000
 #define CMD_SLEEP 0x736C656570000000
+#define CMD_STARE 0x7374617265000000
 #define CMD_TEZAZZLE 0x74657A617A7A6C65
 #define CMD_VERSION 0x76657273696F6E00
 #define CMD_XYRO 0x7879726F00000000
@@ -444,6 +446,10 @@
 #define STR_PIRATSN2 0x7069726174736E32 // When player attempts to sneak past deaf pirate
 #define STR_PLUGH 0x706C756768000000
 #define STR_RADICOOK 0x72616469636F6F6B // When player cooks radishes
+#define STR_REFINVIS 0x726566696E766973 // Player stares at self in Reflection room while invisible
+#define STR_REFNORM 0x7265666E6F726D00 // Player stares at self while normal
+#define STR_REFNOTH 0x7265666E6F746800 // Player stares at a location other than Reflection room
+#define STR_REFSTRON 0x7265667374726F6E // Player stares at self while strong
 #define STR_ROBOT 0x726F626F74000000
 #define STR_SHATFALL 0x7368617466616C6C // When a fragile item shatters on falling through the floor
 #define STR_SHATHERE 0x7368617468657265 // When a fragile item shatters on being dropped carelessly

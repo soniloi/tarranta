@@ -137,6 +137,7 @@ class Game{
 			void execQuit();
 			void execScore(bool final);
 			void execSleep();
+			void execStare();
 			void execTezazzle();
 			void execVersion();
 			void execXyro();

@@ -206,6 +206,22 @@ void Game::NoargExecutor::execSleep(){
 }
 
 /*
+ *	Execute command to stare (at reflective walls, i.e. self)
+ */
+void Game::NoargExecutor::execStare(){
+	if(game->player->getLocation()->getID() == LOCATION_REFLECT){
+		if(game->player->isInvisible())
+			Terminal::wrpro(game->general->get(STR_REFINVIS));
+		else if(game->player->isStrong())
+			Terminal::wrpro(game->general->get(STR_REFSTRON));
+		else
+			Terminal::wrpro(game->general->get(STR_REFNORM));
+	}
+	else
+		Terminal::wrpro(game->general->get(STR_REFNOTH));
+}
+
+/*
  *	Execute TEZAZZLE magic word command (teleport)
  */
 void Game::NoargExecutor::execTezazzle(){
