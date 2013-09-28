@@ -58,21 +58,17 @@ void Game::Parser::parseInput(Game* game, vector<uint64_t> input){
 		else{
 
 			// First check for testing commands, where applicable; we send these directly to the executor without going through the dispatcher
-			#ifdef TESTING_READ
-				#ifdef TESTING_WRITE // WRITE commands do not exist when READ ones do not
-				if(command->isTestingWrite()){
-					if(command->is(CTRL_COMMAND_TESTING_FLASH))
-						game->testingexec->execFlash(tentativeArg);
-					else if(command->is(CTRL_COMMAND_TESTING_GRAB))
-						game->testingexec->execGrab(tentativeArg);
-				}
-				#endif
-			if(command->isTestingRead()){
-				if(command->is(CTRL_COMMAND_TESTING_AIMSIGH))
-					game->testingexec->execAimsigh(tentativeArg);
-				else if(command->is(CTRL_COMMAND_TESTING_NODE))
-					game->testingexec->execNode();
-			}
+			#if defined (TESTING_READ) && defined (TESTING_WRITE)
+			if(command->is(CTRL_COMMAND_TESTING_FLASH))
+				game->testingexec->execFlash(tentativeArg);
+			else if(command->is(CTRL_COMMAND_TESTING_GRAB))
+				game->testingexec->execGrab(tentativeArg);
+			#endif
+			#if defined (TESTING_READ)
+			if(command->is(CTRL_COMMAND_TESTING_AIMSIGH))
+				game->testingexec->execAimsigh(tentativeArg);
+			else if(command->is(CTRL_COMMAND_TESTING_NODE))
+				game->testingexec->execNode();
 			#endif
 
 			// Check for movement commands

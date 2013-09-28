@@ -11,7 +11,7 @@ Game::TestingExecutor::TestingExecutor(Game* game){
  *	Testing methods (conditionally-compiled only)
  */
 
-#ifdef TESTING_READ
+#if defined (TESTING_READ)
 /*
  *	Execute command to tell player current location of specified item
  */
@@ -22,7 +22,12 @@ void Game::TestingExecutor::execAimsigh(uint64_t arg){
 		return;
 	}
 	Location* loc = item->getLocation();
-	Terminal::wrpro("The " + item->getShortname() + " says it is at node: " + game->itos(loc->getID()) + ", \"" + loc->getLongname() + "\".");
+	string nodeid = game->itos(loc->getID());
+	Terminal::wrpro("The " + item->getShortname() + " says it is at node: " + nodeid + ", \"" + loc->getLongname() + "\".");
+	if(loc->contains(item))
+		Terminal::wrpro("Node " + nodeid + " confirms that the " + item->getShortname() + " is present.");
+	else
+		Terminal::wrpro("However, node " + nodeid + " says that it has no " + item->getShortname() + ".");
 }
 
 /*
@@ -36,7 +41,7 @@ void Game::TestingExecutor::execNode(){
 }
 #endif
 
-#ifdef TESTING_WRITE
+#if defined (TESTING_READ) && defined (TESTING_WRITE)
 /*
  *	Execute command to move player to any desired location in game
  */

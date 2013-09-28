@@ -171,11 +171,11 @@
  */
 
 // Testing command codes
-#ifdef TESTING_READ
+#if defined (TESTING_READ)
 #define CTRL_COMMAND_TESTING_AIMSIGH 0x61696D7369676800 // Command to tell current location of specified item
 #define CTRL_COMMAND_TESTING_NODE 0x6E6F646500000000 // Command to echo location ID no to terminal
 #endif
-#ifdef TESTING_WRITE
+#if defined (TESTING_READ) && defined (TESTING_WRITE)
 #define CTRL_COMMAND_TESTING_FLASH 0x666C617368000000 // Command to jump to any other location in the game
 #define CTRL_COMMAND_TESTING_GRAB 0x6772616200000000 // Command to zap any item in the game into the inventory
 #endif

@@ -14,8 +14,6 @@
 #include "Definitions.h"
 #include "Statics.h"
 
-using namespace std;
-
 class Command{
 		friend ostream& operator <<(ostream&, const Command&);
 
@@ -24,15 +22,14 @@ class Command{
 		int status;
 
 	public:
-		#ifdef TESTING_READ
+		#if defined (TESTING_READ)
 		bool isTestingRead();
 		#endif
-		#ifdef TESTING_WRITE
+		#if defined (TESTING_READ) && defined (TESTING_WRITE)
 		bool isTestingWrite();
 		#endif
 		friend class CommandCollection;
 		Command(int stat, uint64_t cd);
-		~Command();
 		bool is(uint64_t cmdcode);
 		bool isCompound();
 		bool isMovement();

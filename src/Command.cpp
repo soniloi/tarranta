@@ -1,5 +1,4 @@
 #include "Command.h"
-using namespace std; // debug
 
 /*
  *	Constructor
@@ -7,40 +6,27 @@ using namespace std; // debug
 Command::Command(int stat, uint64_t cd){
 	this->code = cd;
 	this->status = stat;
-	//cerr << "creating command: " << std::hex << this->code << std::dec << endl;
-}
-
-/*
- *	Destructor
- */
-Command::~Command(){
-	//cerr << "deleting command: " << std::hex << this->code << std::dec << endl;
-}
+}	
 
 /*
  *	ostream overloading; may not be the most suitable, but I needed a way to be
  *	able to read the codes quicker than trying to learn off the ASCII table
  */
 ostream& operator <<(ostream& output, const Command& comm){
-
 	for(int i=CHARS_PER_CODE-ONE ; i >=0 ; i--){
 		char current = (char) (comm.code >> (BITS_PER_BYTE*i));
 		output << current;
 	}
-
-	//output << "\tstatus: " << std::hex << comm.status << std::dec; // DEBUG !!!!!!!!!!!!!!!!!!!!
-
 	return output;
-
 }
 
-#ifdef TESTING_READ
+#if defined (TESTING_READ)
 bool Command::isTestingRead(){
 	return (this->status & CTRL_COMMAND_TESTING_READ);
 }
 #endif
 
-#ifdef TESTING_WRITE
+#if defined (TESTING_READ) && defined (TESTING_WRITE)
 bool Command::isTestingWrite(){
 	return (this->status & CTRL_COMMAND_TESTING_WRITE);
 }

@@ -22,7 +22,7 @@ class Game{
 		StringCollection* general; // A collection of general strings
 		StringCollection* randomevents; // A collection of strings representing random game events
 		map<int, uint64_t> eventturns; // Maps turn numbers to the key for a random event
-		int maxpoints;
+		int maxpoints; // Maximum number of points player can gain in this game
 		bool on; // Whether this game is currently running
 		bool escaped; // Whether the player has escaped the asterbase
 
@@ -202,12 +202,12 @@ class Game{
 			Game* game;
 		public:
 			TestingExecutor(Game* game);
-			#ifdef TESTING_READ
+			#if defined (TESTING_READ)
 			void execAimsigh(uint64_t arg);
 			void execNode();
 			#endif
 
-			#ifdef TESTING_WRITE
+			#if defined (TESTING_READ) && defined (TESTING_WRITE)
 			void execFlash(uint64_t arg);
 			void execGrab(uint64_t arg);
 			#endif
@@ -222,7 +222,7 @@ class Game{
 		Game::PresentargExecutor* presentargexec;
 		Game::InventoryargExecutor* inventoryargexec;
 
-		#ifdef TESTING_READ
+		#if defined (TESTING_READ)
 		Game::TestingExecutor* testingexec;
 		#endif
 

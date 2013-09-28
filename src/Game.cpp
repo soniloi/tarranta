@@ -50,7 +50,7 @@ Game::Game(string filename){
 	this->presentargexec = new PresentargExecutor(this);
 	this->inventoryargexec = new InventoryargExecutor(this);
 
-	#ifdef TESTING_READ
+	#if defined (TESTING_READ)
 	this->testingexec = new TestingExecutor(this);
 	#endif
 
@@ -75,7 +75,7 @@ Game::~Game(){
 	delete this->presentargexec;
 	delete this->inventoryargexec;
 
-	#ifdef TESTING_READ
+	#if defined (TESTING_READ)
 	delete this->testingexec;
 	#endif
 
