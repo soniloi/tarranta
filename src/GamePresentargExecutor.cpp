@@ -245,12 +245,13 @@ void Game::PresentargExecutor::execRepair(Item* item){
 			if(!game->player->hasInPresent(wire))
 				Terminal::wrpro("You do not have the component needed to repair the console.");
 			else{
+				Location* loc = item->getLocation();
+				Item* newpanel = game->items->get(ITEM_PANEL);
+				newpanel->setLocation(loc);
+				loc->deposit(newpanel); // Insert panel
+
 				game->retireItem(wire); // Consume wire
 				game->retireItem(item); // Remove console
-
-				Item* newpanel = game->items->get(ITEM_PANEL);
-				newpanel->setLocation(item->getLocation());
-				item->getLocation()->deposit(newpanel); // Insert panel
 
 				game->player->incrementScore(SCORE_PUZZLE);
 				Terminal::wrpro(game->general->get(STR_CONSOLE));
