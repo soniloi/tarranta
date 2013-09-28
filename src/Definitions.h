@@ -172,6 +172,7 @@
 
 // Testing command codes
 #ifdef TESTING_READ
+#define CTRL_COMMAND_TESTING_AIMSIGH 0x61696D7369676800 // Command to tell current location of specified item
 #define CTRL_COMMAND_TESTING_NODE 0x6E6F646500000000 // Command to echo location ID no to terminal
 #endif
 #ifdef TESTING_WRITE

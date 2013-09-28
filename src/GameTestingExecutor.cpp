@@ -13,6 +13,19 @@ Game::TestingExecutor::TestingExecutor(Game* game){
 
 #ifdef TESTING_READ
 /*
+ *	Execute command to tell player current location of specified item
+ */
+void Game::TestingExecutor::execAimsigh(uint64_t arg){
+	Item* item = game->items->get(arg);
+	if(item == game->items->get(ITEM_NULL)){ // Whatever they input as argument isn't anything we know as an item
+		Terminal::wrpro("I do not know what " + Statics::codeToStr(arg) + " is.");
+		return;
+	}
+	Location* loc = item->getLocation();
+	Terminal::wrpro("The " + item->getShortname() + " says it is at node: " + game->itos(loc->getID()) + ", \"" + loc->getLongname() + "\".");
+}
+
+/*
  *	Execute command to echo player's current location to terminal
  */
 void Game::TestingExecutor::execNode(){

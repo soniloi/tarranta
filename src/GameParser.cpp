@@ -68,7 +68,9 @@ void Game::Parser::parseInput(Game* game, vector<uint64_t> input){
 				}
 				#endif
 			if(command->isTestingRead()){
-				if(command->is(CTRL_COMMAND_TESTING_NODE))
+				if(command->is(CTRL_COMMAND_TESTING_AIMSIGH))
+					game->testingexec->execAimsigh(tentativeArg);
+				else if(command->is(CTRL_COMMAND_TESTING_NODE))
 					game->testingexec->execNode();
 			}
 			#endif

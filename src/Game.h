@@ -203,6 +203,7 @@ class Game{
 		public:
 			TestingExecutor(Game* game);
 			#ifdef TESTING_READ
+			void execAimsigh(uint64_t arg);
 			void execNode();
 			#endif
 
